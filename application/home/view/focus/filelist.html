@@ -1,0 +1,122 @@
+{extend name="public/common"}
+
+{block name="style"}
+<title>文件通知列表</title>
+<style type="text/css">
+    *{margin:0;padding:0;}
+    a{text-decoration:none;}
+    ul li{list-style:none;}
+    body{font-size:12px;font-family:"微软雅黑";color:#666;}
+    .z_title{margin-top:20px;font-size:14px;color:#111;overflow:hidden;text-overflow:ellipsis;display:box;display:-webkit-box;line-clamp:2;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+	.z_title_click{margin-top:20px;font-size:14px;color:#999;overflow:hidden;text-overflow:ellipsis;display:box;display:-webkit-box;line-clamp:2;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+    .z_bottom{margin-top:20px;border-bottom:1px dashed #f1f1f1;height:30px;}
+    .z_bottom .z_services{font-size:12px;color:#999;float:left;}
+    .z_bottom .z_times{font-size:12px;color:#ccc;float:right;}
+
+    .c_title{margin-top:20px;font-size:14px;color:#666;overflow:hidden;text-overflow:ellipsis;display:box;display:-webkit-box;line-clamp:2;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+
+	.tip{height: 40px;line-height: 40px;text-align: center}
+</style>
+{/block}
+
+{block name="body"}
+<div class="container-fluid">
+    <div class="row filebox">
+		{volist name="list" id="vo"}
+		<a href="{:Url('Focus/filenote?id='.$vo['id'])}" class="block">
+			<div class="col-xs-12 col-md-12">
+				<div {eq name="vo.is" value="1"}class="z_title_click"{else/}class="z_title"{/eq}>
+					{$vo.title}
+				</div>
+				<div class="z_bottom">
+					<span class="z_services">{$vo.publisher}</span>
+					<span class="z_times">{$vo.create_time|time_format="Y-m-d"}</span>
+				</div>
+			</div>
+		</a>
+    	{/volist}
+    </div>
+	<div class="tip"></div>
+</div>
+
+{/block}
+
+{block name="script"}
+<script>
+$(function(){
+	//上拉加载
+	var block =$(".block");
+	var blockLen = block.length;
+	var tip = $(".tip");
+	//初始显示
+	if(blockLen < 10){
+		tip.text("");
+	}else{
+		tip.text("上拉加载更多");
+	}
+	//滚动加载
+	loadScroll();
+});
+function loadScroll(){
+	$(window ).off("scroll" ).on("scroll",function(){
+		var dh = $(document).height();
+		var wh = $(window).height();
+		var start = $(window ).scrollTop();
+		var end = wh + start;
+		var len = $(".block" ).length;
+		var tip = $(".tip");
+		if(dh == end){
+			//console.log("dh:"+dh+",wh:"+wh+",start:"+start+",end:"+end);
+			tip.text('');
+			$.ajax({
+				type:"post",
+				url:"{:Url('Focus/notemore')}",
+				data:{
+					length:len
+				},
+				success:function(data){
+					//console.log(data.data);
+					if(data.code == 1){
+						addNew(data);
+						var dataLen =data.data.length;
+						if(data.data.length == 5){
+							tip.text('上拉加载更多');
+						}
+					}else{
+						tip.text('没有更多了');
+						$(window ).off("scroll");
+					}
+				}
+			})
+		}
+	})
+}
+function addNew(data){
+	var html = '';
+	var news = data.data;
+	var newslen = news.length;
+	//console.log(news[0]);
+	for(var i = 0; i< newslen;i++){
+		var n = news[i];
+		html +=
+				'<a href="/home/focus/filenote/id/'+ n.id+'.html" class="block">'+
+					'<div class="col-xs-12 col-md-12">';
+						if( n.is == 1){
+							html +=	'<div class="z_title_click">'
+						}else{
+							html +=	'<div class="z_title">'
+						}
+		html +=
+				n.title+
+				'</div>'+
+				'<div class="z_bottom">'+
+				'<span class="z_services">'+n.publisher+'</span>'+
+				'<span class="z_times">'+ n.time+'</span>'+
+				'</div>'+
+				'</div>'+
+				'</a>';
+	}
+	$(".filebox" ).append(html);
+}
+</script>
+{/block}

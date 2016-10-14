@@ -1,0 +1,252 @@
+{extend name="base/common"}
+
+{block name="style"}
+{/block}
+
+{block name="page-header"}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>项目管理</h2>
+        <ol class="breadcrumb">
+            <li class="active">
+                <strong><a href="{:Url('Community/project')}">上线项目列表</a></strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+{/block}
+
+{block name="main"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>项目列表</h5>
+                    <div class="ibox-tools">
+                        <a data-toggle="modal" class="btn btn-primary" href="{:Url('Community/add')}">新增</a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th><input class="i-checks check-all" type="checkbox"></th>
+                                <th>编号</th>
+                                <th>项目名称</th>
+                                <th>发起人</th>
+                                <th>已筹金额</th>
+                                <th>成功</th>
+                                <th>关注</th>
+                                <th>支持</th>
+                                <th>结束时间</th>
+                                <th>排序</th>
+                                <th>推荐</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr>
+                                <td><input type="checkbox" class="i-checks" name="input[]"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" size="4"/></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="9">
+                                    <div class="page"></div>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script src="/admin/js/plugins/iCheck/icheck.min.js"></script>
+<script>
+    $(function(){
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green'
+        });
+    });
+        //发布
+        $(".post-put").off("click").on("click",function(){
+            var it=$(this);
+            var data = {
+                title:$("input[name='title']").val(),
+                detail:$("input[name='detail']").val(),
+                id:$("input[name='id']").val(),
+                class:$("select[name='class']").val(),
+                status:1
+            };
+            $.ajax({
+                type:"post",
+                url:$(".form-horizontal").attr("action"),
+                data:data,
+                success:function(data){
+                    if(data.code == 1){
+                        if (data.url) {
+                            updateAlert(data.msg + ' 页面即将自动跳转~','success');
+                        }else{
+                            updateAlert(data.msg ,'success');
+                        }
+                        it.prop('disabled','true');
+                        it.prev().prop('disabled','true');
+                        setTimeout(function(){
+                            if (data.url) {
+                                location.href=data.url;
+                            } else {
+                                location.reload();
+                            }
+                            it.removeAttr('disabled');
+                            it.prev().removeAttr('disabled')
+                        },2000);
+                    } else {
+                        updateAlert(data.msg, 'error');
+                        it.attr('disabled','true');
+                        it.prev().prop('disabled','true');
+                        setTimeout(function(){
+                            it.removeAttr('disabled');
+                            it.prev().removeAttr('disabled')
+                        },2000);
+                    }
+                }
+            });
+        });
+    }
+
+    function editMenu(Id) {
+        $.ajax({
+            type: "POST",
+            url: "{:Url('Special/getspecial')}",
+            data: {id:Id},
+            dataType: "json",
+            success: function(data){
+                data = JSON.parse(data);
+                $(".tt").html("编辑专题");
+                $("input[name='id']").val(data.id);
+                $("input[name='title']").val(data.title);
+                $("input[name='detail']").val(data.detail);
+                $("input[name='number']").val(data.number);
+                $("select[name='class']").val(data.class);
+                $(".form-horizontal").attr('action', '{:Url("Special/editspecial")}');
+                $("#btn").text("修改");
+                $(".form-horizontal .number").show();
+
+                //保存，按钮不同status值不同
+                $(".post-add").off("click").on("click",function(){
+                    var it=$(this);
+                    var data = {
+                        title:$("input[name='title']").val(),
+                        detail:$("input[name='detail']").val(),
+                        id:$("input[name='id']").val(),
+                        class:$("select[name='class']").val(),
+                        status:0
+                    };
+                    $.ajax({
+                        type:"post",
+                        url:$(".form-horizontal").attr("action"),
+                        data:data,
+                        success:function(data){
+                            if(data.code == 1){
+                                if (data.url) {
+                                    updateAlert(data.msg + ' 页面即将自动跳转~','success');
+                                }else{
+                                    updateAlert(data.msg ,'success');
+                                }
+                                it.prop('disabled','true');
+                                it.next('button').prop('disabled','true');
+                                setTimeout(function(){
+                                    if (data.url) {
+                                        location.href=data.url;
+                                    } else {
+                                        location.reload();
+                                    }
+                                    it.removeAttr('disabled');
+                                    it.next('button').removeAttr('disabled')
+                                },2000);
+                            } else {
+                                updateAlert(data.msg, 'error');
+                                it.attr('disabled','true');
+                                it.next('button').prop('disabled','true');
+                                setTimeout(function(){
+                                    it.removeAttr('disabled');
+                                    it.next('button').removeAttr('disabled')
+                                },2000);
+                            }
+                        }
+                    });
+                });
+                //发布
+                $(".post-put").off("click").on("click",function(){
+                    var it=$(this);
+                    var data = {
+                        title:$("input[name='title']").val(),
+                        detail:$("input[name='detail']").val(),
+                        id:$("input[name='id']").val(),
+                        class:$("select[name='class']").val(),
+                        status:1
+                    };
+                    $.ajax({
+                        type:"post",
+                        url:$(".form-horizontal").attr("action"),
+                        data:data,
+                        success:function(data){
+                            if(data.code == 1){
+                                if (data.url) {
+                                    updateAlert(data.msg + ' 页面即将自动跳转~','success');
+                                }else{
+                                    updateAlert(data.msg ,'success');
+                                }
+                                it.prop('disabled','true');
+                                it.prev().prop('disabled','true');
+                                setTimeout(function(){
+                                    if (data.url) {
+                                        location.href=data.url;
+                                    } else {
+                                        location.reload();
+                                    }
+                                    it.removeAttr('disabled');
+                                    it.prev().removeAttr('disabled')
+                                },2000);
+                            } else {
+                                updateAlert(data.msg, 'error');
+                                it.attr('disabled','true');
+                                it.prev().prop('disabled','true');
+                                setTimeout(function(){
+                                    it.removeAttr('disabled');
+                                    it.prev().removeAttr('disabled')
+                                },2000);
+                            }
+                        }
+                    });
+                });
+            }
+        })
+    }
+</script>
+
+{/block}

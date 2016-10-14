@@ -1,0 +1,214 @@
+{extend name="public/common"}
+
+{block name="style"}
+<link rel="stylesheet" href="/home/css/logList.css">
+{/block}
+
+{block name="body"}
+<div class="top_menu">
+    <div class="xh-menu xh-year" data-msg="year">
+        <span class="son" t_num=""></span>
+        <span class="fa fa-angle-down"></span>
+    </div>
+    <div class="xh-menu xh-month" data-msg="month">
+        <span class="son" t_num="0">所有</span>
+        <span class="fa fa-angle-down"></span>
+    </div>
+</div>
+<div class="fuzzy">
+    <div class="y_m_List">
+        <div class="year">
+            {volist name="years" id="vo"}
+            <div class="yearL cho" data-num="{$vo.year}">{$vo.year}年</div>
+            {/volist}
+        </div>
+        <div class="month">
+            <div class="monthL cho" data-num="1">1月</div>
+            <div class="monthL cho" data-num="2">2月</div>
+            <div class="monthL cho" data-num="3">3月</div>
+            <div class="monthL cho" data-num="4">4月</div>
+            <div class="monthL cho" data-num="5">5月</div>
+            <div class="monthL cho" data-num="6">6月</div>
+            <div class="monthL cho" data-num="7">7月</div>
+            <div class="monthL cho" data-num="8">8月</div>
+            <div class="monthL cho" data-num="9">9月</div>
+            <div class="monthL cho" data-num="10">10月</div>
+            <div class="monthL cho" data-num="11">11月</div>
+            <div class="monthL cho" data-num="12">12月</div>
+            <div class="monthL cho all" data-num="0">所有</div>
+        </div>
+        <br style="clear:both"/>
+    </div>
+</div>
+<div id="vo-box">
+    {volist name="list" id="vo"}
+    <div class="listBox">
+        <div class="guide">
+            <span>{$key}月</span>
+            (共<span>{$vo|count}</span>篇)
+        </div>
+        {volist name="vo" id="co"}
+        <div class="log_list">
+            <a href="{:url('User/logview?id='.$co['id'])}">
+                <div class="list">
+                    <span class="day">{$co.create_time|time_format="d"}</span>
+                    <span class="log_title">{$co.content}</span>
+                </div>
+            </a>
+            <br style="clear:both"/>
+        </div>
+        {/volist}
+    </div>
+    {/volist}
+</div>
+
+{/block}
+
+{block name="script"}
+<script>
+    var w_w = $(window).width();
+    var w_h = $(window).height()-44;
+    var fuzzy =$('.fuzzy');
+    var this_year = new Date().getFullYear();
+    fuzzy.css({'width':w_w,'height':w_h});
+    $('.xh-year').find('.son').text(this_year+'年').attr('t_num',this_year);
+    function select_y_m(){
+        var menu = $('.xh-menu');
+        function defalut(m){
+            var it = $(m);
+            var angle = it.find('.fa');
+            var y_m = it.data('msg');
+            var this_y_m = fuzzy.find('.'+y_m);
+            angle.removeClass('fa-angle-up').addClass('fa-angle-down');
+            fuzzy.hide();
+            this_y_m.hide();
+        }
+        menu.each(function(){
+            $(this).off("click").on('click',function(){
+                var other;
+                var it = $(this);
+                var angle = it.find('.fa');
+                var y_m = it.data('msg');
+                var this_y_m = fuzzy.find('.'+y_m);
+                var isshow = angle.hasClass('fa-angle-down');
+                if(it.hasClass("xh-year")){
+                    other = it.next();
+                }else{
+                    other = it.prev();
+                }
+                if(isshow){
+                    //恢复默认
+                    defalut(other);
+                    //切换显示
+                    angle.removeClass('fa-angle-down').addClass('fa-angle-up');
+                    fuzzy.show();
+                    this_y_m.show();
+                    this_y_m.find('.cho').each(function(){
+                        var thischo = $(this );
+                        var thischop = thischo.parents();
+                        var numY,numM;
+                        if(thischop.hasClass("month")){
+                            //该月是否有日志
+                            var other = thischop.prev();
+                            numY = $('.xh-year').find('.son').attr('t_num');
+                            numM = thischo.data('num');
+                            hasLog();
+                        }else{
+                            //该年是否有日志
+                            other = thischop.next();
+                            numY = parseInt(thischo.text());
+                            other.find('.cho' ).not('.all').each(function(){
+                                numM = $(this ).data('num');
+                                hasLog();
+                            });
+                        }
+                        function hasLog(){
+                            $.ajax({
+                                type:'POST',
+                                url:"{:Url('User/loglist')}",
+                                data:{
+                                    year:numY,
+                                    month:numM
+                                },
+                                dataType: "json",
+                                success:function(data){
+                                    var type = $.isArray(data.data);
+                                    if( !type){
+                                        thischo.css({"color":"#fb8e07"});
+                                    }
+                                }
+                            });
+                        }
+
+                        $(this).off("click").on('click',function(){
+                            var this_cho = $(this);
+                            var t_num = this_cho.data('num');
+                            //console.log(t_num);
+                            it.find('.son').text(this_cho.text());
+                            it.find('.son').attr('t_num',t_num);
+                            var year_num = $('.xh-year').find('.son').attr('t_num');
+                            var month_num = $('.xh-month').find('.son').attr('t_num');
+                            $.ajax({
+                                type:'POST',
+                                url:"{:Url('User/loglist')}",
+                                data:{
+                                    year:year_num,
+                                    month:month_num
+                                },
+                                dataType: "json",
+                                success:function(data){
+                                    $('.fuzzy').hide();
+                                    var obj = data.data,
+                                        newHtml = '';
+                                    for(var key in obj){
+                                        if(key){console.log(key+"a");}
+                                        if(typeof obj[key] === 'object'){
+                                            newHtml += '<div class="listBox"><div class="guide"><span>'+key+'月</span>(共<span>'+obj[key].length+'</span>篇)</div>';
+                                            for(var i= 0 ,len = obj[key].length;i<len;i++){
+                                                newHtml += '<div class="log_list">'+
+                                                           '<a href="/home/user/logview/id/'+obj[key][i].id+'".html>'+
+                                                           '<div class="list">'+
+                                                           '<span class="day">'+obj[key][i].day+'</span>'+
+                                                           '<span class="log_title">'+obj[key][i].content+'</span>'+
+                                                           '</div>'+
+                                                           '</a>'+
+                                                           '<br style="clear:both"/>'+
+                                                           '</div>';
+                                            }
+                                            newHtml += '</div>';
+                                        }
+                                    }
+                                    $('#vo-box').html(newHtml);
+                                }
+                            });
+                        });
+                    });
+                    fuzzy.click(function(){
+                        fuzzy.hide();
+                        var reset = $(".xh-menu");
+                        defalut(reset);
+                    })
+
+                }else{
+                    angle.removeClass('fa-angle-up').addClass('fa-angle-down');
+                    fuzzy.hide();
+                    this_y_m.hide();
+                }
+
+            });
+        });
+    }
+
+    select_y_m();
+    $(window).scroll(function(event){
+        var doc_h = $(document).height();//获取文本高度
+        var w_h = $(window).height();//获取屏幕高度
+        var scroll_top  = $(window).scrollTop();//获取滚动条到顶部的高度
+        var s_w_h = w_h+scroll_top;
+        //console.log(doc_h +"  ======   "+w_h+"   =====   "+scroll_top);
+        if(s_w_h >=doc_h ){
+            console.log('点击加载更多');
+        }
+    });
+</script>
+{/block}

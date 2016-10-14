@@ -1,0 +1,213 @@
+{extend name="public/common"}
+
+{block name="style"}
+<link rel="stylesheet" href="/home/css/navbar.css">
+<link rel="stylesheet" href="/home/css/AcIndex.css">
+<style>
+    .tip{text-align: center;color: #cccccc;line-height: 30px;font-size: 14px;height:30px;}
+</style>
+{/block}
+
+{block name="body"}
+{include file="public/navbar"}
+<div class="pageBody" pageId="1">
+    <div class="current_special">
+        {volist name="recommend" id="vo"}
+        <img src="{$vo.list_image|get_cover='path'}" class="bac_img">
+        {/volist}
+        <!--<img src="/home/images/activity(big).jpg" class="bac_img">-->
+        <div class="fuzzy">
+            <div class="spe_title"></div>
+            <div class="shadow_box">
+               {volist name="recommend" id="vo"}
+                <div class="content">
+                    <a href="{:Url('Activity/hotactivity?id='.$vo['id'])}">
+                        <div class="roll_box">
+                            <div class="s_tag">热门活动</div>
+                            <img class="s_img" src="{$vo.front_cover|get_cover='path'}">
+                            <!--<img class="s_img" src="/home/images/activity(small).jpg">-->
+                            <div class="s_title">{$vo.name}</div>
+                            <div class="sent_detail">
+                                <span class="tissue">{$vo.publisher}</span>
+                                <span class="time">{$vo.create_time|time_format="Y-m-d"}</span>
+                            </div>
+                            <div class="footer">
+                                <div class="scan">
+                                    <img src="/home/images/scan2.png">
+                                    <span>{$vo.views}</span>
+                                </div>
+                                <span class="join"><span>{$vo.enrollnumber}</span>&nbsp;人报名</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {/volist}
+            </div>
+            <div class="change">
+                <img src="/home/images/change.png">换一个
+            </div>
+        </div>
+    </div>
+    {neq name="meet" value=""}
+    <div class="vip">
+        <span class="title">一&nbsp;重要文件.及时确认&nbsp;一</span>
+        {volist name="meet" id="vo"}
+        {eq name="vo.is" value="1"}
+            <div class="v_note">
+                <a href="{:Url('activity/meetnote?id='.$vo.id)}">
+                    <div class="m_tag">会议通告</div>
+                    <div class="v_n_title">{$vo.name}</div>
+                    <div class="tissue">{$vo.publisher}</div>
+                    <div class="time">
+                        <span>{$vo.create_time|time_format='Y-m-d'}</span>&nbsp;&nbsp;发布
+                    </div>
+                    <div class="hurdle"></div>
+                    <div class="join">
+                        已报名<span>{$vo.enrollnumber}/{$vo.totalnumber}</span>
+                    </div>
+                        {neq name="$vo.is_enroll" value="1"}
+                        <div class="ensure">报&nbsp;名</div>
+                        {else/}
+                        <div class="joined">已报名</div>
+                        {/neq}
+                    <br style="clear:both;" />
+                </a>
+            </div>
+        {/eq}
+        {/volist}
+        <br style="clear:both;" />
+    </div>
+    {/neq}
+
+    <div class="active">
+        <span class="title">一&nbsp;精彩活动.寓教于乐&nbsp;一</span>
+        {volist name="hotactivity" id="hot"}
+        <div class="block">
+            <a href="{:Url('activity/hotactivity?id='.$hot.id)}">
+                <div class="content">
+                    <img src="{$hot.list_image|get_cover='path'}" class="ac_img" alt="图片">
+                    <div class="ac_name">{$hot.name}</div>
+                    <div class="address">
+                        <img src="/home/images/map_mark.png" class="iconImg" alt="坐标">
+                        <span class="a_name">{$hot.address}</span>
+                        <span class="time">{$hot.create_time|time_format='Y-m-d'}&nbsp;&nbsp;发布</span>
+                    </div>
+
+                    <div class="foot">
+                        <div class="scan_num">
+                            <img src="/home/images/scan2.png" class="iconImg">
+                            <span>{$hot.views}</span>
+                        </div>
+                        <div class="join_num">
+                            <span>{$hot.enrollnumber}</span>
+                            人报名
+                        </div>
+                    </div>
+                    <br style="clear:both;" />
+                </div>
+            </a>
+            <br style="clear:both;" />
+        </div>
+        {/volist}
+
+    </div>
+</div>
+<div class="tip">
+    上拉加载更多
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript" src="/home/js/navbar.js"></script>
+<script>
+"use strict";
+$(function(){
+    //上拉加载更多
+    var block =$(".block");
+    var blockLen = block.length;
+    var tip = $(".tip");
+        //初始显示
+        if(blockLen < 2){
+            tip.text("");
+        }else{
+            tip.text("上拉加载更多");
+        }
+    //滚动加载
+    loadScroll();
+
+});
+/**
+ * loadScroll 上拉加载信息
+ * @type [number] len
+ */
+function loadScroll(){
+    $(window ).off("scroll" ).on("scroll",function(){
+        var dh = $(document).height();
+        var wh = $(window).height();
+        var start = $(window ).scrollTop();
+        var end = wh + start;
+        var len = $(".block" ).length;
+        var tip = $(".tip");
+        if(dh == end){
+            //console.log("dh:"+dh+",wh:"+wh+",start:"+start+",end:"+end);
+            tip.text('');
+            $.ajax({
+                type:"post",
+                url:"{:Url('Activity/activitymore')}",
+                data:{
+                    length:len
+                },
+                success:function(data){
+                    console.log(data);
+                    if(data.code == 1){
+                        addActive(data);
+                        var dataLen =data.data.length;
+                        if(data.data.length == 5){
+                            tip.text('上拉加载更多');
+                        }
+                    }else{
+                        tip.text('没有更多了');
+                        $(window ).off("scroll");
+                    }
+                }
+            })
+        }
+    })
+}
+function addActive(data){
+    var html = '';
+    var events = data.data;
+    var eventsLen = events.length;
+    for(var i = 0 ; i< eventsLen;i++){
+        var event = events[i];
+        html +=
+                '<div class="block">'+
+                '<a href="/home/activity/hotactivity/id/'+event.id+'.html">'+
+                '<div class="content">'+
+                '<img src="'+event.path+'" class="ac_img" alt="图片">'+
+                '<div class="ac_name">'+event.name+'</div>'+
+                '<div class="address">'+
+                '<img src="/home/images/map_mark.png" class="iconImg" alt="坐标">'+
+                '<span class="a_name">'+event.address+'</span>'+
+                '<span class="time">'+event.pb_time+'&nbsp;&nbsp;发布</span>'+
+                '</div>'+
+                '<div class="foot">'+
+                '<div class="scan_num">'+
+                '<img src="/home/images/scan.png" class="iconImg">'+
+                '<span>'+event.views+'</span>'+
+                '</div>'+
+                '<div class="join_num">'+
+                '<span>'+event.enrollnumber+'</span>'+
+                '人报名'+
+                '</div>'+
+                '</div>'+
+                '<br style="clear:both;" />'+
+                '</div>'+
+                '</a>'+
+                '<br style="clear:both;" />'+
+                '</div>';
+    }
+    $(".active" ).append(html);
+}
+</script>
+{/block}

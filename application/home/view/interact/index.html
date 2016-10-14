@@ -1,0 +1,91 @@
+{extend name="public/common"}
+
+{block name="style"}
+<style type="text/css">
+    *{padding: 0;margin: 0;}
+    a{text-decoration: none;}
+    ul li{list-style: none;}
+    body{background: url('/home/images/test2.jpg') no-repeat;background-size: 100% 100%;}
+    .list{width: 100%;padding: 0 20px;}
+    .list ul{width: 100%;}
+    .list ul li{width: 100%;margin-top: 20px;}
+    .list ul li .box{line-height: 80px;background: rgba(255,255,255,0.9);border-top-left-radius: 4px;border-top-right-radius: 4px;position: relative;}
+    .list ul li .box a{position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 1;}
+    .list ul li:first-child .box{border-bottom: 2px solid #3dc353;}
+    .list ul li:nth-child(2) .box{border-bottom: 2px solid #ff9800;}
+    .list ul li:nth-child(3) .box{border-bottom: 2px solid #ac2130;}
+    .list ul li:last-child{margin: 0;}
+    .list ul li:last-child .box{border-bottom: 2px solid #29b6f6;}
+    .list ul li:last-child .box .title{position: relative;bottom: 6px;}
+    .list ul li .box img{width: 32px;margin-left: 20px;margin-right: 10px;}
+    .list ul li .box .title{font-size: 18px;color: #333;}
+    .list ul li .box .fa-angle-right{font-size: 24px;color: #ccc;position: absolute;right: 20px;top: 27px;}
+    .list ul li .box .little{font-size: 12px;color: #999;bottom: 16px;position: absolute;line-height: 20px;left: 68px;}
+    .list .break{line-height: 40px;text-align: center;font-size: 14px;color: #666;}
+    .list .break .line{width: 20px;height: 0;border-top: 1px solid #666;display: inline-block;position: relative;bottom: 4px;}
+    .suggest{width: 100%;position: absolute;bottom: 15px;text-align: center;color: #999;}
+    .suggest img{width: 16px;margin-right: 4px;}
+    .suggest .firstchild{padding-right:4px;border-right: 1px dashed #ccc;}
+</style>
+{/block}
+
+{block name="body"}
+<div>
+    <div class="list">
+        <ul>
+            <li>
+                <div class="box">
+                    <img src="/home/images/interact/healthy.png">
+                    <span class="title">健康管理</span>
+                    <span class="fa fa-angle-right"></span>
+                    <a href="http://wechat.psych.ac.cn/zj/index.php/xlcp/start/1?uid=627"></a>
+                </div>
+            </li>
+            <li>
+                <div class="box">
+                    <img src="/home/images/interact/hope.png">
+                    <span class="title">微心愿认领</span>
+                    <span class="fa fa-angle-right"></span>
+                    <a href="http://xhxf.hzdj.gov.cn/index.php/taskinfo/index"></a>
+                </div>
+            </li>
+            <li>
+                <div class="box">
+                    <img src="/home/images/interact/user-red.png">
+                    <span class="title">工会服务</span>
+                    <span class="fa fa-angle-right"></span>
+                    <a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzA3Mjk5NTg5OA==#wechat_webview_type=1&wechat_redirect"></a>
+                </div>
+            </li>
+            <div class="break">
+                <span class="line"></span>
+                <span class="word">感谢你的积极参与</span>
+                <span class="line"></span>
+            </div>
+            <li>
+                <div class="box">
+                    <img src="/home/images/interact/report.png">
+                    <span class="title">众筹调研</span>
+                    <span class="fa fa-angle-right"></span>
+                    <span class="little">您有一份调查问卷快去看看吧!</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="suggest">
+        <img src="/home/images/interact/wenhao.png">
+        <span class="firstchild">问题与帮助</span>
+        <img src="/home/images/interact/suggestion.png">
+        <span>意见与反馈</span>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+    $(function(){
+        var height = $(window).height();
+        $("body").height(height-20);
+    });
+</script>
+{/block}

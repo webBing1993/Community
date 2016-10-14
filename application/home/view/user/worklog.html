@@ -1,0 +1,155 @@
+{extend name="public/common"}
+
+{block name="style"}
+<link rel="stylesheet" href="/home/css/worklog.css">
+{/block}
+
+{block name="body"}
+<div class="top">
+    <img src="/home/images/time.png">
+    当前日期：
+    <span id="time"></span>
+</div>
+<div class="logBox">
+    <div class="log">
+        <div class="workContent">
+            <label for="content">工作内容</label>
+            <input type="text" id="content" class='input Emrys-input' contenteditable="true" placeholder="填写主要工作内容" required>
+            <!--<div  class='input Emrys-input' contenteditable="true" data-msg="填写主要工作内容" data-reg=""></div>-->
+        </div>
+        <div class="workSchedule">
+            <label for="schedule">工作进度</label>
+            <input type="text" id="schedule" class='input Emrys-input' contenteditable="true" placeholder="填写已完成工作内容" required>
+            <!--<div id="schedule" class='input Emrys-input' contenteditable="true" data-msg="填写已完成工作内容" data-reg="过滤标准"></div>-->
+        </div>
+        <div class="hurdle"></div>
+        <textarea name="feel" id="feel"  class='Emrys-input tarea' contenteditable="true" placeholder="写下你对今日工作的反思与心得" data-reg="post" data-class="post"></textarea>
+        <!--<div id="feel" class='Emrys-input' contenteditable="true" data-msg="写下你对今日工作的反思与心得" data-reg="post" data-class="post"></div>-->
+        <div class="button">提交日志</div>
+        <br style="clear:both"/>
+    </div>
+</div>
+<a href="{:url('User/loglist')}">
+    <div class="check_log">查看日志</div>
+</a>
+{/block}
+
+{block name="script"}
+<script>
+"use strict";
+//    setInterval(function() {
+//        var now = (new Date()).toLocaleString();
+//        $('#time').text(now);
+//    }, 1000);
+
+//顶部获取当前时间
+function currentTime(){
+    var d = new Date(),str = '';
+    var day = d.getDay();
+    var week = [];
+    week = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+    str += d.getFullYear()+'-';
+    str  += d.getMonth() + 1+'-';
+    str  += d.getDate()+'&nbsp;';
+    str += d.getHours()+':';
+    str  += d.getMinutes()+'&nbsp;';
+    str  += week[day];
+    return str;
+}
+setInterval(function(){$('#time').html(currentTime)},1);
+
+function changeBac(){
+    var feelWord = $('#feel').val();
+    var content = $('#content' ).val();
+    var schedule = $('#schedule' ).val();
+    if(feelWord != ''&&content !=''&&schedule!=''){
+        $('.button').addClass('post');
+    }else {
+        $('.button').removeClass('post');
+    }
+}
+var intx;
+var isSubmit =$(".Emrys-input");
+    isSubmit.each(function(){
+
+        var it=$(this);
+        it.on('focus',function(){
+            intx = setInterval(changeBac,100);
+        });
+        it.on('blur',function(){
+            window.clearInterval(intx);
+        });
+    });
+
+//$('#feel').on('focus',function(){
+//    intx = setInterval(changeBac,100);
+//});
+//$('#feel').on('blur',function(){
+//    window.clearInterval(intx);
+//});
+$('.logBox').on('click','.post',function(){
+    var work_content = $('#content').val();
+    var work_schedule = $('#schedule').val();
+    var work_feel = $('#feel').val();
+    console.log(work_content,work_schedule,work_feel);
+    $.ajax({
+        type: "POST",
+        url: "{:Url('User/worklog')}",
+        data: {
+            content:work_content,
+            complete:work_schedule,
+            experience:work_feel
+        },
+        dataType: "json",
+        success:function(){
+            window.location.href='/home/user/loglist';
+        }
+    });
+});
+//输入框placeholder
+//function input(){
+//    // 过滤验证标准
+//    var reg = (function(){
+//        function isNull(dom,callback){
+//            var value = dom.text();
+//            if(value == ''){
+//                if(callback){
+//                    callback();
+//                }
+//            }
+//        }
+//        return {
+//            isNull : isNull
+//        }
+//    })();
+
+    /*
+     *   js 原型，采用原型模式
+     * */
+//    reg.prototype = {
+//        focus : function(dom){
+//            var value = dom.text();
+//            if(value == dom.data('msg')){
+//                dom.text('');
+//            }
+//        }
+//    };
+
+//    var input = $(".Emrys-input");
+//    input.each(function(){
+//        var msg =  $(this).data('msg');
+//        $(this).text(msg);
+//        $(this).on("focus", function(){
+//            reg.prototype.focus($(this));
+//        });
+//        $(this).on("blur", function(){
+//            var thisDom = $(this);
+//            reg.isNull(thisDom,function(){
+//                thisDom.text(thisDom.data('msg'));
+//            });
+//        });
+//    });
+//}
+//input();
+</script>
+{/block}

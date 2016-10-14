@@ -1,0 +1,231 @@
+body {
+  background: #f1f1f1;
+  font-size: 0;
+}
+.vip {
+  width: 100%;
+}
+.vip .title {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  color: #f43c4a;
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+.vip .v_note {
+  background: #fff;
+  border-radius: 8px;
+  width: calc(100% - 20px);
+  margin-left: 10px;
+  margin-bottom: 10px;
+  position: relative;
+}
+.vip .v_note .m_tag {
+  margin-left: -5px;
+  background-image: url("/home/images/meeting.png");
+  background-size: 100% 100%;
+  margin-top: 11px;
+  position: absolute;
+  width: 65px;
+  height: 34px;
+  line-height: 24px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  display: inline-block;
+}
+.vip .v_note .v_n_title {
+  padding: 10px 10px 0 10px;
+  font-size: 16px;
+  text-indent: 60px;
+  line-height: 25px;
+  color: #111;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  display: -webkit-box;
+  word-break:break-all;
+}
+.sent_detail .tissue{
+  width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+}
+.vip .v_note .tissue {
+  padding: 0 10px;
+  font-size: 12px;
+  color: #999;
+  margin-top: 10px;
+  display: inline-block;
+}
+.vip .v_note .time {
+  margin-top: 10px;
+  margin-right: 10px;
+  font-size: 12px;
+  color: #ccc;
+  float: right;
+  display: inline-block;
+}
+.vip .v_note .hurdle {
+  width: calc(100% - 20px);
+  margin-left: 10px;
+  height: 1px;
+  background: #e5e5e5;
+  margin-top: 10px;
+  -webkit-transform: scaleY(0.6);
+  transform: scaleY(0.6);
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  overflow: hidden;
+}
+.vip .v_note .join {
+  width: 50%;
+  height: 40px;
+  line-height: 40px;
+  color: #666666;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  margin-left: 10px;
+  margin-top: 3px;
+  display: inline-block;
+}
+.vip .v_note .ensure {
+  width: 70px;
+  height: 24px;
+  line-height: 23px;
+  color: #3dc353;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 4px;
+  border: 1px solid #3dc353;
+  display: inline-block;
+  float: right;
+  margin-top: 11px;
+  margin-right: 10px;
+}
+.vip .v_note .joined {
+  width: 70px;
+  height: 24px;
+  line-height: 23px;
+  color: #cccccc;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  display: inline-block;
+  float: right;
+  margin-top: 11px;
+  margin-right: 10px;
+}
+.active {
+  width: 100%;
+}
+.active .title {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  color: #f43c4a;
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+  color: #666;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+.active a {
+  text-decoration: none;
+}
+.active a .content {
+  width: 100%;
+  background: #fff;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+}
+.active a .content .ac_img {
+  width: calc(100% - 20px);
+  height: auto;
+  border-radius: 8px;
+  margin: 10px;
+}
+.active a .content .ac_name {
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  display: -webkit-box;
+  font-size: 16px;
+  color: #111;
+  padding: 0 10px;
+  word-break: break-all;
+}
+.active a .content .address {
+  color: #999;
+  margin: 10px;
+  font-size: 12px;
+
+}
+.active a .content .address .a_name {
+  display: inline-block;
+  width: 50%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+
+}
+.active a .content .address .time {
+  color: #ccc;
+  display: inline-block;
+  position: absolute;
+  right: 10px;
+}
+.active a .content .address .iconImg{
+  position: relative;
+  bottom: 4px;
+}
+.active a .content .foot {
+  width: 100%;
+}
+.active a .content .foot .scan_num,
+.active a .content .foot .join_num {
+  display: inline-block;
+  padding: 0 10px;
+  height: 24px;
+  line-height: 24px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+.active a .content .foot .scan_num {
+  color: #999;
+  background: #f1f1f1;
+  margin-left: 10px;
+}
+.scan_num span{
+  color:#3dc353;
+}
+.active a .content .foot .join_num {
+  margin-right: 10px;
+  float: right;
+  color: #fff;
+  background: #3dc353;
+}
+.active a .iconImg {
+  width: 12px;
+  height: 12px;
+  margin-top: -2px;
+}
+a:link,
+a:visited,
+a:hover {
+  text-decoration: none;
+}

@@ -1,0 +1,368 @@
+{extend name="base/common"}
+
+{block name="style"}
+<link href="/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+<!-- Sweet Alert -->
+<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+<link href="/admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+<link rel="stylesheet" href="/static/select2/select2.min.css">
+{/block}
+
+{block name="page-header"}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>消息管理</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="index.html">Action</a>
+            </li>
+            <li class="active">
+                <strong>Index</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+{/block}
+
+{block name="main"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>消息列表</h5>
+                    <div class="ibox-tools">
+                        <a data-toggle="modal" class="btn btn-sm btn-primary" href="#modal-form" onclick="">添加内容</a>
+                        <div id="modal-form" class="modal fade" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <form class="form-horizontal" method="post" action="" enctype="multipart/form-data">
+                                            <p class="tt">添加消息</p>
+                                            <div class="form-group"><label class="col-lg-2 control-label">对象</label>
+                                                <div class="col-lg-10">
+                                                    <div class="i-checks">
+                                                    <label><input type="radio" id="1" value="1" name="touser_1" onclick="showhidden(this)"><i></i>  @个人</label>
+                                                    <label><input type="radio" id="2" value="0" name="touser_1" onclick="showhidden(this)"><i></i> @公司</label>
+                                                    <label><input type="radio" id="4" value="3" name="touser_1" onclick="showhidden(this)"><i></i>@标签</label>
+                                                    <label><input type="radio" id="3" value="2" name="touser_1" onclick="showhidden(this)" checked><i></i> @所有人 </label>
+                                                    <input type="hidden" name="id" value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="people" style="display: none" class="form-group">
+                                                <label class="col-lg-2 control-label">个人</label>
+                                                <div class="col-lg-10">
+                                                    <select id="menu" multiple="multiple" class="form-control"  name="user_id[]">
+                                                        <option value="-1">--请选择--</option>
+                                                        {volist name="listuser" id="vo"}
+                                                        <option value="{$vo.userid}">{$vo.id}:{$vo.name}</option>
+                                                        <br/>
+                                                        {/volist}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div id="Thelabel" style="display: none" class="form-group">
+                                                <label class="col-lg-2 control-label">标签</label>
+                                                <div class="col-lg-10">
+                                                    <select class="form-control" name="totagid" id="objTwo">
+                                                        <option value="-1">--请选择--</option>
+                                                        {volist name="listtag" id="vo"}
+                                                        <option value="{$vo.tagid}">{$vo.tagname}</option>
+                                                        <br/>
+                                                        {/volist}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div id="company" style="display: none" class="form-group">
+                                                <label class="col-lg-2 control-label">公司</label>
+                                                <div class="col-lg-10">
+                                                    <select class="form-control" name="departmentid" id="objOne">
+                                                        <option value="-1">--请选择--</option>
+                                                        {volist name="listdepartment" id="vo"}
+                                                        <option value="{$vo.id}">{$vo.id}:{$vo.name}</option>
+                                                        <br/>
+                                                        {/volist}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group"><label class="col-lg-2 control-label">内容</label>
+                                                <div class="col-lg-10" rows="5"><textarea name="title" class="form-control col-lg-10" placeholder="必填" required="" rows="6"></textarea></div>
+                                            </div>
+                                            <input type="hidden" name="id" value="">
+                                            <div class="form-group">
+                                                <div class="i-checks col-lg-10 col-lg-offset-2">
+                                                    <button type="submit" target-form="form-horizontal" class="btn btn-primary ajax-post-my" name="is_dev" >发送</button>
+                                                    <button type="submit" target-form="form-horizontal" class="btn btn-info ajax-post-my"  checked name="is_dev1">草稿</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="information" class="modal fade" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <form class="form-horizontal" method="post" action="" enctype="multipart/form-data">
+                                            <p class="tt">详细信息</p>
+                                            <div class="form-group"><label class="col-lg-2 control-label">发送类型</label>
+                                                <div class="col-lg-10"><input name="object2"  disabled="true" class="form-control col-lg-10"></div>
+                                            </div>
+                                            <div class="form-group"><label class="col-lg-2 control-label">发送对象</label>
+                                                <div class="col-lg-10"><input name="object1"  disabled="true" class="form-control col-lg-10"></div>
+                                            </div>
+                                            <div class="form-group"><label class="col-lg-2 control-label">发送时间</label>
+                                                <div class="col-lg-10"><input name="object9"  disabled="true" class="form-control col-lg-10"></div>
+                                            </div>
+                                            <div class="form-group"><label class="col-lg-2 control-label">内容</label>
+                                                <div class="col-lg-10" rows="5"><textarea name="title1"  disabled="true"  class="form-control col-lg-10"  rows="6"></textarea></div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>内容</th>
+                                <th>对象</th>
+                                <th>类型</th>
+                                <th>发送时间 </th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {volist name="list" id="v"}
+                            <tr class="">
+                                <td>{$v.id}</td>
+                                <td>
+                                    {$v.content|msubstr=0,10} </td>
+                                <td>
+                                    {eq name="v:name" value="全体成员"}
+                                    {$v.name}
+                                    {else/}
+                                    {$v.tour_1}：{$v.name|msubstr=0,6}
+                                    {/eq}
+                                </td>
+                                <td>{$v.msgtype}</td>
+                                <td>
+                                    {:date("Y-m-d",$v.create_time)}
+
+                                </td>
+                                <td>
+                                    {eq name="v:status" value="1"}
+                                    已发送
+                                    {/eq}
+                                    {eq name="v:status" value="0"}
+                                    草稿
+                                    {/eq}
+                                </td>
+                                <td>
+                                    <a data-toggle="modal" title="查看"onclick="editMenu({$v.id})" href="#information">查看</a>
+
+                                    <a class="ajax-get confirm" title="编辑" href="{:Url('Message/repeat?id='.$v.id)}">重新发送</a>
+                                </td>
+                            </tr>
+                            {/volist}
+                            <tfoot>
+                            <tr>
+                                <td colspan="10">
+                                    <div class="page">{$_page}</div>
+                                </td>
+                            </tr>
+                            </tfoot>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script src="/static/select2/select2.min.js"></script>
+<script src="/admin/js/plugins/iCheck/icheck.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#menu").select2({ width: '80%' });
+
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green'
+        });
+
+        $('input').on('ifChecked', function(event){
+            showhidden(this);
+        });
+    });
+    function addMenu(pid) {
+        $(".tt").html("新增菜单");
+        $(".form-horizontal")[0].reset();
+        $("select[name='pid']").val(pid);
+    }
+    $('.ajax-post-my').click(function(){
+        console.log($(this));
+        var value = $(this).attr("name");
+        console.log(value);
+        if(value == 'is_dev'){
+            $("input[name = 'id']").attr("value",1);
+        } else {
+            $("input[name = 'id']").attr("value",0);
+        }
+        var target,query,form;
+        var target_form = $(this).attr('target-form');
+        var that = this;
+        var nead_confirm=false;
+        if( ($(this).attr('type')=='submit') || (target = $(this).attr('href'))){
+            form = $('.'+target_form);
+
+            if ($(this).attr('hide-data') === 'true'){
+                //无数据时也可以使用的功能
+                form = $('.hide-data');
+                query = form.serialize();
+            } else if (form.get(0)== undefined){
+                return false;
+            } else if ( form.get(0).nodeName=='FORM' ){
+                if ( $(this).hasClass('confirm') ) {
+                    if(!confirm('确认要执行该操作吗?')){
+                        return false;
+                    }
+                }
+                if($(this).attr('url') !== undefined){
+                    target = $(this).attr('url');
+                }else{
+                    target = form.get(0).action;
+                }
+                query = form.serialize();
+            } else if( form.get(0).nodeName=='INPUT' || form.get(0).nodeName=='SELECT' || form.get(0).nodeName=='TEXTAREA') {
+                form.each(function(k,v){
+                    if(v.type=='checkbox' && v.checked==true){
+                        nead_confirm = true;
+                    }
+                });
+                if ( nead_confirm && $(this).hasClass('confirm') ) {
+                    if(!confirm('确认要执行该操作吗?')){
+                        return false;
+                    }
+                }
+                query = form.serialize();
+            } else {
+                if ( $(this).hasClass('confirm') ) {
+                    if(!confirm('确认要执行该操作吗?')){
+                        return false;
+                    }
+                }
+                query = form.find('input,select,textarea').serialize();
+            }
+            $(that).addClass('disabled').attr('autocomplete','off').prop('disabled',true);
+            $.post(target,query).success(function(data){
+                if (data.code==1) {
+                    if (data.url) {
+                        updateAlert(data.msg + ' 页面即将自动跳转~','success');
+                    }else{
+                        updateAlert(data.msg ,'success');
+                    }
+                    setTimeout(function(){
+                        $(that).removeClass('disabled').prop('disabled',false);
+                        if (data.url) {
+                            location.href=data.url;
+                        } else {
+                            location.reload();
+                        }
+                    },2000);
+                } else {
+                    updateAlert(data.msg, 'error');
+                    setTimeout(function(){
+                        $(that).removeClass('disabled').prop('disabled',false);
+                        if (data.url) {
+                            //location.href=data.url;
+                        }
+                    },2000);
+                }
+            });
+        } else {
+            swal("操作失败!", "请重试!", "error");
+        }
+        return false;
+    });
+
+    window.updateAlert = function (text, shortCutFunction) {
+        shortCutFunction = shortCutFunction || 'info';
+        warning({shortCutFunction:shortCutFunction,msg:text});
+    };
+
+
+    function editMenu(menuId) {
+        $.ajax({
+            type: "get",
+            url: "{:Url('Message/review')}",
+            data: {id:menuId},
+            //dataType: "json",
+            success: function(response){
+                var data = JSON.parse(response);
+                $(".tt").html("");
+                $("input[name='object2']").val(data.tourname);
+                $("textarea[name='title1']").val(data.content);
+                $("input[name='object1']").val(data.name);
+                $("input[name='object9']").val(data.create_time);
+                $("input[name='object8']").val(data.send_time);
+                $("input[name='id']").val(data.id);
+
+            }
+        })
+    }
+
+    window.updateAlert = function (text, shortCutFunction) {
+        shortCutFunction = shortCutFunction || 'info';
+        warning({shortCutFunction:shortCutFunction,msg:text});
+    };
+    function showhidden(Object){
+        switch (Object.id){
+            case '1':
+                document.getElementById('people').style.display = 'block';
+                document.getElementById('company').style.display = 'none';
+                document.getElementById('Thelabel').style.display = 'none';
+                break;
+            case '2':
+                document.getElementById('people').style.display = 'none';
+                document.getElementById('company').style.display = 'block';
+                document.getElementById('Thelabel').style.display = 'none';
+                break;
+            case '4':
+                document.getElementById('people').style.display = 'none';
+                document.getElementById('company').style.display = 'none';
+                document.getElementById('Thelabel').style.display = 'block';
+                break;
+            default:
+                document.getElementById('people').style.display = 'none';
+                document.getElementById('company').style.display = 'none';
+                document.getElementById('Thelabel').style.display = 'none';
+                break;
+        }
+    }
+    $("#menu").select2({
+        tags: true,
+        maximumSelectionLength: 10  //最多能够选择的个数
+    });
+    $("#menu2").select2({
+        tags: true,
+        maximumSelectionLength: 10  //最多能够选择的个数
+    });
+</script>
+
+{/block}

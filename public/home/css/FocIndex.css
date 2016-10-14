@@ -1,0 +1,234 @@
+body {
+  background: #F1F1F1;
+  font-size: 0px;
+}
+.foc_top {
+  width: 100%;
+  height: 70px;
+  background: #fff;
+  padding-top: 10px;
+}
+.foc_top .img_box {
+  width: 80px;
+  height: 60px;
+  float: left;
+  display: inline;
+  position: relative;
+  text-align: center;
+}
+.foc_top .img_box img {
+  width: 60px;
+  height: 36px;
+  margin: 12px 10px;
+}
+.img_box span{
+  font-size: 16px;
+  line-height: 60px;
+  text-align: center;
+  color: red;
+  font-family: "Adobe 仿宋 Std R",sans-serif;
+}
+.foc_top .notice_title {
+  float: left;
+  display: inline;
+  width: calc(100% - 140px);
+  height: 30px;
+  margin-top: 15px;
+  line-height: 30px;
+  border-left: 1px solid #e5e5e5;
+  font-size: 16px;
+  overflow: hidden;
+}
+.foc_top .notice_title ul{
+  padding: 0;
+  margin-bottom: 0;
+}
+.foc_top .notice_title ul li{
+  padding: 0 10px;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  color: #111;
+}
+.foc_top .notice_title ul li p{
+  line-height: 30px;
+  margin: 0;
+}
+.foc_top .notice_title ul li a,.foc_top .img_box a,.foc_top .more a{
+  text-decoration: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+.more span{
+  font-size: 18px;
+  line-height: 30px;
+}
+.foc_top .notice_title .odd{
+  /*background: #f1f1f1;*/
+}
+.foc_top .more{
+  width: 60px;
+  line-height: 60px;
+  text-align: center;
+  float: left;
+  color: #f43c4a;
+  position: relative;
+  font-size: 14px;
+}
+.foc_top .more img{
+  width: 50px;
+}
+.menu {
+  width: 100%;
+  height: 40px;
+  background: #f1f1f1;
+}
+.menu span {
+  float: left;
+  display: inline;
+  font-size: 13px;
+  color: #999;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  margin-left: calc((100vw - 160px)/6);
+  margin-right: calc((100vw - 160px)/6);
+}
+@media (max-width:320px) {
+  .menu span {
+    margin-left: 27px;
+    margin-right: 27px;
+  }
+
+
+
+}
+.menu .chosen {
+  color:#333;
+  border-bottom: 2px solid #f43c4a;
+}
+.past_topic {
+   width: 100%;
+   height: 40px;
+   background: #fff;
+   text-align: right;
+   line-height: 40px;
+   border-bottom: 5px solid #e5e5e5;
+ }
+.past_topic .line{
+  height: 0;
+  width: 50px;
+  border-bottom: 1px solid #999;
+  display: inline-block;
+  position: relative;
+  bottom: 3px;
+}
+.past_topic .left{
+  right: 10px;
+}
+.past_topic .right{
+  left: 5px;
+}
+.past_topic a {
+  font-size: 14px;
+  color: #f43d4b;
+  padding-right: 13px;
+}
+.past_topic a span{
+  font-size: 16px;
+}
+
+.f_content {
+  width: 100%;
+  padding: 0 10px;
+  background: #fff;
+  position: relative;
+}
+.f_content .content_list {
+  position: relative;
+  padding-bottom: 10px;
+  font-size: 12px;
+  color: #666666;
+  top: 10px;
+  margin-bottom: 10px;
+}
+.f_content .content_list img {
+  width: 100%;
+  border-radius: 8px;
+}
+.f_content .content_list .c_l_title {
+  font-size: 16px;
+  color: #111111;
+  width: 100%;
+  margin-top: 10px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  display:-webkit-box;
+  display:-webkit-box;
+  line-clamp:2;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  word-break: break-all;
+}
+.f_content .content_list .foot {
+  width: 100%;
+  height: 18px;
+  line-height: 18px;
+}
+.f_content .content_list .foot span {
+  float: left;
+  display: inline;
+}
+.f_content .content_list .foot span img {
+  float: left;
+  display: inline;
+  width: 12px;
+  margin-right: 4px;
+  margin-top: 3px;
+}
+.f_content .content_list .foot .organizer {
+  padding-right: 20px;
+  color: #999;
+}
+.f_content .content_list .foot .sent_time {
+  color: #ccc;
+}
+.f_content .content_list .foot .scan {
+  margin-right: 10px;
+}
+.f_content .content_list .foot .scan,
+.f_content .content_list .foot .talk {
+  float: right;
+  padding: 0 10px;
+  height: 18px;
+  line-height: 18px;
+  border-radius: 9px;
+  background: #f1f1f1;
+  color: #3dc353;
+}
+.f_content .content_list:before {
+  content: '';
+  position: absolute;
+  border-bottom: 1px solid #e5e5e5;
+  width: 200%;
+  height: 200%;
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-transform: scale(0.5, 0.5);
+  transform: scale(0.5, 0.5);
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  left: 0;
+  top: 0;
+}
+a:link,
+a:visited,
+a:hover {
+  text-decoration: none;
+}

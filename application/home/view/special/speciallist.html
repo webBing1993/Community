@@ -1,0 +1,472 @@
+{extend name="public/common"}
+
+{block name="style"}
+<title>专题列表</title>
+<style type="text/css">
+    *{margin:0;padding:0;}
+    a{text-decoration:none;}
+    ul li{list-style:none;}
+    body{font-size:12px;font-family: "Microsoft yahei", Sans-Serif;color:#666;}
+    .top{width: 100%;height: 40px;background: #e8e8e8;}
+    .top ul{margin: 0;}
+    .top ul .home{width: 10%;height: 40px;float: left;position: relative;}
+    .top ul .home img{width: 24px;margin: 8px 0 0 8px;}
+    .top ul .home a{width: 100%;height: 100%;position: absolute;left: 0;top: 0;z-index: 2;}
+    .top ul li{width: 30%;float: left;}
+    .top ul li p{font-size: 16px;text-align: center;border-left: 1px solid #fff;margin: 9px 0;color: #999;}
+    .top .active p{color: #333;}
+    .nav{margin-top:20px;height:24px;}
+    .nav .z_times{height:18px;display:inline-block;text-align:center;font-size:10px;background:#f4511e;border-radius:4px;color:#fff;line-height:18px;padding:0px 5px 0px 5px;}
+    .nav .z_title{padding-left:10px;font-size:16px;color:#111;font-weight:800;overflow:hidden;text-overflow:ellipsis;line-clamp:2;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+    .nav .z_text{font-size:14px;color:#999;margin:10px 0 20px 0;overflow:hidden;text-overflow:ellipsis;display:box;display:-webkit-box;line-clamp:2;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+    .course{background:#F6F6F6;border-radius:5px;}
+    .course .c_title{height:40px;text-align:center;line-height:40px;}
+    .course .c_title span{font-size:14px;color:#666;}
+    .course .c_title .icon{font-size:20px;color:#ccc;position:relative;top:2px;left:4px;}
+    .course .c_course{border-top:1px solid #e5e5e5;display:none;}
+
+    .course .c_course .c_list{padding: 10px 10px 0 10px;height:100px;}
+    .course .c_course .c_list a{text-decoration:none;}
+    .course .c_course .c_list .c_special{height:100%;width:100%;border-bottom:1px solid #eee;}
+    .course .c_course .c_list .c_special .c_img{height:80px;width:100px;border-radius:4px;float:left;position:relative;}
+    .course .c_course .c_list .c_special .c_float{height:80px;width:100px;position:absolute;background:#333;filter:alpha(opacity=60);-moz-opacity:0.6;opacity:0.6;border-radius:4px;}
+    .course .c_course .c_list .c_special .c_float .z_icon{text-align:center;padding-top:28px;}
+    .course .c_course .c_list .c_special .c_float .z_icon img{width:24px;height:24px;color:#fff;vert-align:middle}
+
+
+    .course .c_course .c_list .c_special .c_float .c_text{color:#fff;font-size:14px;text-align:center;font-weight:800;padding-top:7px;}
+    .course .c_course .c_list .c_special .c_nav{margin-left:110px;font-size:16px;color:#333;height:42px;overflow:hidden;text-overflow:ellipsis;display:box;display:-webkit-box;line-clamp:2;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+    .course .c_course .c_list .c_special .c_bottom{margin-left:110px;}
+    .course .c_course .c_list .c_special .c_bottom .c_read{color:#999;font-size:12px;margin-top:5px;display:inline-block;}
+    .course .c_course .c_list .c_special .c_bottom .c_number{float:right;color:#fff;background:#ffa726;font-size:14px;border-radius:12px;line-height:24px;text-align:center;/*display:inline-block;*/padding:0px 6px 0px 6px;}
+
+    .bottom{height:20px;border-bottom:1px solid #e5e5e5;}
+
+    .tip{text-align: center;color: #cccccc;line-height: 40px;font-size: 14px;height:40px;}
+    .z_title{overflow: hidden;text-overflow: -o-ellipsis-lastline; overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;}
+    @media screen and (max-width: 321px){
+        .top ul .home{width: 13%;height: 40px;float: left;}
+        .top ul li{width: 29%;float: left;}
+        .top ul .home img{width: 24px;margin: 8px 0 0 9px;}
+    }
+
+</style>
+{/block}
+
+{block name="body"}
+<div class="top">
+    <ul>
+        <div class="home">
+            <img src="/home/images/home.png">
+            <a href="{:Url('Special/index')}"></a>
+        </div>
+        <li class="active">
+            <p>微党课</p>
+        </li>
+        <li>
+            <p>好案例</p>
+        </li>
+        <li>
+            <p>新成果</p>
+        </li>
+    </ul>
+</div>
+<div class="container-fluid box" style="display: block" id="one">
+    {volist name="list1" id="vo"}
+    <div class="row block">
+        <div class="nav">
+            <div class="col-xs-12 col-md-12 z_title">
+                <span class="z_times">第{$vo.number}期</span>
+                <span class="">{$vo.title}</span>
+            </div>
+            <div class="col-xs-12 col-md-12">
+                <div class="z_text">{$vo.detail}</div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="course">
+                <div class="c_title" onclick="isCourseshow(this)">
+                    <span>所有课程</span>
+                    <i class="fa fa-angle-down icon click_show"></i>
+                </div>
+                <!--专题列表-->
+                <div class="c_course">
+                {volist name="vo.course" id="co"}
+                    <div class="c_list">
+                        {if condition="$co.type eq 1"}
+                        <a href="{:Url('Special/video?id='.$co['id'])}">
+                        {elseif condition="$co.type eq 2"}
+                        <a href="{:Url('Special/article?id='.$co['id'])}">
+                        {else/}
+                        <a href="{:Url('Special/video?id='.$co['id'])}">
+                        {/if}
+                            <div class="c_special">
+                                <img  class="c_img" src="{$co.front_cover|get_cover='path'}" />
+                                <!--<div class="c_float">-->
+                                    <!--{if condition="$co.type eq 2"}-->
+                                    <!--<div class="z_icon">-->
+                                        <!--<img src="/home/images/special/img.png">-->
+                                    <!--</div>-->
+                                    <!--<div class="c_text">图文</div>-->
+                                    <!--{elseif condition="$co.type eq 1"}-->
+                                    <!--<div class="z_icon">-->
+                                        <!--<img src="/home/images/special/video.png" />-->
+                                    <!--</div>-->
+                                    <!--<div class="c_text">视频</div>-->
+                                    <!--{else/}-->
+                                    <!--<div class="z_icon">-->
+                                        <!--<img src="/home/images/special/music.png" />-->
+                                    <!--</div>-->
+                                    <!--<div class="c_text">音乐</div>-->
+                                    <!--{/if}-->
+                                <!--</div>-->
+                                <p class="c_nav">{$co.title}</p>
+                                <div class="c_bottom">
+                                    <span class="c_read">{$co.retype_text}</span>
+                                    <span class="c_number">{if condition="$co.views > 999"}999+人学习过{else/}{$co.views}人学习过{/if}</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {/volist}
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-12 bottom"></div>
+    </div>
+    {/volist}
+</div>
+<div class="container-fluid box" style="display: none" id="two">
+    {volist name="list2" id="vo"}
+    <div class="row block">
+        <div class="nav">
+            <div class="col-xs-12 col-md-12 z_title">
+                <span class="z_times">第{$vo.number}期</span>
+                <span class="">{$vo.title}</span>
+            </div>
+            <div class="col-xs-12 col-md-12">
+                <div class="z_text">{$vo.detail}</div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="course">
+                <div class="c_title" onclick="isCourseshow(this)">
+                    <span>所有课程</span>
+                    <i class="fa fa-angle-down icon click_show"></i>
+                </div>
+                <!--专题列表-->
+                <div class="c_course">
+                    {volist name="vo.course" id="co"}
+                    <div class="c_list">
+                        {if condition="$co.type eq 1"}
+                        <a href="{:Url('Special/video?id='.$co['id'])}">
+                            {elseif condition="$co.type eq 2"}
+                            <a href="{:Url('Special/article?id='.$co['id'])}">
+                                {else/}
+                                <a href="{:Url('Special/video?id='.$co['id'])}">
+                                    {/if}
+                                    <div class="c_special">
+                                        <img  class="c_img" src="{$co.front_cover|get_cover='path'}" />
+                                        <!--<div class="c_float">-->
+                                            <!--{if condition="$co.type eq 2"}-->
+                                            <!--<div class="z_icon">-->
+                                                <!--<img src="/home/images/special/img.png">-->
+                                            <!--</div>-->
+                                            <!--<div class="c_text">图文</div>-->
+                                            <!--{elseif condition="$co.type eq 1"}-->
+                                            <!--<div class="z_icon">-->
+                                                <!--<img src="/home/images/special/video.png" />-->
+                                            <!--</div>-->
+                                            <!--<div class="c_text">视频</div>-->
+                                            <!--{else/}-->
+                                            <!--<div class="z_icon">-->
+                                                <!--<img src="/home/images/special/music.png" />-->
+                                            <!--</div>-->
+                                            <!--<div class="c_text">音乐</div>-->
+                                            <!--{/if}-->
+                                        <!--</div>-->
+                                        <p class="c_nav">{$co.title}</p>
+                                        <div class="c_bottom">
+                                            <span class="c_read">{$co.retype_text}</span>
+                                            <span class="c_number">{if condition="$co.study> 999"}999+人学习过{else/}{$co.study}人学习过{/if}</span>
+                                        </div>
+                                    </div>
+                                </a>
+                    </div>
+                    {/volist}
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-12 bottom"></div>
+    </div>
+    {/volist}
+</div>
+<div class="container-fluid box" style="display: none" id="three">
+    {volist name="list3" id="vo"}
+    <div class="row block">
+        <div class="nav">
+            <div class="col-xs-12 col-md-12 z_title">
+                <span class="z_times">第{$vo.number}期</span>
+                <span class="">{$vo.title}</span>
+            </div>
+            <div class="col-xs-12 col-md-12">
+                <div class="z_text">{$vo.detail}</div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="course">
+                <div class="c_title" onclick="isCourseshow(this)">
+                    <span>所有课程</span>
+                    <i class="fa fa-angle-down icon click_show"></i>
+                </div>
+                <!--专题列表-->
+                <div class="c_course">
+                    {volist name="vo.course" id="co"}
+                    <div class="c_list">
+                        {if condition="$co.type eq 1"}
+                        <a href="{:Url('Special/video?id='.$co['id'])}">
+                            {elseif condition="$co.type eq 2"}
+                            <a href="{:Url('Special/article?id='.$co['id'])}">
+                                {else/}
+                                <a href="{:Url('Special/video?id='.$co['id'])}">
+                                    {/if}
+                                    <div class="c_special">
+                                        <img  class="c_img" src="{$co.front_cover|get_cover='path'}" />
+                                        <!--<div class="c_float">-->
+                                            <!--{if condition="$co.type eq 2"}-->
+                                            <!--<div class="z_icon">-->
+                                                <!--<img src="/home/images/special/img.png">-->
+                                            <!--</div>-->
+                                            <!--<div class="c_text">图文</div>-->
+                                            <!--{elseif condition="$co.type eq 1"}-->
+                                            <!--<div class="z_icon">-->
+                                                <!--<img src="/home/images/special/video.png" />-->
+                                            <!--</div>-->
+                                            <!--<div class="c_text">视频</div>-->
+                                            <!--{else/}-->
+                                            <!--<div class="z_icon">-->
+                                                <!--<img src="/home/images/special/music.png" />-->
+                                            <!--</div>-->
+                                            <!--<div class="c_text">音乐</div>-->
+                                            <!--{/if}-->
+                                        <!--</div>-->
+                                        <p class="c_nav">{$co.title}</p>
+                                        <div class="c_bottom">
+                                            <span class="c_read">{$co.retype_text}</span>
+                                            <span class="c_number">{if condition="$co.study> 999"}999+人学习过{else/}{$co.study}人学习过{/if}</span>
+                                        </div>
+                                    </div>
+                                </a>
+                    </div>
+                    {/volist}
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-12 bottom"></div>
+    </div>
+    {/volist}
+</div>
+<div class="tip"></div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+    "use strict";
+    //隐藏列表、显示列表
+    function isCourseshow(list){
+        var parent = $(list).parents(".col-xs-12");
+        var icon = $(list ).find(".fa");
+        var show = icon.hasClass("fa-angle-down");
+        if(show){
+            icon.removeClass("fa-angle-down" ).addClass("fa-angle-up");
+            parent.find(".c_course").show();
+        }else{
+            icon.removeClass("fa-angle-up" ).addClass("fa-angle-down");
+            parent.find(".c_course").hide();
+        }
+    }
+    $(function(){
+        //隐藏列表、显示列表
+//        $(".click_hide").click(function(){
+//            var parent = $(this).parents(".col-xs-12");
+//            parent.find(".c_course").hide();
+//            parent.find(".click_hide").hide();
+//            parent.find(".click_show").show();
+//        });
+//        $(".click_show").click(function(){
+//            var parent = $(this).parents(".col-xs-12");
+//            parent.find(".c_course").show();
+//            parent.find(".click_show").hide();
+//            parent.find(".click_hide").show();
+//        });
+        //上拉加载更多
+        initialize();
+        var index = 1;
+        var it = $('#one');
+        loadScroll(index,it);
+        function check(my){
+            var block = $(my).find(".block");
+            var blockLen = block.length;
+            var tip = $(".tip");
+            var index = $(my).index()-1;
+            //初始显示
+            if(blockLen < 5){
+                tip.text("");
+            }else{
+                tip.text("上拉加载更多")
+            }
+            //滚动加载
+            loadScroll(index,$(my));
+        }
+        //切换
+        $(".top").find("li").each(function(){
+           $(this).on('click',function(){
+               var top_index = $(this).index();
+               $(this).addClass("active").siblings().removeClass("active");
+               $(".box").each(function(){
+                  var box_index = $(this).index();
+                   if(box_index - 1 == top_index){
+                       $(this).show().siblings(".box").hide();
+                       check(this);
+                   }
+               });
+           });
+        });
+        function initialize(){
+            var myUrl = window.location.toString();
+            var num = myUrl.substring(myUrl.lastIndexOf("/")+1,myUrl.lastIndexOf("."));
+            $(".top").find("li").each(function(){
+                var top_index = $(this).index();
+                if(num == top_index){
+                    $(this).addClass("active").siblings().removeClass("active");
+                }
+            });
+            $(".box").each(function(){
+                var box_index = $(this).index();
+                if(box_index - 1 == num){
+                    $(this).show().siblings(".box").hide();
+                    check(this);
+                }
+            });
+        }
+    });
+    function loadScroll(cla,id){
+        $(window ).off("scroll").on("scroll",function(){
+            var tip = $(".tip");
+            var dh = $(document).height();
+            var wh = $(window).height();
+            var th = tip.height();
+            var start = $(window ).scrollTop();
+            var end = wh + start;
+            var len = id.find('.block').length;
+            //console.log("dh:"+dh+",wh:"+wh+",start:"+start+",end:"+end,",th:"+th);
+            if(end == dh){
+                tip.text('');
+                $.ajax({
+                    type:"post",
+                    url:"{:Url('Special/listmore')}",
+                    data:{
+                        class:cla,
+                        length:len
+                    },
+                    success:function(data){
+                        if(data.code == 1){
+                            addCourse(data,cla);
+                            tip.text('上拉加载更多');
+                        }else{
+                            tip.text('没有更多了');
+                            $(window ).off("scroll");
+                        }
+                    }
+                })
+            }
+        })
+    }
+    function addCourse(data,cla){
+        var html = '';
+        var coursehtml = '';
+        var stages = data.data;
+        var stagesLen= stages.length;
+        for(var i = 0 ; i < stagesLen;i++ ){
+            var stage=stages[i];
+            var course = stage.course;
+            var courseLen = course.length;
+            coursehtml = '';
+            for(var j = 0 ;j < courseLen;j++){
+                coursehtml +=
+                        '<div class="c_list">';
+                if(course[j].type== '1'){
+                    coursehtml +=
+                            '<a href="/home/special/video/id/'+course[j].id+'.html">';
+                }else if(course[j].type== '2'){
+                    coursehtml +=
+                            '<a href="/home/special/article/id/'+course[j].id+'.html">';
+                }else{
+                    coursehtml +=
+                            '<a href="/home/special/music/id/'+course[j].id+'.html">';
+                }
+                coursehtml +=
+                        '<div class="c_special">'+
+                        '<img  class="c_img" src="'+course[j].path+'" />'
+//                        '<div class="c_float">'+
+//                        '<div class="z_icon">';
+//                if(course[j].type== '1'){
+//                    coursehtml +=
+//                            '<img src="/home/images/special/video.png" />'+
+//                            '</div>'+
+//                            '<div class="c_text">视频</div>';
+//
+//                }else if(course[j].type== '2'){
+//                    coursehtml +=
+//                            '<img src="/home/images/special/img.png">'+
+//                            '</div>'+
+//                            '<div class="c_text">图文</div>'
+//
+//                }else{
+//                    coursehtml +=
+//                            '<img src="/home/images/special/music.png" />'+
+//                            '</div>'+
+//                            '<div class="c_text">音乐</div>';
+//                }
+                coursehtml +=
+//                        '</div>'+
+                        '<p class="c_nav">'+course[j].title+'</p>'+
+                        '<div class="c_bottom">'+
+                        '<span class="c_read">'+course[j].retype_text+'</span>'+
+                        '<span class="c_number">{if condition="'+course[j].study+'> 999"}999+人学习过{else/}'+course[j].study+'人学习过{/if}</span>'+
+                        '</div>'+
+                        '</div>'+
+                        '</a>'+
+                        '</a>'+
+                        '</div>';
+            }
+            html +=
+                    '<div class="row block">'+
+                    '<div class="nav">'+
+                    '<div class="col-xs-12 col-md-12 z_title">'+
+                    '<span class="z_times">第'+stage.number+'期</span>'+
+                    '<span class="" style="margin-left: 5px">'+stage.title+'</span>'+
+                    '</div>'+
+                    '<div class="col-xs-12 col-md-12">'+
+                    '<div class="z_text">'+stage.detail+'</div>'+
+                    '</div>'+
+                    '</div>'+
+                    '<div class="col-xs-12 col-md-12">'+
+                    '<div class="course">'+
+                    '<div class="c_title" onclick="isCourseshow(this)">'+
+                    '<span>所有课程</span>'+
+                    '<i class="fa fa-angle-down icon click_show"></i>'+
+                    '</div>'+
+                    <!--专题列表-->
+                    '<div class="c_course">'+
+                    coursehtml+
+                    '</div>'+
+                    '</div>'+
+                    '</div>'+
+                    '<div class="col-xs-12 col-md-12 bottom"></div>'+
+                    '</div>';
+        }
+        $(".box" ).eq(cla-1).append(html);
+    }
+</script>
+{/block}

@@ -1,0 +1,229 @@
+
+body{
+  margin: 0;
+  padding: 0;
+  font-size: 0;
+  background: #f1f1f1;
+}
+.menu{
+  width: 100%;
+  background: #fff;
+  height: 44px;
+  color: #666;
+  font-size: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  line-height: 44px;
+  li{
+    width: 33.33%;
+    float: left;
+    text-align: center;
+    span{
+      height: 16px;
+      font-size: 12px;
+      padding: 0 4px;
+      background: #f43c4a;
+      color: #fff;
+      border-radius: 12px;
+      margin-left: 4px;
+    }
+  }
+  .chosen{
+    border-bottom: 2px solid #f43c4a;
+    color: #f43c4a;
+    font-weight: 800;
+    height: 44px;
+  }
+}
+.paddingBox{
+  padding: 0 10px;
+}
+.list{
+  z-index: 8;
+  display: none;
+  width: 100%;
+  padding: 20px 10px;
+  position: relative;
+  .user_log{
+    width: 24px;
+    height: 24px;
+    border-radius: 24px;
+    float: left;
+  }
+  .user_id{
+    display: inline-block;
+    height: 24px;
+    line-height: 24px;
+    font-size: 14px;
+    color: #3dc353;
+    margin-left: 10px;
+  }
+  .reply_time{
+    font-size: 12px;
+    color: #999;
+    margin-left: 10px;
+  }
+  .to_reply{
+    width: 20px;
+    height: 20px;
+    right: 10px;
+    z-index: 99;
+    position: absolute;
+  }
+  .tip{
+    font-size: 14px;
+    color: #666;
+    float: right;
+  }
+  .reply_detail{
+    font-size: 16px;
+    color: #333;
+    width: calc(~'100% - 34px');
+    margin-left: 34px;
+    margin-top: 20px;
+    text-overflow: -o-ellipsis-lastline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+  .my_po{
+    position: relative;
+    width:calc(~'100% - 34px');
+    margin-left: 34px;
+    background: #fff;
+    font-size: 14px;
+    color: #333;
+    padding: 5px 10px 5px 20px;
+    border-radius: 4px;
+    margin-top: 10px;
+    .triangle{
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 8px solid #fff;
+      position: absolute;
+      top: -8px;
+    }
+  }
+}
+.inform{
+  background: #fff;
+  border-radius: 4px;
+  padding: 0;
+  height: 180px;
+  margin: 10px 0;
+  img{
+    width: 18px;
+  }
+  .title{
+    position: relative;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+    padding: 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+  .time,.address{
+    position: relative;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    font-size: 15px;
+    color: #666;
+    padding-left: 10px;
+  }
+  .tips{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 14px;
+    color: #ff9800;
+  }
+}
+.reply{
+  display:block;
+}
+.list:after{
+  content: '';
+  position: absolute;
+  border-bottom: 1px solid #e5e5e5;
+  width: calc(~'200% - 60px');
+  height: 200%;
+  -webkit-transform-origin:0 0;
+  transform-origin: 0 0;
+  -webkit-transform:scale(0.5,0.5);
+  transform:scale(0.5,0.5);
+  box-sizing: border-box;
+  -webkit-box-sizing:border-box;
+  left: 40px;
+  top:0;
+  z-index: 0;
+}
+.time:after,.address:after,.title:after{
+  content: '';
+  position: absolute;
+  border-bottom: 1px solid #e5e5e5;
+  width:200%;
+  height: 200%;
+  -webkit-transform-origin:0 0;
+  transform-origin: 0 0;
+  -webkit-transform:scale(0.5,0.5);
+  transform:scale(0.5,0.5);
+  box-sizing: border-box;
+  -webkit-box-sizing:border-box;
+  left: 0px;
+  top:0;
+  z-index: 0;
+}
+
+.inputBox{
+  position: fixed;
+  display: none;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  background: #fff;
+  padding: 7px 60px 7px 10px;
+  input{
+    width: 100%;
+    height: 36px;
+    border-radius: 4px;
+    padding-left: 10px;
+    font-size: 14px;
+    color: #ccc;
+    border: 1px solid #e5e5e5;
+    background: #f6f6f6;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .send{
+    width: 60px;
+    height: 36px;
+    line-height: 36px;
+    position: absolute;
+    font-size: 18px;
+    color: #ff7043;
+    bottom: 7px;
+    right: 0;
+    text-align: center;
+  }
+}
+.lastTips{
+  width: 100%;
+  height: 18px;
+  line-height: 18px;
+  color: #333;
+  font-size: 16px;
+}

@@ -1,0 +1,431 @@
+{extend name="public/common"}
+
+{block name="style"}
+<link rel="stylesheet" href="/home/css/navbar.css">
+<link rel="stylesheet" href="/home/css/FocIndex.css">
+<style>
+    .imgcon{
+        height: 130px;
+        width: 355px;
+    }
+    .tip{text-align: center;color: #cccccc;line-height: 40px;font-size: 14px;height:40px;}
+</style>
+{/block}
+
+{block name="body"}
+{include file="public/navbar"}
+<div class="pageBody" pageId="0">
+    <div class="current_special">
+        {volist name="recommend" id="vo"}
+        <img src="{$vo.list_image|get_cover='path'}" class="bac_img">
+        {/volist}
+        <!--<img src="/home/images/focus(big).jpg" class="bac_img">-->
+        <div class="fuzzy">
+            <div class="spe_title"></div>
+            <div class="shadow_box">
+                {volist name="recommend" id="vo"}
+                <div class="content">
+                    <a href="{:Url('Focus/newdetail?id='.$vo['id'])}">
+                        <div class="roll_box">
+                            <div class="s_tag">推荐阅读</div>
+                            <img class="s_img" src="{$vo.front_cover|get_cover='path'}">
+                            <!--<img class="s_img" src="/home/images/focus(small).jpg">-->
+                            <div class="s_title">{$vo.title}</div>
+                            <div class="sent_detail">
+                                <span class="tissue">{$vo.publisher}</span>
+                                <span class="time">{$vo.create_time|time_format="Y-m-d"}</span>
+                            </div>
+                            <div class="footer">
+                                <div class="scan">
+                                    <img src="/home/images/scan2.png">
+                                    <span>{$vo.views}</span>
+                                </div>
+                                <div class="talk">
+                                    <img src="/home/images/talk2.png">
+                                    <span>{$vo.comments}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {/volist}
+            </div>
+            <div class="change">
+                <img src="/home/images/change.png">换一个
+            </div>
+        </div>
+    </div>
+
+    {neq name="filenote" value=""}
+    <div class="foc_top" id="foc_top" name="foc_top">
+        <div class="img_box">
+            <span>文件通知</span>
+            <a href="{:Url('Focus/filelist')}"></a>
+        </div>
+        <div class="notice_title">
+            <ul>
+                {volist name="filenote" id="vo"}
+                <li>
+                    <p>{$vo.title}</p>
+                    <a href="{:Url('Focus/filenote?id='.$vo['id'])}"></a>
+                </li>
+                {/volist}
+            </ul>
+        </div>
+        <div class="more">
+            <span class="fa fa-reorder"></span>
+            <a href="{:Url('Focus/filelist')}"></a>
+        </div>
+    </div>
+    {/neq}
+
+    <div class="menu">
+        <span class="chosen" sta="1">工委发布</span>
+        <span sta="2">省直动态</span>
+        <span sta="3">市县传真</span>
+    </div>
+    <div class="past_topic">
+
+        <a href="{:Url('Focus/newlist?class=1')}">往期回顾
+            <span class="fa fa-angle-right"></span></a>
+        <!--<span class="line right"></span>-->
+
+    </div>
+    <div id="f_content">
+        {volist name="list1" id="com"}
+        <div class="f_content publish" f_sta="1">
+            <a href="{:Url('Focus/newdetail?id='.$com['id'])}">
+                <div class="content_list">
+                    <img class="c_l_img imgcon" src="{$com.list_image|get_cover='path'}" alt="图片（工委发布）">
+                    <p class="c_l_title">{$com.title}</p>
+                    <div class="foot">
+
+                        <span class="sent_time"><span>{$com.create_time|time_format="Y-m-d"}</span>发布</span>
+                        <span class="talk">
+                            <img src="/home/images/talk2.png">
+                            <span class="talk_num">{$com.comments}</span>
+                        </span>
+                        <span class="scan">
+                            <img src="/home/images/scan2.png">
+                            <span class="scan_num">{$com.views}</span>
+                        </span>
+                    </div>
+                </div>
+            </a>
+            <br style="clear:both;" />
+        </div>
+        {/volist}
+        {volist name="list2" id="pro"}
+        <div class="f_content trend" f_sta="2">
+            <a href="{:Url('Focus/newdetail?id='.$pro['id'])}">
+                <div class="content_list">
+                    <img class="c_l_img imgcon" src="{$pro.list_image|get_cover='path'}" alt="图片（省直动态）">
+                    <p class="c_l_title">{$pro.title}</p>
+                    <div class="foot">
+                        <span class="sent_time"><span>{$pro.create_time|time_format="Y-m-d"}</span>发布</span>
+                    <span class="talk">
+                        <img src="/home/images/talk2.png"  alt="评论">
+                        <span class="talk_num">{$pro.comments}</span>
+                    </span>
+                    <span class="scan">
+                        <img src="/home/images/scan2.png"  alt="浏览">
+                        <span class="scan_num">{$pro.views}</span>
+                    </span>
+                    </div>
+                </div>
+            </a>
+            <br style="clear:both;" />
+        </div>
+        {/volist}
+        {volist name="list3" id="city"}
+        <div class="f_content fax" f_sta="3">
+            <a href="{:Url('Focus/newdetail?id='.$city['id'])}">
+                <div class="content_list">
+                    <img class="c_l_img imgcon" src="{$city.list_image|get_cover='path'}" alt="图片（市县传真）">
+                    <p class="c_l_title">{$city.title}</p>
+                    <div class="foot">
+                        <span class="sent_time"><span>{$city.create_time|time_format="Y-m-d"}</span>发布</span>
+                    <span class="talk">
+                        <img src="/home/images/talk2.png" alt="评论">
+                        <span class="talk_num">{$city.comments}</span>
+                    </span>
+                    <span class="scan">
+                        <img src="/home/images/scan2.png" alt="浏览">
+                        <span class="scan_num">{$city.views}</span>
+                    </span>
+                    </div>
+                </div>
+                <br style="clear:both;" />
+            </a>
+        </div>
+        {/volist}
+    </div>
+</div>
+<div class="tip"></div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript" src="/home/js/navbar.js"></script>
+<script src="/home/js/scroll.js"></script>
+<script>
+    var menu_left = (win_w-180)*(1/6);
+    var menu = $('.menu').find('span');
+    $('.f_content').each(function(){
+        var f_sta = $(this).attr('f_sta');
+        var sta = menu.eq(0).attr('sta');
+        if(f_sta!= sta){
+            $(this).hide();
+        }
+    });
+//    menu.css({'margin-left':menu_left,'margin-right':menu_left});
+    menu.each(function(){
+        $(this).on('click',function(){
+            $(this).addClass('chosen').siblings().removeClass('chosen');
+            var sta = $(this).attr('sta');
+            $('.f_content').each(function(){
+                var f_sta = $(this).attr('f_sta');
+                if(f_sta == sta){
+                    var url = "/home/focus/newlist/class/" + sta;
+                    $(this).show();
+                    $(".past_topic a").attr("href",url);
+                }else {
+                    $(this).hide();
+                }
+            });
+        });
+    });
+    var menu_index = sessionStorage.menu;
+    menu.each(function(){
+       var index = $(this).index();
+        if(menu_index == index) {
+            if(index == 0) {
+                $(this).addClass("chosen").siblings().removeClass("chosen");
+                $(".publish").show();
+                $(".past_topic a").attr("href","{:Url('Focus/newlist?class=1')}");
+            } if(index == 1) {
+                $(this).addClass("chosen").siblings().removeClass("chosen");
+                $(".trend").show();
+                $(".fax").hide();
+                $(".publish").hide();
+                $(".past_topic a").attr("href","{:Url('Focus/newlist?class=2')}");
+            } if(index == 2) {
+                $(this).addClass("chosen").siblings().removeClass("chosen");
+                $(".fax").show();
+                $(".publish").hide();
+                $(".trend").hide();
+                $(".past_topic a").attr("href","{:Url('Focus/newlist?class=3')}");
+            } else{}
+            sessionStorage.clear();
+        } else{}
+    });
+    $(".f_content").find("a").each(function(){
+        $(this).on('click',function(){
+            var menu_index = $(".menu").find(".chosen").index();
+            sessionStorage.menu = menu_index;
+        });
+    });
+    $(".past_topic a").on('click',function(){
+        var myindex = $(".menu").find(".chosen").attr("sta") - 1;
+        sessionStorage.menu = myindex;
+    })
+</script>
+<script type="text/javascript">
+    $(function(){
+        $(".notice_title").myScroll({
+           speed:100,
+           rowHeight:30
+        });
+        $(".notice_title").find("li:odd").addClass("odd");
+    });
+</script>
+<script>
+    "use strict";
+
+    $(function(){
+        var span = $('.menu' ).find('span');
+        var len = $('.publish').length;
+        var tip = $(".tip");
+        if(len < 5){
+            tip.text('');
+        }else{
+            tip.text('上拉加载更多')
+        }
+        loadScroll('.publish');
+
+        span.each(function(){
+            $(this).on('click',function(){
+                var sta = $(this).attr('sta');
+                var className;
+                $(this).addClass('chosen').siblings().removeClass('chosen');
+                $('.f_content').each(function(){
+                    var f_sta = $(this).attr('f_sta');
+                    if(f_sta == sta){
+                        $(this).show();
+                    }else {
+                        $(this).hide();
+                    }
+                });
+
+                if( sta==1 ){
+                    className = ".publish";
+                }else if( sta==2 ){
+                    className = ".trend";
+                }else if( sta==3 ){
+                    className = ".fax";
+                }
+                loadScroll(className);
+            });
+        });
+    });
+
+	/**
+     * loadScroll:上拉加载更多信息
+     * @param className
+     */
+    function loadScroll(className){
+        $(window ).off("scroll" ).on("scroll",function(){
+            //console.log(className);
+            var dh = $(document).height();
+            var wh = $(window).height();
+            var start = $(window ).scrollTop();
+            var end = wh + start;
+            var info=$("#f_content" ).find(className);
+            var len = info.length;
+            var sta = info.attr('f_sta');
+            var tip = $(".tip");
+            //console.log("dh:"+dh+",wh:"+wh+",start:"+start+",end:"+end);
+            if(end == dh){
+                tip.text('');
+                $.ajax({
+                    type:"post",
+                    url:"{:Url('Focus/listmore')}",
+                    data:{
+                        type:sta,
+                        length:len
+                    },
+                    success:function(data){
+                        if(data.code == 1){
+                            if(sta == 1){
+                                addPublish(data);
+                            }else if(sta == 2){
+                                addTrend(data);
+                            }else if(sta ==3){
+                                addFax(data);
+                            }
+                            var datalen = data.data.length;
+                            if(datalen == 5){
+                                tip.text('上拉加载更多');
+                            }else{
+                                tip.text('');
+                            }
+
+                        }else{
+                            tip.text('没有更多了');
+                            $(window ).off("scroll");
+                        }
+                    }
+                })
+            }
+        })
+    }
+
+	/**
+     * addPublish:加入工委发布的信息
+     * @param data
+     */
+    function addPublish(data){
+        var html = '';
+        var publishs = data.data;
+        var publishsLen = publishs.length;
+        for(var i = 0 ;i<publishsLen;i++){
+            var publish = publishs[i];
+            html +=
+                    '<div class="f_content publish" f_sta="1">'+
+                    '<a href="/home/focus/newdetail/id/'+publish.id+'.html">'+
+                    '<div class="content_list">'+
+                    '<img class="c_l_img imgcon" src="'+publish.path+'" alt="图片（工委发布）">'+
+                    '<p class="c_l_title">'+publish.title+'</p>'+
+                    '<div class="foot">'+
+                    '<span class="sent_time"><span>'+publish.time+'</span>发布</span>'+
+                    '<span class="talk">'+
+                    '<img src="/home/images/talk2.png">'+
+                    '<span class="talk_num">'+publish.comments+'</span>'+
+                    '</span>'+
+                    '<span class="scan">'+
+                    '<img src="/home/images/scan2.png">'+
+                    '<span class="scan_num">'+publish.views+'</span>'+
+                    '</span>'+
+                    '</div>'+
+                    '</div>'+
+                    '</a>'+
+                    '<br style="clear:both;" />'+
+                    '</div>'
+        }
+        $('#f_content').append(html);
+
+    }
+    function addTrend(data){
+        var html = '';
+        var trends = data.data;
+        var trendsLen = trends.length;
+        for(var i = 0;i<trendsLen;i++){
+            var trend = trends[i];
+            html +=
+                    '<div class="f_content trend" f_sta="2">'+
+                    '<a href="/home/focus/newdetail/id/'+trend.id+'.html">'+
+                    '<div class="content_list">'+
+                    '<img class="c_l_img imgcon" src="'+trend.path+'" alt="图片（省直动态）">'+
+                    '<p class="c_l_title">'+trend.title+'</p>'+
+                    '<div class="foot">'+
+                    '<span class="sent_time"><span>'+trend.time+'</span>发布</span>'+
+                    '<span class="talk">'+
+                    '<img src="/home/images/talk2.png"  alt="评论">'+
+                    '<span class="talk_num">'+trend.comments+'</span>'+
+                    '</span>'+
+                    '<span class="scan">'+
+                    '<img src="/home/images/scan2.png"  alt="浏览">'+
+                    '<span class="scan_num">'+trend.views+'</span>'+
+                    '</span>'+
+                    '</div>'+
+                    '</div>'+
+                    '</a>'+
+                    '<br style="clear:both;" />'+
+                    '</div>'
+        }
+        $('#f_content').append(html);
+    }
+    function addFax(data){
+        var html ='';
+        var faxes = data.data;
+        var faxesLen = faxes.length;
+        for(var i =0 ;i<faxesLen;i++){
+            var fax = faxes[i];
+            html +=
+                    '<div class="f_content fax" f_sta="3">'+
+                    '<a href="/home/focus/newdetail/id/'+fax.id+'.html">'+
+                    '<div class="content_list">'+
+                    '<img class="c_l_img imgcon" src="'+fax.path+'" alt="图片（市县传真）">'+
+                    '<p class="c_l_title">'+fax.title+'</p>'+
+                    '<div class="foot">'+
+                    '<span class="sent_time"><span>'+fax.time+'</span>发布</span>'+
+                    '<span class="talk">'+
+                    '<img src="/home/images/talk2.png" alt="评论">'+
+                    '<span class="talk_num">'+fax.comments+'</span>'+
+                    '</span>'+
+                    '<span class="scan">'+
+                    '<img src="/home/images/scan2.png" alt="浏览">'+
+                    '<span class="scan_num">'+fax.views+'</span>'+
+                    '</span>'+
+                    '</div>'+
+                    '</div>'+
+                    '<br style="clear:both;" />'+
+                    '</a>'+
+                    '</div>'
+
+        }
+
+        $('#f_content').append(html);
+    }
+</script>
+
+{/block}

@@ -1,0 +1,19 @@
+{extend name="public/common"}
+
+{block name="style"}
+<style>
+    .photo img{
+        width:100%;
+        height: 100%;
+    }
+</style>
+{/block}
+
+{block name="body"}
+<div class="photo">
+        <img src="{$msg.seattable_image|get_cover='path'}">
+</div>
+{/block}
+
+{block name="script"}
+{/block}

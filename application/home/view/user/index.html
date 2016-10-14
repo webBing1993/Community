@@ -1,0 +1,89 @@
+{extend name="public/common"}
+
+{block name="style"}
+<link rel="stylesheet" href="/home/css/userIndex.css">
+{/block}
+
+{block name="body"}
+<div class="top">
+    <img src="/home/images/topbac.jpg" alt="" class="topbg">
+    <div class="fuzzy">
+        {eq name="visit" value="0"}
+        <img class="headLogo" src="{$user['userid']|get_header}">
+        <a href="{:Url('User/setting')}">
+            <div class="guide">
+                {neq name="user.nickname" value=""}<span>{$user.nickname}</span>{else/}<span>完善您的个人信息</span>{/neq}
+                <span class="fa fa-angle-right"></span>
+            </div>
+        </a>
+        {else/}
+        <img class="headLogo" src="/home/images/vistor.jpg">
+        <div class="guide">
+            <span>游客</span>
+            <span class="fa fa-angle-right"></span>
+        </div>
+        </a>
+        {/eq}
+    </div>
+    <img src="/home/images/hurdle2.png" class="hurdle">
+</div>
+{eq name="visit" value="0"}
+<a href="{:Url('User/myactivity')}">
+    <div class="myAct list">
+        <img src="/home/images/ac.png">
+        <div class="guide">
+            <span>我的活动</span>
+            <span class="fa fa-angle-right"></span>
+        </div>
+    </div>
+</a>
+<a href="{:Url('User/myread')}">
+    <div class="myRead list">
+        <img src="/home/images/myread.png">
+        <div class="guide">
+            <span>我的阅读</span>
+            <span class="fa fa-angle-right"></span>
+        </div>
+    </div>
+</a>
+<a href="{:Url('User/mycourse')}">
+    <div class="myClass list">
+        <img src="/home/images/class.png">
+        <div class="guide">
+            <span>我的课程</span>
+            <span class="fa fa-angle-right"></span>
+        </div>
+    </div>
+</a>
+<a href="{:Url('User/mymessage')}">
+    <div class="myMsg list">
+        <img src="/home/images/msg.png">
+        <div class="guide">
+            <span>我的消息</span>
+            <span class="fa fa-angle-right"></span>
+            <span class="msgNum">
+                <span class="num">{$number}</span>条新消息
+            </span>
+        </div>
+    </div>
+</a>
+<a href="{:Url('User/worklog')}">
+    <div class="myDia list">
+        <img src="/home/images/diary.png">
+        <div class="guide">
+            <span>我的日志</span>
+            <span class="fa fa-angle-right"></span>
+        </div>
+    </div>
+</a>
+{/eq}
+{/block}
+
+{block name="script"}
+<script>
+    var msgNum = $('.msgNum').find('.num').text();
+    if(msgNum == 0 || msgNum == ''){
+        $('.msgNum').hide();
+    }
+</script>
+{/block}

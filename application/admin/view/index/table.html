@@ -1,0 +1,167 @@
+{extend name="base/common"}
+
+{block name="style"}
+<!-- Toastr style -->
+<link href="/admin/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+<!-- Gritter -->
+<link href="/admin/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+<style>
+    h2{
+        width: 100%;
+        color:#185081;
+        font-size: 40px!important;
+        font-weight: 600!important;
+        line-height: 160px;
+        text-align: center;
+    }
+    .con{
+        height: 150px;
+    }
+    .con h1{
+        margin-top: 5px!important;
+        margin-bottom: 20px!important;
+    }
+    #tip{
+        width: 100%;
+        text-align: center;
+    }
+    #message tr{
+        width: 100%;
+    }
+    #message tr td{
+        width: 25%;
+        height: 30px;
+        padding-left: 30px;
+        line-height: 30px;
+    }
+    #message tr td:nth-child(odd){
+        background: #77d1bf;
+        color:#ffffff;
+    }
+    #message tr td:nth-child(even) {
+        background: #ffffff;
+    }
+</style>
+{/block}
+
+{block name="page-header"}
+{/block}
+
+{block name="main"}
+<div class="wrapper wrapper-content">
+    <h2>欢迎进入后台管理系统</h2>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-success pull-right">总数</span>
+                    <h5>关注用户</h5>
+                </div>
+                <div class="ibox-content con">
+                    <h1 class="no-margins">{$userTotal}</h1>
+                    <div class="stat-percent font-bold text-success">{$userTotal}</i></div>
+                    <small>用户总数</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-info pull-right">总数</span>
+                    <h5>活动通知</h5>
+                </div>
+                <div class="ibox-content con">
+                    <h1 class="no-margins">{$activityTotal}</h1>
+                    <div class="stat-percent font-bold text-info">{$activityTotal}</div>
+                    <small>活动通知总数</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-primary pull-right">总数</span>
+                    <h5>评论</h5>
+                </div>
+                <div class="ibox-content con">
+                    <h1 class="no-margins">{$commentTotal}</h1>
+                    <div class="stat-percent font-bold text-navy">{$commentTotal}</div>
+                    <small>评论总数</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-danger pull-right">总数</span>
+                    <h5>课程</h5>
+                </div>
+                <div class="ibox-content con">
+                    <h1 class="no-margins">{$courseTotal}</h1>
+                    <div class="stat-percent font-bold text-danger">{$courseTotal}</div>
+                    <small>课程数</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 40px">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5 id="tip">服务器信息</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="message">
+                        <tr>
+                            <td>PHP版本：</td>
+                            <td>{$config['version']}</td>
+                            <td>MYSQL版本：</td>
+                            <td>{$config['mysql_version']}</td>
+                        </tr>
+                        <tr>
+                            <td>服务器端信息：</td>
+                            <td>{$config['os']}</td>
+                            <td>服务器所在时间：</td>
+                            <td>{$config['time']}</td>
+
+                        </tr>
+                        <tr>
+                            <td>最大执行时间：</td>
+                            <td>{$config['max_ex_time']}</td>
+                            <td>最大上传限制：</td>
+                            <td>{$config['max_upload']}</td>
+                        </tr>
+                        <tr>
+                            <td>当前主机名：</td>
+                            <td>{$config['pc']}</td>
+                            <td>服务器语言：</td>
+                            <td>{$config['language']}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+
+{block name="script"}
+<!-- Flot -->
+<script src="/admin/js/plugins/flot/jquery.flot.js"></script>
+<script src="/admin/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+<script src="/admin/js/plugins/flot/jquery.flot.spline.js"></script>
+<script src="/admin/js/plugins/flot/jquery.flot.resize.js"></script>
+<script src="/admin/js/plugins/flot/jquery.flot.pie.js"></script>
+<script src="/admin/js/plugins/flot/jquery.flot.symbol.js"></script>
+<script src="/admin/js/plugins/flot/jquery.flot.time.js"></script>
+<script>
+    /* 插件块关闭操作 */
+    $(".title-opt .wm-slide").each(function(){
+        $(this).click(function(){
+            $(this).closest(".columns-mod").find(".bd").toggle();
+            $(this).find("i").toggleClass("mod-up");
+        });
+    })
+</script>
+{/block}

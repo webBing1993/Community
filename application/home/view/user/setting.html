@@ -1,0 +1,188 @@
+{extend name="public/common"}
+
+{block name="style"}
+<title>个人设置</title>
+<!--css-->
+<style type="text/css">
+    *{margin:0;padding:0;}
+    a{text-decoration:none;}
+    ul li{list-style:none;}
+    body{font-size:12px;font-family:"微软雅黑";color:#666;background:#F0F0F2;}
+    /*标题*/
+    .title{height:160px;background:#fff;text-align:center;}
+    .title img{height:70px;width:70px;border-radius:50px;
+        margin-top:30px;}
+    .title p{padding-top:10px;color:#999;font-size:16px;}
+
+    .content{height:100px;background:#fff;margin-top:20px;}
+    .content .z_content{margin-left:10px;height:50px;line-height:50px;font-size:16px;color:#333;}
+    .content .z_content .name{border-bottom:1px solid #f1f1f1;height:50px;}
+    .content .z_content .name p{display:inline-block;font-size:14px;color:#ccc;float:right;padding-right:10px;margin:0;}
+    .content .z_content .name p span{padding-left:8px;}
+    .content .z_content .nunber p{float:right;font-size:14px;color:#f43c4a;padding-right:10px;margin:0;}
+
+    .overlay{background-color:black;-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";background-color: rgba(0, 0, 0, 0.4);position: fixed;left: 0;right:0;top:0;bottom:0;z-index:10000;display:none;}
+
+    .z_popup{width:auto;margin-left:0;margin-right:0;left:30px;right:30px;}
+    .popup{width:270px;height:120px;margin:0 auto;text-align:center;background:#fff;display:none;z-index:99999;position:fixed;top:33%;}
+    .popup .top{height:70px;position:relative;}
+    .popup .top .z_top{border-bottom:1px solid #e5e5e5;height:70px;}
+    .popup .top .z_top .fa{width:14px;height:14px;color:#ccc;display:none;}
+    .popup .top .text{outline:none;border:0;padding-top:40px;font-size:18px;color:#333;}
+
+    .popup  .icon{height:50px;width:50px;background:#fff;padding:3px;border-radius:25px;position:absolute;left:43%;top:-25px;}
+    .popup  .icon img{height:44px;width:44px;}
+
+    .popup .bottom{height:50px;padding:10px 0 10px 0;line-height:30px;}
+    .popup .bottom .no{width:50%;height:30px;float:left;font-size:14px;color:#999;border-right:1px solid #f1f1f1;}
+    .popup .bottom .yes{width:50%;height:30px;float:left;font-size:16px;color:#333;}
+
+</style>
+{/block}
+
+{block name="body"}
+<div class="container-fluid">
+    <div class="row">
+        <div class="title">
+            <img src="{$user.userid|get_header}" alt="" class="img-circle"/>
+            <p class="click_img">点击修改您的头像</p>
+        </div>
+        <div class="image">
+            <input type="file" id="upload" accept="image/jpg, image/png, image/gif, image/jpeg">
+            <input type="hidden" name="header" class="img"  value="" required="">
+        </div>
+        <div class="content">
+            <div class="z_content">
+                <div class="name">账号昵称
+                    {eq name="user.nickname" value=""}
+                    <p class="click_show">设置昵称后即可评论<span class="fa fa-angle-right"></span></p>
+                    {else/}
+                    <p class="click_show"><span id="nickname">{$user.nickname}</span><span class="fa fa-angle-right"></span></p>
+                    {/eq}
+                </div>
+            </div>
+            <div class="z_content">
+                <div class="nunber">手&nbsp;机&nbsp;号<p id="phone">{$user.mobile}</p></div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row overlay"></div>
+    <div class="row popup z_popup">
+        <div class="col-md-12 col-xs-12 top">
+            <div class="z_top">
+                <input type="text" class="text" id="text" />
+                <span class="fa fa-exclamation-circle"></span>
+            </div>
+        </div>
+        <div class="icon"><img src="/home/images/nickname.png"></div>
+        <div class="col-md-12 col-xs-12 bottom">
+            <div class="no">取消</div>
+            <div class="yes">保存</div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript" src="/static/js/angular/angular.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+
+        //隐藏手机号码中间4位
+        var phone = $("#phone").text();
+        var mphone =phone.substr(3,4);
+        var lphone = phone.replace(mphone,"****");
+        $("#phone").text(lphone);
+
+
+        $(".z_content").find(".click_show").click(function(){
+            $(".overlay").show();
+            $(".popup").show();
+        });
+        $(".popup").find(".no").click(function(){
+            $(".overlay").hide();
+            $(".popup").hide();
+        });
+
+
+        //修改昵称
+        $(".popup").find(".yes").click(function(){
+            var val = $(".z_top").find("#text").val();
+           if(val == ""){
+                 $("#text").parent().find("span").fadeIn(300);return;
+           }
+            $.ajax({
+                type: "POST",
+                url: "{:Url('User/setName')}",
+                data: {nickname:val},
+                dataType: "Json",
+                success:function(data){
+                    if(data.code == 1){
+                        $("#nickname").text(data.data.nickname);
+                    }else{
+                        window.location.reload();
+                    }
+                },
+            });
+            $(".overlay").hide();
+            $(".popup").hide();
+        });
+
+        $(".image").hide();
+        //触发上传按钮
+        $('.title').find('img').off("click").on('click',function(){
+            $('#upload').click();
+        });
+        //上传图片并获取信息
+            $('#upload').off("change").on('change',function(){
+                var size = ($(this)[0].files[0].size / 1024).toFixed(2);
+                var imgBox = $(this);
+                if(size <= 2048){
+                    var img = $(this)[0].files[0];
+                    var formData = new FormData();
+                    formData.append("picture",img);
+                    $.ajax({
+                        type:"post",
+                        url:"{:Url('File/uploadPicture')}",
+                        data:formData,
+                        processData : false,
+                        contentType : false,
+                        success:function(msg){
+                            var msg = $.parseJSON(msg);
+                            if(msg['code'] == 1){
+                                imgBox.siblings(".img").val(msg.data["path"]);
+                                setHeader();
+                            } else {
+                                warning({msg:msg['info']});
+                                return;
+                            }
+                        }
+                    });
+                } else {
+                    warning({msg:"您选择的图片超过2mb，请重新选择"});
+                    return;
+                }
+            });
+        //图片上传成功后直接上传数据修改头像
+        function setHeader(){
+            var header = $("input[name='header']").val();
+            $.ajax({
+                type:"post",
+                url:"{:Url('User/setHeader')}",
+                data:{header:header},
+                dataType: "Json",
+                success:function(msg){
+                    if(msg.code == 1){
+                        $(".title").find('img').attr('src',header)
+                    }else{
+                        warning({msg:msg['info']});
+                        return;
+                    }
+                }
+            })
+        }
+
+    });
+</script>
+{/block}

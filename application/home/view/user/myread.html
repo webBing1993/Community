@@ -1,0 +1,139 @@
+{extend name="public/common"}
+
+{block name="style"}
+<link rel="stylesheet" href="/home/css/myRead.css">
+{/block}
+
+{block name="body"}
+<div class="top">
+    <div class="read_menu">
+        <span class="selected">已收藏<span id="num">{$number}</span>篇阅读</span>
+    </div>
+</div>
+<div class="listBox">
+    {volist name="list" id="vo"}
+    <div class="listBlock">
+        <a href="{:Url('Focus/newdetail?id='.$vo['id'])}" name=".$vo['id']">
+            <div class="list">
+                <img src="{$vo.front_cover|get_cover='path'}">
+                <span class="title">{$vo.title}</span>
+                <span class="sent_time">
+                    <span>{$vo.create_time|time_format="Y.m.d"}</span>发布
+                </span>
+                <span class="fa fa-angle-right"></span>
+                {eq name="vo.focus_status" value="-1"}
+                <div class="lose">已失效</div>
+                {/eq}
+            </div>
+        </a>
+    </div>
+    <div class="delete" onclick="deleteList({$vo.id},this)">删除</div>
+    {/volist}
+
+{/block}
+
+{block name="script"}
+
+<script>
+$(function(){
+    var list = $('.list');
+    var menu = $(".menu");
+    var listBlock=$(".listBlock");
+    var len = listBlock.length;
+    var lastX;
+    var pressedObj;
+    var lastLeftObj;
+    var start; //按下的点
+    //已失效透明层的位置
+    listBlock.each(function(){
+        var it = $(this);
+        var lose = it.find(".lose");
+        lose.css({"position":"absolute",top:0});
+    });
+    // 滑动删除
+    for (var i = 0; i < len; ++i) {
+        //当前滑动的点
+        listBlock[i].addEventListener('touchstart', function(e){
+            lastX = e.changedTouches[0].pageX;
+            pressedObj = this;
+            var touches = event.touches[0];
+            start = {
+                x: touches.pageX,
+                y: touches.pageY
+            };
+        });
+        //阻止纵向滚动
+        listBlock[i].addEventListener('touchmove',function(e){
+            var touches = event.touches[0];
+            delta = {
+                x: touches.pageX - start.x,
+                y: touches.pageY - start.y
+            };
+            if (Math.abs(delta.x) > Math.abs(delta.y)) {
+                event.preventDefault();
+            }
+        });
+        listBlock[i].addEventListener('touchend', function(e){
+            var diffX = e.changedTouches[0].pageX - lastX;
+            var dlt =$(this).next(".delete");
+            var fa = $(this ).find(".fa");
+            var lose = $(this ).find(".lose");
+            var menuh = $(".top" ).height();
+            var top = $(this ).offset().top-menuh;
+            if (diffX < -10) {
+                // 左滑
+                $(pressedObj).animate({marginLeft:"-50px"}, 500);
+                dlt.show();
+                dlt.css({top:top});
+                fa.animate({right:"70px"},500);
+                dlt.animate({right:0}, 500);
+                lose.animate({right:"25px"}, 500);
+                // 重置
+                lastLeftObj && lastLeftObj != pressedObj &&
+                $(lastLeftObj).animate({marginLeft:0}, 500)&&
+                $(lastLeftObj).find(".lose").animate({right:0}, 500)&&
+                $(lastLeftObj).find(".fa").animate({right:"20px"}, 500)&&
+                $(lastLeftObj).next(".delete").animate({right:"-60px"}, 500)&&
+                $(lastLeftObj).next(".delete").hide();
+                lastLeftObj = pressedObj;
+            } else if (diffX > 10) {
+                // 右滑
+                $(pressedObj).animate({marginLeft:"0"}, 500);
+                fa.animate({right:"20px"},500);
+                dlt.animate({right:"-60px"}, 500);
+                lose.animate({right:"0"}, 500);
+                setTimeout(dlt.hide(),500);
+                //重置
+                lastLeftObj = null;
+            }
+        });
+    }
+
+
+});
+    //删除某个列表
+    function deleteList(id,it){
+        var Num = $("#num" );
+        var num = Num.text();
+        var list = $(it).prev();
+        list.remove();
+        $(it ).remove();
+        num--;
+        Num.text(num);
+        $.ajax({
+            type:"post",
+            url:"{:Url('User/read_del')}",
+            data:{
+                id:id
+            },
+            success:function(data){
+                //console.log(data);
+//                var list = $(it).parent();
+//                list.remove();
+//                num--;
+//                num.text(num);
+            }
+        });
+    }
+</script>
+{/block}

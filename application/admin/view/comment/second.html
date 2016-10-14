@@ -1,0 +1,96 @@
+{extend name="base/common"}
+
+{block name="style"}
+
+{/block}
+
+{block name="page-header"}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>二级评论列表</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="{:Url('Comment/index')}">一级评论</a>
+            </li>
+            <li class="active">
+                <strong>二级评论列表</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+{/block}
+
+{block name="main"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>评论列表</h5>
+                    <div class="ibox-tools">
+                        <a href="javascript:window.history.go(-1);" class="btn btn-white btn-sm"><i class="fa fa-reply"></i> 返回</a>
+                    </div>
+                </div>
+
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th><input class="i-checks check-all" type="checkbox"></th>
+                                <th>评论内容</th>
+                                <th>评论标题</th>
+                                <th>类别</th>
+                                <th>发表用户</th>
+                                <th>发表时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {volist name="list" id="vo"}
+                            <tr>
+                                <td><input type="checkbox" class="i-checks" name="input[]"></td>
+                                <td>{$vo.content|msubstr=0,25}</td>
+                                {notempty name="vo.activity_id"}<td>{$vo->activity->name|msubstr=0,20}</td>{/notempty}
+                                {notempty name="vo.focus_id"}<td>{$vo->focus->title|msubstr=0,20}</td>{/notempty}
+                                {notempty name="vo.course_id"}<td>{$vo->course->title|msubstr=0,20}</td>{/notempty}
+                                <td>{$vo.type_text}</td>
+                                <td>{$vo->user->name}</td>
+                                <td>{$vo.create_time|time_format="Y-m-d H:i"}</td>
+                                <td>
+                                    <a href="{:Url('Comment/del?id='.$vo['id'])}" class="confirm ajax-del">删除</a>
+                                </td>
+                            </tr>
+                            {/volist}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="10">
+                                    <div class="page">{$_page}</div>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script src="/admin/js/plugins/iCheck/icheck.min.js"></script>
+<script>
+    highlight_subnav("{:Url('Comment/index')}");
+
+    $(document).ready(function(){
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+    });
+</script>
+{/block}

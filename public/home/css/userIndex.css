@@ -1,0 +1,107 @@
+body {
+  background: #f1f1f1;
+  padding: 0;
+  margin: 0;
+  font-size: 0;
+}
+body a,
+body a:link,
+body a:visited,
+body a:hover {
+  text-decoration: none;
+}
+.top {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  /*background: url("/home/images/topbac.jpg") no-repeat;*/
+  background-size: 100%;
+}
+.top .topbg{
+  width: 100%;
+  height: 150px;
+  position: absolute;
+}
+.top .hurdle {
+  width: 100%;
+  height: 10px;
+  position: absolute;
+  bottom: 0;
+  z-index:9999;
+}
+.top .fuzzy {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 150px;
+  background: rgba(153, 153, 153, 0);
+}
+.top .fuzzy .headLogo {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  border: 1px solid #fff;
+  margin-top: 30px;
+  margin-left: 30px;
+  float: left;
+}
+.top .fuzzy .guide {
+  width: calc(100% - 130px);
+  float: left;
+  font-size: 18px;
+  color: #fff;
+  margin-left: 10px;
+  margin-top: 48px;
+}
+.top .fuzzy .guide .fa {
+  font-size: 24px;
+  float: right;
+}
+.list {
+  width: 100%;
+  height: 50px;
+  background: #fff;
+  font-size: 15px;
+  color: #333;
+  position: relative;
+}
+.list img {
+  width: 24px;
+  margin: 13px 10px;
+  float: left;
+}
+.list .guide {
+  width: calc(100% - 54px);
+  float: left;
+  margin-top: 16px;
+}
+.list .guide .fa {
+  float: right;
+  font-size: 22px;
+  color: #ccc;
+  margin-top: -2px;
+}
+.list .msgNum {
+  float: right;
+  margin-right: 10px;
+  color: #f43c4a;
+  font-size: 13px;
+}
+.myMsg {
+  margin-top: 10px;
+}
+.list:before {
+  content: '';
+  position: absolute;
+  border-bottom: 1px solid #e5e5e5;
+  width: calc(200% - 88px);
+  height: 200%;
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-transform: scale(0.5, 0.5);
+  transform: scale(0.5, 0.5);
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  left: 44px;
+  top: 0;
+}

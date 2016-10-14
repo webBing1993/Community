@@ -1,0 +1,184 @@
+{extend name="public/common"}
+
+{block name="style"}
+<link rel="stylesheet" href="/home/css/navbar.css">
+<link rel="stylesheet" href="/home/css/SpeIndex.css">
+{/block}
+
+{block name="body"}
+{include file="public/navbar"}
+<div class="pageBody" pageId="2"></div>
+<div class="current_special">
+    {volist name="recommend" id="vo"}
+    <img src="{$vo.list_image|get_cover='path'}" class="bac_img">
+    {/volist}
+    <!--<img src="/home/images/special(big).jpg" class="bac_img">-->
+    <div class="fuzzy">
+        <div class="spe_title"></div>
+        <div class="shadow_box">
+            {volist name="recommend" id="vo"}
+                <div class="content">
+                    {if condition="$vo.type eq 1"}
+                    <a href="{:Url('Special/video?id='.$vo['id'])}">
+                    {elseif condition="$vo.type eq 2"}
+                    <a href="{:Url('Special/article?id='.$vo['id'])}">
+                    {else/}
+                    <a href="{:Url('Special/video?id='.$vo['id'])}">
+                    {/if}
+                        <div class="roll_box">
+                            <div class="s_tag1">{$vo.retype_text}</div>
+                            <img class="s_img" src="{$vo.front_cover|get_cover='path'}">
+                            <!--<img class="s_img" src="/home/images/special(small).jpg">-->
+                            <div class="s_title">{$vo.title}</div>
+                            <div class="sent_detail">
+                                <span class="tissue">{$vo.publisher}</span>
+                                <span class="time">{$vo.create_time|time_format="Y-m-d"}</span>
+                            </div>
+                            <div class="footer">
+                                <span class="learn"><span>{$vo.views}</span>&nbsp;人学习过</span>
+                            </div>
+                        </div>
+                    </a>
+                    </a>
+                </div>
+            {/volist}
+        </div>
+        <div class="change">
+            <img src="/home/images/change.png">换一个
+        </div>
+    </div>
+    {neq name="$special" value=""}
+    <div class="c_s_title">
+        <a href="{:Url('Special/specialview?id='.$special['id'])}">
+            <div class="title">
+                <span class="tag">第{$special.number}期</span>
+                <div class="titlecon">{$special.title}</div>
+            </div>
+            <div class="describe">
+                {$special.detail}
+            </div>
+            <div class="hurdle"></div>
+            <br style="clear:both;" />
+        </a>
+    </div>
+    {/neq}
+</div>
+<div class="past_topic">
+    <a href="{:Url('Special/speciallist')}">往期回顾&nbsp;&nbsp;</a>
+    <span class="fa fa-angle-right"></span>
+</div>
+<div class="interests">
+    <div class="title">一&nbsp;兴趣爱好.任你挑选&nbsp;一</div>
+    {volist name="interests" id="in"}
+    <div class="i_list">
+        {if condition="$in['type'] eq 1"}
+        <div class="tag">视频</div>
+        <a href="{:Url('Special/interestvideo?id='.$in['id'])}">
+        {elseif condition="$in['type'] eq 2"}
+        <div class="tag">图文</div>
+        <a href="{:Url('Special/interestarticle?id='.$in['id'])}">
+        {else/}
+        <div class="tag">音乐</div>
+        <a href="{:Url('Special/interestvideo?id='.$in['id'])}">
+        {/if}
+            <img src="{$in.list_image|get_cover='path'}" class="i_img imgcon" alt="图文/视频">
+            <div class="i_name">{$in.title}</div>
+            <div class="join">
+                <img src="/home/images/person.png">
+            <span>
+                <span class="j_num">{$in.views}</span>
+                人学习
+            </span>
+            </div>
+        </a>
+        </a>
+        <br style="clear:both;" />
+    </div>
+    {/volist}
+</div>
+<div class="tip"></div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript" src="/home/js/navbar.js"></script>
+<script>
+"use strict";
+    $(function(){
+        //上拉加载更多
+        var list =$(".i_list");
+        var listLen = list.length;
+        var tip = $(".tip");
+        //初始显示
+        if(listLen < 5){
+            tip.text("");
+        }else{
+            tip.text("上拉加载更多");
+        }
+        //滚动加载
+        loadScroll();
+
+    });
+    function loadScroll(){
+        $(window ).off("scroll").on("scroll",function(){
+            var dh = $(document).height();
+            var wh = $(window).height();
+            var tip = $(".tip");
+            var start = $(window ).scrollTop();
+            var end = wh + start;
+            var len = $(".i_list" ).length;
+            //console.log("dh:"+dh+",wh:"+wh+",start:"+start+",end:"+end,",th:"+th);
+            if(end == dh){
+                tip.text('');
+                $.ajax({
+                    type:"post",
+                    url:"{:Url('Special/interestmore')}",
+                    data:{
+                        length:len
+                    },
+                    success:function(data){
+                        if(data.code == 1){
+                            console.log(data);
+                            addList(data);
+                            tip.text('上拉加载更多');
+                        }else{
+                            tip.text('没有更多了');
+                            $(window ).off("scroll");
+                        }
+                    }
+                })
+            }
+        })
+    }
+    function addList(data){
+        var html = '';
+        var lists = data.data;
+        var listsLen = lists.length;
+        for(var i = 0 ; i<listsLen;i++){
+            var list = lists[i];
+            html +=
+                    '<div class="i_list">'+
+                    '{eq name="'+list.type+'" value="1"}'+
+                    '<div class="tag">视频</div>'+
+                    '<a href="/home/special/interestvideo/id/'+list.id+'.html">'+
+                    '{else/}'+
+                    '<div class="tag">图文</div>'+
+                    '<a href="/home/special/interestarticle/id/'+list.id+'.html">'+
+                    '{/eq}'+
+                    '<img src="'+list.path+'" class="i_img imgcon" alt="图文/视频">'+
+                    '<div class="i_name">'+list.title+'</div>'+
+                    '<div class="join">'+
+                    '<img src="/home/images/person.png">'+
+                    '<span>'+
+                    '<span class="j_num">'+list.views+'</span>'+
+                    '人学习'+
+                    '</span>'+
+                    '</div>'+
+                    '</a>'+
+                    '</a>'+
+                    '<br style="clear:both;" />'+
+                    '</div>'
+        }
+        $(".interests" ).append(html);
+    }
+</script>
+{/block}

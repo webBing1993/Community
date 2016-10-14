@@ -1,0 +1,85 @@
+.w-h(@w:100%;@h:100%){
+  width:@w;
+  height:@h;
+}
+.font(@size:13px;@col:#666){
+  font-size:@size;
+  color:@col;
+}
+body{
+  background: #f1f1f1;
+  font-size: 0px;
+}
+.past_topic{
+  .w-h(100%;40px);
+  background: #fff;
+  text-align: center;
+  line-height: 40px;
+  a{
+    .font(14px;#666);
+  }
+  .fa{
+    color: #ccc;
+    font-size: 20px;
+    position: absolute;
+    margin-top:9px;
+  }
+}
+
+.interests{
+  width: 100%;
+  .title{
+    .w-h(100%;36px);
+    line-height: 36px;
+    .font(13px;#666);
+    text-align: center;
+  }
+  .i_list{
+    width: 100%;
+    position: relative;
+    background: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    .tag{
+      .w-h(45px;30px);
+      background-image: url(/home/images/bj9.png);
+      background-size: 100% 100%;
+      position: absolute;
+      left: 5px;
+      top: 20px;
+      line-height: 21px;
+      .font(12px;#fff);
+      text-align: center;
+    }
+    .i_img{
+      width: 100%;
+      border-radius: 4px;
+    }
+    .i_name{
+      width: 100%;
+      .font(16px;#111);
+      text-align: center;
+      padding-top: 10px;
+      text-overflow: -o-ellipsis-lastline;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .join{
+      .font(14px;#999);
+      height: 14px;
+      text-align: center;
+      line-height: 0;
+      margin-top: 10px;
+      img{
+        width: 14px;
+        margin-right: 4px;
+      }
+    }
+  }
+}
+a,a:link,a:visited,a:hover{
+  text-decoration: none;
+}

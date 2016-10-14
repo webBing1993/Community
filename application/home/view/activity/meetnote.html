@@ -1,0 +1,510 @@
+{extend name="public/common"}
+
+{block name="style"}
+<style type="text/css">
+    *{padding: 0;margin: 0;}
+    ul{margin: 0;}
+    ul li{list-style: none;}
+    p{margin: 0;}
+    a{text-decoration: none;}
+    body{font-family: "Microsoft yahei",sans-serif;}
+    .top{border-bottom: 10px solid #f1f1f1;}
+    .top .tongzhi{text-align: center;height: 180px;width: 100%;background: url(/home/images/activity/meetnote.jpg);background-size: cover;position: relative;}
+    .top .tongzhi img{height: 10px;width:100%;position: absolute;bottom: 0px;left: 0;}
+    .top .tongzhi .top-top{font-size: 18px;color: #fff;font-weight: 600;text-overflow: ellipsis;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;display: -webkit-box;margin: 0 20px;}
+    .top .tongzhi .label{background: #ff7043;color: #fff;font-size: 14px;font-weight: 100;padding: 5px 7px;border-radius: 4px;display: inline-block;margin-top: 40px;margin-bottom: 10px;}
+    .top .tongzhi .face{font-size: 12px;padding-top: 6px;margin-top:10px;color: #fff;font-style: italic;border-top: 1px solid #fff;display: inline-block;}
+    .top .detail{font-size: 14px;color: #666;margin: 0 10px;}
+    .top .detail .jianshu{text-align: center;margin: 20px 0 10px 0;}
+    .top .detail .jianshu span{display: inline-block;color: #333;font-size: 14px;padding: 0 3px 4px 3px;border-bottom: 2px solid palevioletred;font-weight: 300;}
+    .top .detail .fadeIn{text-overflow: ellipsis;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;display: -webkit-box;word-break: break-all;}
+    .top .detail .fadeIn img,.top .detail .fadeOut img{width: 100%;height: 180px;}
+    .top .detail .fadeIn p{overflow: hidden;}
+    .top .detail .fadeOut{word-break: break-all;}
+    .top .detail .angle{color:#ccc;font-size: 24px;text-align: center;margin: 0 40%;}
+    .body{border-bottom: 10px solid #f1f1f1;}
+    .body ul li{height: 60px;}
+    .body ul li .icon{width: 54px;height: 60px;float: left;}
+    .body ul li img{width: 24px;margin: 18px 15px;}
+    .body ul li .content{font-size: 16px;color: #333;height: 60px;margin-left: 54px;border-bottom: 1px dashed #f1f1f1;padding-right: 10px;position: relative;}
+    .body ul li:last-child .content{border: 0;}
+    .body ul li .content .word{text-overflow: ellipsis;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;display: -webkit-box;}
+    .body ul li .special a{position: absolute;width: 100%;height: 100%;left: 0;top: 0;z-index: 4;}
+    .body ul li .special .word{margin-right: 20px;}
+    .body ul li .content .fa-angle-right{font-size: 20px;color: #ccc;position: absolute;right: 10px;top: 20px;}
+    .body .require{line-height: 40px;text-align: center;font-size: 14px;color: #666;position: relative;}
+    .body .require:before{content: '';position: absolute;border-top: 1px solid #e5e5e5;width: 200%;height: 200%;-webkit-transform-origin: 0 0;transform-origin: 0 0;-webkit-transform: scale(0.5, 0.5);transform: scale(0.5, 0.5);-webkit-box-sizing: border-box;box-sizing: border-box;left: 0;}
+    .body .require span{font-size: 20px;color: #ccc;position: relative;left: 4px;top: 2px;}
+    .body .pullUp{height: 0;overflow: hidden;}
+    .body .pullDown{height: auto;padding: 0 10px 10px 10px;}
+    .people{padding: 0 10px;margin-bottom: 70px;}
+    .people ul li{border-bottom: 1px dashed #f1f1f1;}
+    .people ul li:last-child{border: 0;}
+    .people ul li span{font-size: 14px;margin: 20px 0;display: inline-block;}
+    .people ul li .count{font-size: 12px;color: #999;float: right;}
+    .people ul li .signed{color: #3dc353;}
+    .people ul li .leave{color: #f43c4a;}
+    .people ul li .no-sign{color: #666;}
+    .people ul li .list{font-size: 16px;color: #333;min-height: 22px;margin-bottom: 20px;}
+    .foot{height: 50px;position: fixed;left: 0;bottom: 0;z-index: 4;width: 100%;background: #fff;box-shadow: 0px -1px 3px #e5e5e5;}
+    .foot .small{width: 25%;float: left;height: 100%;font-size: 13px;text-align: center;padding: 4px 0;}
+    .foot .small img{width: 20px;}
+    .foot .small p{margin-top: 2px;}
+    .foot .ask-leave{color: #f43c4a;position: relative;}
+    .foot .ask-leave .right-border{width: 0;height: 30px;border-right: 1px solid #f1f1f1;position: absolute;right: 0;top: 10px;}
+    .foot .ask-replace{color: #3dc353;}
+    .foot .signing{width: 50%;float: left;}
+    .foot .signing span{width: 95%;background: #3dc353;line-height: 34px;display: inline-block;border-radius: 4px;margin-top: 7px;font-size: 18px;color: #fff;text-align: center;box-shadow: 0px 3px 2px #2baf2b;}
+    .foot .clear{clear: both;}
+    .inputbox{width: 100%;height: 50px;padding-left: 10px;border-top: 1px solid #e5e5e5;position: fixed;z-index: 5;bottom: -50px;left: 0;background: #fff;display:none}
+    .inputbox span{width: 60px;line-height: 50px;font-size: 16px;color: #999;display: inline-block;text-align: center;float: right;}
+    .inputbox input{width: 80.65%;padding-left: 10px;height: 36px;border: 1px solid #f1f1f1;outline: none;background: #f6f6f6;margin-top: 7px;font-size: 14px;color: #333;border-radius: 4px;float: right;}
+    .inputbox input::-webkit-input-placeholder{color: #ccc;}
+    .up{transition:  500ms;transform: translateY(-50px);}
+    .down{transition:  500ms;transform: translateY(0px);}
+    #one{display: none}
+    #two{display: none}
+    .replacer{width: 100%;height: 290px;box-shadow: 0px -1px 3px #e5e5e5;position: fixed;left: 0;bottom: -290px;background: #fff;z-index: 5;font-size: 16px;color: #ccc;}
+    .replacer .re-top{line-height: 39px;border-bottom: 1px solid #e5e5e5;font-size: 15px;color: #3dc353;text-align: center;}
+    .replacer .re-body{border-bottom: 1px solid #e5e5e5;}
+    .replacer .re-body ul li{height: 50px;}
+    .replacer .re-body ul li .icon{width: 40px;height: 50px;float: left;}
+    .replacer .re-body ul li img{width: 20px;margin: 15px 10px;}
+    .replacer .re-body ul li .content{height: 50px;margin-left: 50px;border-bottom: 1px dashed #f1f1f1;}
+    .replacer .re-body ul li:last-child .content{border: 0;}
+    .replacer .re-body ul li .content input{outline: none;width: 100%;padding-right: 10px;line-height: 49px;border: 0;color: #333;}
+    .replacer .re-body ul li .content input::-webkit-input-placeholder{color: #ccc;}
+    .replacer .reason{height: 150px;position: relative;color: #333;padding: 10px 10px;}
+    .replacer .reason .reason-box{height: 90px;margin-bottom: 10px;width: 100%;outline: none;overflow: scroll;}
+    .replacer .reason .reason-box #reason{color: #ccc;}
+    .replacer .reason .button{line-height: 30px;width: 80px;background: #ccc;color: #fff;font-size: 14px;text-align: center;position: absolute;bottom: 10px;right: 10px;display: inline-block;border-radius: 4px;}
+    .re-up{transition:  750ms;transform: translateY(-290px);}
+    .re-down{transition:  750ms;transform: translateY(0px);}
+    .sign-box{width: 100%;text-align: center;line-height: 50px;position: fixed;left: 0;bottom: -50px;z-index: 5;color: #fff;font-size: 17px;background: #3dc353;}
+    .new{background: #f43c4a;}
+    .done{bottom: 0px;}
+    .shadow{position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 2;background: rgba(66,66,66,0.3);}
+
+</style>
+{/block}
+
+{block name="body"}
+<div ng-app="meetnote" ng-controller="allCtrl">
+    <div class="top">
+        <div class="tongzhi">
+            <span class="label">会议通告</span>
+            <p class="top-top">{$list.name}</p>
+            <div class="face">
+                <span id="organization">{$list.publisher} /</span>
+                <span id="time">{$list.create_time|time_format='Y.m.d'}发布</span>
+            </div>
+            <img src="/home/images/curve.png">
+        </div>
+        <div class="detail">
+            <div class="jianshu">
+                <span>会议简述</span>
+            </div>
+            <div class="fadeIn" id="fade">{$list.detail}</div>
+            <div class="angle" id="angle">
+                <span class="fa fa-angle-down"></span>
+            </div>
+        </div>
+    </div>
+    <div class="body">
+        <ul>
+            <li>
+                <div class="icon">
+                    <img src="/home/images/activity/topic.png">
+                </div>
+                <div class="content">
+                    <span class="word">{$list.title}</span>
+                </div>
+            </li>
+            <li>
+                <div class="icon">
+                    <img src="/home/images/activity/people.png">
+                </div>
+                <div class="content">
+                    <span class="word">{$list.sponsor}</span>
+                </div>
+            </li>
+            <li>
+                <div class="icon">
+                    <img src="/home/images/activity/time.png">
+                </div>
+                <div class="content">
+                    <span class="word">{$list.date}</span>
+                </div>
+            </li>
+            <li>
+                <div class="icon">
+                    <img src="/home/images/activity/address.png">
+                </div>
+                <div class="content special">
+                    <span class="word">{$list.address}</span>
+                    <span class="fa fa-angle-right"></span>
+                    <a href="{:Url('Activity/map?id='.$list['id'])}"></a>
+                </div>
+            </li>
+            <li>
+                <div class="icon">
+                    <img src="/home/images/activity/seat.png">
+                </div>
+                <div class="content special">
+                    <span class="word">点击查看座位表</span>
+                    <span class="fa fa-angle-right"></span>
+                    <a href="{:Url('Activity/seattable?id='.$list['id'])}"></a>
+                </div>
+            </li>
+        </ul>
+        <div class="require">
+            相关要求
+            <span class="fa fa-angle-down"></span>
+        </div>
+        <div class="pullUp" id="pull">
+            {$list.requirement}
+        </div>
+    </div>
+    <div class="people">
+        <ul>
+            <li>
+                <span class="signed">*已报名单</span>
+                <span class="count">{{readyNumber}}人</span>
+                <div class="list">{{ready}}</div>
+            </li>
+            <li>
+                <span class="leave">*请假名单</span>
+                <span class="count">{{leaveNumber}}人</span>
+                <div class="list">{{leave}}</div>
+            </li>
+            <li>
+                <span class="no-sign">*未报名单</span>
+                <span class="count">{{noneNumber}}人</span>
+                <div class="list">{{none}}</div>
+            </li>
+        </ul>
+    </div>
+    {neq name="list.is_enroll" value="1"}
+    <div class="foot" >
+        <div class="small ask-leave" id="askLeave" ng-click="askLeave();">
+            <img src="/home/images/activity/leave.png">
+            <p>有事请假</p>
+            <span class="right-border"></span>
+        </div>
+        <div class="small ask-replace" id="askReplace" ng-click="askReplace()">
+            <img src="/home/images/activity/replace.png">
+            <p>找人代</p>
+        </div>
+        <div class="signing" ng-click="sign()">
+            <span id="signings">我要报名</span>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="inputbox">
+        <span id="send" ng-click="send()">发送</span>
+        <input type="text" name="reason" placeholder="写下你的请假理由..." value="">
+    </div>
+    <div class="replacer">
+        <div class="re-top">
+            代参加者个人信息
+        </div>
+        <div class="re-body">
+            <ul>
+                <li>
+                    <div class="icon">
+                        <img src="/home/images/activity/people.png">
+                    </div>
+                    <div class="content">
+                        <input type="text" id="name" placeholder="填写姓名" value="">
+                    </div>
+                </li>
+                <li>
+                    <div class="icon">
+                        <img src="/home/images/activity/tel.png">
+                    </div>
+                    <div class="content">
+                        <input type="text" id="tel" placeholder="联系方式" value="">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="reason">
+            <div class="reason-box" contentEditable="true";>
+            </div>
+            <span class="button" ng-click="replace()">确认报名</span>
+        </div>
+    </div>
+    <div class="sign-box" id="one">
+        报名成功
+    </div>
+    <div class="sign-box new" id="two">已请假</div>
+    {else/}
+    {eq name="list.class" value="3"}
+    <div class="sign-box new done">已请假</div>
+    {else/}
+    <div class="sign-box done">
+        已成功报名
+    </div>
+    {/eq}
+    {/neq}
+    <div class="shadow" style="display: none;"></div>
+</div>
+{/block}
+
+{block name="script"}
+<script src="/static/js/angular/angular.min.js"></script>
+<script type="text/javascript">
+    (function(){
+        var  app= angular.module("meetnote",[]);
+        app
+        .factory("data",["$http",function($http){
+            return{
+                list:function(){
+                    return{$msg};
+                }
+            }
+        }])
+        .controller("allCtrl",["$scope","data", function ($scope,data){
+            $scope.data = data.list();
+            $scope.ready = $scope.data.member.ready.join("，");
+            $scope.leave = $scope.data.member.leave.join("，");
+            $scope.none = $scope.data.member.none.join("，");
+            $scope.readyNumber = $scope.data.number.ready;
+            $scope.leaveNumber = $scope.data.number.leave;
+            $scope.noneNumber = $scope.data.number.none;
+            $scope.package = function(data){
+                $scope.$apply(function(){
+                    $scope.ready = data.member.ready.join("，");
+                    $scope.leave = data.member.leave.join("，");
+                    $scope.none = data.member.none.join("，");
+                    $scope.readyNumber = data.number.ready;
+                    $scope.leaveNumber = data.number.leave;
+                    $scope.noneNumber = data.number.none;
+                });
+            }
+            $scope.askLeave = function(){
+                var width = angular.element(window).width();
+                var input_width = width - 82;
+                angular.element(".inputbox" ).show();
+                angular.element(".inputbox input").width(input_width);
+                setTimeout(function(){
+                    angular.element(".inputbox").removeClass("down").addClass("up");
+                    angular.element(".shadow").show();
+                    angular.element(".inputbox input").focus();
+                },1);
+                angular.element(".inputbox input").focus(function(){
+                    angular.element("#send").text("提交");
+                    angular.element("#send").css("color","#f43c4a");
+                });
+                var input = angular.element("input[name='reason']").val().trim();
+                if(!input){
+                    angular.element(".inputbox input").blur(function(){
+                        angular.element("#send").text("发送");
+                        angular.element("#send").css("color","#999");
+                    });
+                }
+
+                angular.element(".shadow").on('click',function(){
+                    setTimeout(function(){
+                        angular.element(".inputbox").removeClass("up").addClass("down");
+                        angular.element(".shadow").hide();
+                    },1);
+                });
+            }
+            $scope.send = function(){
+                var input = $("input[name='reason']").val().trim();
+                if(input) {
+                    $.ajax({
+                        type:"post",
+                        url:"{:Url('activity/enroll')}",
+                        data:{id:{$list['id']},type:3,reason:input},
+                        success:function(data){
+                            setTimeout(function(){
+                                angular.element(".inputbox input").val("");
+                                angular.element(".inputbox"). removeClass("up").addClass("down");
+                                angular.element("#two").show();
+                                angular.element("#two").addClass("up");
+                                angular.element(".shadow").hide();
+                            },1);
+                            $scope.package(data.data);
+                        }
+                    })
+                } else{
+                    alert("请输入你的请假理由!");
+                }
+            }
+            $scope.askReplace = function(){
+                var placeHolder = "<span id='reason'>填写找人代参加的理由...</span>"
+                angular.element(".replacer .reason-box").append(placeHolder);
+                setTimeout(function(){
+                    angular.element(".replacer").removeClass("re-down").addClass("re-up");
+                    angular.element(".shadow").show();
+                },1);
+                angular.element(".replacer .reason-box").focus(function(){
+                    angular.element("#reason").remove();
+                    angular.element(".reason .button").css({
+                        "background":"#3dc353",
+                        "color":"#fff"
+                    });
+                });
+                $(".replacer .reason-box").blur(function(){
+                    var input = $(".replacer .reason-box").text().trim();
+                    if(!input){
+                        angular.element(".replacer .reason-box").append(placeHolder);
+                    } else {}
+                    var span = angular.element(" #reason").text();
+                    if(!input || span == '填写找人代参加的理由...') {
+                        angular.element(".reason .button").css({
+                            "background":"#ccc",
+                            "color":"#fff"
+                        });
+                    } else{}
+                });
+                angular.element(".shadow").on('click',function(){
+                    setTimeout(function(){
+                        angular.element(".replacer").removeClass("re-up").addClass("re-down");
+                        angular.element(".shadow").hide();
+                    },1);
+                    angular.element("#reason").remove();
+                });
+            }
+            $scope.replace = function(){
+                var reason = angular.element(".replacer .reason-box").text().trim();
+                var name = angular.element("#name").val().trim();
+                var tel = angular.element("#tel").val().trim();
+                var reg1 = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+                var reg2 = /^[\u4E00-\u9FA5]{2,}$/;
+                if(reg2.test(name) && reg1.test(tel)) {
+                    $.ajax({
+                        type:"post",
+                        url:"{:Url('activity/enroll')}",
+                        data:{id:{$list['id']},replacement:name,mobile:tel,reason:reason,type:4},
+                        success:function(data){
+                            setTimeout(function(){
+                                angular.element(".replacer").removeClass("re-up").addClass("re-down");
+                                angular.element(".shadow").hide();
+                                angular.element("#one").show();
+                                angular.element("#one").addClass("up");
+                            },1);
+                            $scope.package(data.data);
+                        }
+                    });
+                } else{
+                    if(!reg2.test(name) || !name) {
+                        alert("请输入正确的姓名");
+                    }
+                    if(!reg1.test(tel) || !tel) {
+                        alert("请输入正确的联系方式");
+                    }
+                    if(!reason) {
+                        alert("请输入找人替代的理由");
+                    }
+                }
+            }
+            $scope.sign = function(){
+                $.ajax({
+                    type:"post",
+                    url:"{:Url('Activity/enroll')}",
+                    data:{id:{$list['id']},type:2},
+                    dataType:"json",
+                    success:function(data){
+                        angular.element("#one").show();
+                        angular.element("#one").addClass("up");
+                        $scope.package(data.data);
+                    }
+                })
+            }
+        }])
+    })();
+</script>
+<script type="text/javascript">
+    $(function(){
+        $(".body ul li").each(function(){
+            var height = $(this).find(".content .word").height();
+            var margin_top = (60 - height) / 2;
+            $(this).find(".content .word").css('padding-top',margin_top);
+        });
+        myclick();
+        pull();
+        /* 第一个下拉 */
+        function myclick(){
+            $("#angle").on('click',function(){
+                var classname = $("#fade").attr("class");
+                if(classname == "fadeIn") {
+                    $("#fade").removeClass().addClass("fadeOut");
+                    $(".angle").find("span").removeClass("fa fa-angle-down").addClass("fa fa-angle-up");
+                } else {
+                    $("#fade").removeClass().addClass("fadeIn");
+                    $(".angle").find("span").removeClass("fa fa-angle-up").addClass("fa fa-angle-down");
+                }
+            })
+        }
+        /* 第二个下拉 */
+        function pull(){
+            $(".body .require").on('click',function(){
+                var classname = $("#pull").attr("class");
+                if(classname == "pullUp") {
+                    $("#pull").removeClass("pullUp").addClass("pullDown");
+                    $(".body .require").find("span").removeClass("fa fa-angle-down").addClass("fa fa-angle-up");
+                } else {
+                    $("#pull").removeClass("pullDown").addClass("pullUp");
+                    $(".body .require").find("span").removeClass("fa fa-angle-up").addClass("fa fa-angle-down");
+                }
+            })
+        }
+    });
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+<script>
+    //---微信接口JS-SDK的调用
+    wx.config({
+        debug: false,
+        appId: '{$jsSign.appid}', // 必填，公众号的唯一标识
+        timestamp: {$jsSign['timestamp']}, // 必填，生成签名的时间戳，切记时间戳是整数型，别加引号
+        nonceStr: '{$jsSign.noncestr}', // 必填，生成签名的随机串
+        signature: '{$jsSign.signature}', // 必填，签名，见附录1
+        jsApiList: [
+            'checkJsApi',
+            'chooseImage',
+            'previewImage',
+            'uploadImage',
+            'downloadImage',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+        ]
+    });
+
+    wx.ready(function () {
+        wx.onMenuShareTimeline({
+            title: '{$list.name}',
+            link: "{$list.link}",
+            imgUrl: '{$list.share_image}',
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+        wx.onMenuShareAppMessage({
+            title: '{$list.name}', // 分享标题
+            desc: '{$list.detail}', // 分享描述
+            link: '{$list.link}', // 分享链接
+            imgUrl: '{$list.share_image}', // 分享图标
+            type: '', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+    });
+    wx.error(function (res) {
+        alert('wx.error: '+JSON.stringify(res));
+    });
+</script>
+{/block}

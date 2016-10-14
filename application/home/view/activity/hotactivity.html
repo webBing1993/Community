@@ -1,0 +1,893 @@
+{extend name="public/common"}
+
+{block name="style"}
+<style type="text/css">
+    *{padding: 0;margin: 0;}
+    ul{margin: 0;}
+    ul li{list-style: none;}
+    p{margin: 0;}
+    a{text-decoration: none;color: #333;}
+    body{font-family: 微软雅黑;}
+    .all{position: absolute;width: 100%;height: 100%;left: 0;top: 0;overflow-y: scroll;-webkit-overflow-scrolling: touch;}
+    .all .top{height: 180px;position: relative;}
+    .all .neck{padding: 20px 10px;position: relative;}
+    .neck:before{content: '';position: absolute;border-bottom: 1px solid #e5e5e5;width: 200%;height: 200%;-webkit-transform-origin: 0 0;transform-origin: 0 0;-webkit-transform: scale(0.5, 0.5);transform: scale(0.5, 0.5);-webkit-box-sizing: border-box;box-sizing: border-box;left: 0;top: 0;}
+    .neck p{font-size: 18px;color: #111;font-weight: 600;margin-bottom: 10px;text-overflow: ellipsis;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;display: -webkit-box;word-break:break-all;}
+    .neck span{font-size: 12px;color: #999;margin-right: 10px;}
+    .all .body ul li{height: 50px;}
+    .body ul li .icon{width: 64px;height: 50px;float: left;}
+    .body ul li img{width: 24px;margin: 13px 20px;}
+    .body ul li .content{font-size: 16px;color: #333;height: 50px;margin-left: 64px;border-bottom: 1px dashed #f1f1f1;padding-right: 10px;position: relative;}
+    .body ul li:last-child .content{border: 0;}
+    .body ul li .content .word{text-overflow: ellipsis;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;display: -webkit-box;word-break:break-all;}
+    .body ul li .special a{position: absolute;width: 100%;height: 100%;left: 0;top: 0;z-index: 1;}
+    .body ul li .special .word{margin-right: 20px;}
+    .body ul li .content .fa-angle-right{font-size: 20px;color: #ccc;position: absolute;right: 10px;top: 15px;}
+    .body .require{font-size: 14px;color: #666;position: relative;margin: 0 10px;text-align: center;}
+    #require-content{text-align: left;position: relative;padding-top: 20px;}
+    #require-content:before{content: '';position: absolute;border-top: 1px solid #e5e5e5;width: 200%;height: 200%;-webkit-transform-origin: 0 0;transform-origin: 0 0;-webkit-transform: scale(0.5, 0.5);transform: scale(0.5, 0.5);-webkit-box-sizing: border-box;box-sizing: border-box;left: 0;top: 0;}
+    .require-content{text-overflow: ellipsis;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;display: -webkit-box;word-break:break-all;}
+    .require-content p{overflow: hidden;}
+    .require-content img ,.require-all img{width: 100%;height: 180px;}
+    .body .require #angle{width:100px;font-size: 20px;color: #ccc;padding: 10px 0;}
+    .require-all{word-break:break-all;}
+    /*评论区*/
+    .all .comment{margin-top: 10px;margin-bottom: 50px;}
+    .comment .comment-top{text-align: center;position: relative;}
+    .comment .comment-top:before{content:'';position: absolute;border-top:1px solid #e5e5e5;width: 200%;height: 200%;-webkit-transform-origin: 0 0;transform-origin: 0 0;-webkit-transform: scale(0.5, 0.5);transform: scale(0.5, 0.5);-webkit-box-sizing: border-box;box-sizing: border-box;left: 0;}
+    .comment .comment-top span{font-size: 13px;font-style: italic;color: #999;padding: 0 20px;position: relative;bottom: 10px;background: #fff;z-index: 1;}
+    .comment-body{}
+    .comment-body ul li{margin-top: 15px;}
+    .comment-body ul li:first-child{margin-top: 0;}
+    .comment-body .image{height: 44px;padding: 0 10px;}
+    .comment-body .image img{width: 24px;height: 24px;border-radius: 12px;margin-right: 10px;}
+    .comment-body .image .name{font-size: 14px;color: #999;position: relative;top: 1px;}
+    .comment-body .image .time{font-size: 12px;color: #ccc;float: right;}
+    .comment-body .detail{margin-left: 44px;padding-right: 10px;position: relative;}
+    .comment-body .detail:before{content: '';width: 200%;height: 200%;position: absolute;border-bottom: 1px solid #f1f1f1;-webkit-transform-origin: 0 0;transform-origin: 0 0;-webkit-transform: scale(0.5, 0.5);transform: scale(0.5, 0.5);-webkit-box-sizing: border-box;box-sizing: border-box;left: 0;}
+    .comment-body .detail .detail-main{color: #333;font-size: 14px;margin-bottom: 15px;word-break:break-all;}
+    .comment-body .detail .detail-second{background: #f1f1f1;padding: 10px 10px;margin-bottom: 20px;z-index: 1;position: relative;font-size: 12px;}
+    .comment-body .detail .detail-second ul li{margin-top: 10px;}
+    .comment-body .detail .detail-second ul li:first-child{margin-top: 0
+
+    ;}
+    .comment-body .detail .detail-second .reply-name{color: #3dc353;display: inline-block;float: left;min-width: 20%;}
+    .comment-body .detail .detail-second .reply-content{color: #999;display: inline-block;max-width: 80%;word-break:break-all;}
+    .comment-body .detail .detail-second p{font-size: 12px;color: #999;text-align: center;margin-top: 10px;}
+    .comment-body .detail .detail-foot{position: relative;height: 30px;}
+    .comment-body .detail .detail-foot .icon{width: 18px;}
+    .comment-body .detail .detail-foot .icon-del{position: absolute;right: 150px;}
+    .comment-body .detail .detail-foot .icon-comment{position: absolute;right: 80px;}
+    .comment-body .detail .detail-foot .icon-zan{position: absolute;right: 10px;}
+    .comment-body .detail .detail-foot span{font-size: 12px;color: #999;position: absolute;right: 34px;bottom: 10px;}
+    .comment-body .detail .detail-foot .zaned{animation:dou 300ms ease;-webkit-animation:dou 300ms ease;}
+    @keyframes dou {
+        0%{transform: rotate(1deg);}
+        10%{transform: rotate(10deg);}
+        30%{transform: rotate(-10deg);}
+        50%{transform: rotate(10deg);}
+        70%{transform: rotate(-10deg);}
+        90%{transform: rotate(10deg);}
+        100%{transform: rotate(0deg);}
+    }
+    @-webkit-keyframes dou {
+        0%{transform: rotate(1deg);}
+        10%{transform: rotate(10deg);}
+        30%{transform: rotate(-10deg);}
+        50%{transform: rotate(10deg);}
+        70%{transform: rotate(-10deg);}
+        90%{transform: rotate(10deg);}
+        100%{transform: rotate(0deg);}
+    }
+    .comment-body #load{width: 100%;text-align: center;font-size: 14px;color: #999;padding: 15px 0;}
+    .comment-body #load img{width: 18px;margin-right: 4px;}
+    /*底部*/
+    .foot{height: 50px;position: fixed;left: 0;bottom: 0;z-index: 1;width: 100%;background: #fff;box-shadow: 0px -1px 3px #e5e5e5;}
+    .foot .small{width: 23%;float: left;height: 100%;font-size: 12px;text-align: center;padding: 4px 0;}
+    .foot .small img{width: 22px;position: relative;top: 2px;}
+    .foot .small p{margin-top: 4px;color: #999;}
+    .foot .none{}
+    .foot .none img{width: 22px;position: relative;top: 2px;animation:suoxiao 500ms ease;-webkit-animation:suoxiao 500ms ease;}
+    .foot .collected{}
+    .foot .collected img{width: 22px;position: relative;top: 2px;animation:fangda 500ms ease;-webkit-animation:fangda 500ms ease;}
+    @keyframes fangda {
+        0%{transform: scale(0.1);}
+        80%{transform: scale(1.1);}
+        100%{transform: scale(1);}
+    }
+    @-webkit-keyframes fangda {
+        0%{transform: scale(0.1);}
+        80%{transform: scale(1.1);}
+        100%{transform: scale(1);}
+    }
+    @keyframes suoxiao {
+        0%{transform: scale(1);}
+        100%{transform: scale(0.1);}
+    }
+    @-webkit-keyframes suoxiao {
+        0%{transform: scale(1);}
+        100%{transform: scale(0.1);}
+    }
+    .foot .signing{width: 54%;float: left;}
+    .foot .signing span{width: 100%;background: #3dc353;line-height: 34px;display: inline-block;border-radius: 4px;margin-top: 7px;font-size: 18px;color: #fff;text-align: center;box-shadow: 0px 3px 2px #2baf2b;}
+    .clear{clear: both;}
+    .inputbox{width: 100%;height: 50px;padding-left: 10px;border-top: 1px solid #e5e5e5;position: fixed;z-index: 5;bottom: -50px;left: 0;background: #fff;}
+    .inputbox span{width: 60px;line-height: 50px;font-size: 16px;color: #999;display: inline-block;text-align: center;float: right;}
+    .inputbox input{width: 80.65%;padding-left: 10px;height: 36px;border: 1px solid #f1f1f1;outline: none;background: #f6f6f6;margin-top: 7px;font-size: 14px;color: #333;border-radius: 4px;float: right;}
+    .inputbox input::-webkit-input-placeholder{color: #ccc;}
+    .up{transition:  500ms;transform: translateY(-50px);}
+    .down{transition:  500ms;transform: translateY(0px);}
+    .shadow{position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 2;background: rgba(66,66,66,0.3);}
+    .success{height: 90px;width: 42%;background: rgba(0,0,0,0.6);color: #fff;text-align: center;position: fixed;z-index: 5;bottom: -90px;left: 29%;border-radius: 4px;}
+    .success img{width: 36px;padding: 10px 0;}
+    .success p{font-size: 16px;}
+    .succeed{transition:  400ms;transform: translateY(-240px);}
+    .list{width: 100%;height: 200px;box-shadow: 0px -1px 3px #e5e5e5;position: fixed;left: 0;bottom: -200px;background: #fff;z-index: 5;font-size: 16px;color: #333;}
+    .list .list-top{line-height: 39px;border-bottom: 1px solid #e5e5e5;font-size: 15px;color: #3dc353;text-align: center;}
+    .list .list-body{padding: 10px 10px;}
+    .shang{transition:  500ms;transform: translateY(-200px);}
+    .xia{transition:  500ms;transform: translateY(0px);}
+    .pl{width: 72%;height: 120px;position: fixed;left: 14%;top: 40%;z-index: 5;border-radius: 4px;background: #fff;margin: 0;padding: 0;text-align: center;}
+    .pl .pl-top{display: inline-block;height: 50px;width: 50px;border-radius: 25px;position: relative;bottom: 25px;background: #fff;}
+    .pl .pl-top img{width: 44px;height: 44px;border-radius: 22px;position: relative;top: 3px;}
+    .pl .pl-body{padding: 0 7.5%;text-align: left;}
+    .pl .pl-body input{border: none;outline: none;border-bottom: 1px solid #f1f1f1;width: 80%;padding-left: 10px;margin-left: 4%;}
+    .pl .pl-body img{width: 14px;margin-left: 15px;}
+    .pl .pl-foot ul li{width: 50%;float: left;}
+    #no p{font-size: 14px;color: #999;padding: 5px 0;margin: 9.5px 0;border-right: 1px solid #f1f1f1;}
+    #yes p{font-size: 16px;color: #333;margin: 13.5px 0;}
+    @media screen and (max-width: 359px) {
+        .comment-body .detail .detail-second .reply-name{color: #3dc353;display: inline-block;float: left;min-width: 23%;}
+        .comment-body .detail .detail-second .reply-content{color: #999;display: inline-block;max-width: 77%;}
+    }
+
+    /*---banner---start*/
+    .top .banner_box{width: 100%;height: 100%;overflow: hidden;}
+    .top #banner{height: 100%;position: relative;}
+    .top #banner li{float:left;height: 100%;}
+    .top #banner li img{width:100%;height: 100%;}
+    .top .arc{height: 10px;width: 100%;position: absolute;z-index: 1;bottom: 0;left: 0;}
+    .top .arc img{width: 100%;height: 100%;position: absolute;top: 0;}
+    .top #focus{position: absolute;top: 2px;z-index: 1;}
+    .top #focus li{float: left;}
+    .top #focus li span{display: inline-block;width: 16px;height: 4px;background: rgba(153,153,153,0.6);margin: 0 8px;border-radius: 2px;}
+    .top #focus .focuson span{background: #f43c4a;}
+</style>
+{/block}
+
+{block name="body"}
+
+
+<div ng-app="hotactivity" ng-controller="allCtrl">
+    <div class="all">
+        <!-- banner  -->
+        <div class="top">
+            <div class="banner_box">
+                <ul id="banner">
+                    {volist name="list.carousel" id="ca"}
+                    <li >
+                        <img src="{$ca|get_cover='path'}">
+                    </li>
+                    {/volist}
+                </ul>
+                <ul id="focus" ng-if="bannerLength.length > 1">
+                    {volist name="list.carousel" id="ca"}
+                    <li>
+                        <span></span>
+                    </li>
+                    {/volist}
+                </ul>
+            </div>
+            <div class="arc">
+                <img src="/home/images/curve.png">
+            </div>
+        </div>
+        <!-- banner -->
+        <div class="neck">
+            <p>{$list.name}</p>
+            <span class="skim-time">浏览{$list.views}次</span>
+            <span class="collection-time">收藏{$list.collect}次</span>
+        </div>
+        <div class="body">
+            <ul>
+                <li>
+                    <div class="icon">
+                        <img src="/home/images/activity/people.png">
+                    </div>
+                    <div class="content">
+                        <span class="word">{$list.sponsor}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="icon">
+                        <img src="/home/images/activity/money.png">
+                    </div>
+                    <div class="content">
+                        <span class="word">{$list.cost}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="icon">
+                        <img src="/home/images/activity/time.png">
+                    </div>
+                    <div class="content">
+                        <span class="word">{$list.start_time|time_format} — {$list.end_time|time_format}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="icon">
+                        <img src="/home/images/activity/tel.png">
+                    </div>
+                    <div class="content">
+                        <a href="tel:13465844692"><span class="word">{$list.telephone}</span></a>
+                    </div>
+                </li>
+                <li>
+                    <div class="icon">
+                        <img src="/home/images/activity/address.png">
+                    </div>
+                    <div class="content special">
+                        <span class="word">{$list.address}</span>
+                        <span class="fa fa-angle-right"></span>
+                        <a href="{:Url('Activity/map?id='.$list['id'])}"></a>
+                    </div>
+                </li>
+            </ul>
+            <div class="require">
+                <div class="require-content" id="require-content">{$list.detail}</div>
+                <span id="angle" class="fa fa-angle-down"></span>
+            </div>
+        </div>
+        <div class="comment">
+            <div class="comment-top">
+                <span>共{{commentCount}}条评论</span>
+            </div>
+            <div class="comment-body">
+                <ul>
+                    <li ng-repeat="li in list">
+                        <div class="image">
+                            <img src="{{li.header}}">
+                            <span class="name">{{li.nickname}}</span>
+                            <span class="time">{{li.create_time * 1000 | date:"yyyy-MM-dd"}}</span>
+                        </div>
+                        <div class="detail">
+                            <div class="detail-main">{{li.content}}</div>
+                            <div class="detail-second" ng-if="li.notes.length > 0">
+                                <ul>
+                                    <li ng-repeat="ul in li.notes">
+                                        <span class="reply-name">{{ul.nickname}}：</span>
+                                        <span class="reply-content">{{ul.content}}</span>
+                                        <div class="clear"></div>
+                                    </li>
+                                    <p ng-if="li.notes.length > 4" ng-click="load($event,li.id,$index)">更多评论</p>
+                                </ul>
+                            </div>
+                            <div class="detail-foot">
+                                {eq name="visit" value="0"}
+                                <img class= "icon icon-del" src="/home/images/del.png" ng-click="selfDel(li.id)" ng-if="li.self == 1">
+                                <img class="icon icon-comment" ng-click="myAlert(li.id,li.create_user,li.nickname)" src="/home/images/comment-grey.png">
+                                <span ng-bind="li.likes"></span>
+                                <img class="icon icon-zan" ng-click="dianzan($event,li.id,li.create_user)" src="/home/images/zan-grey.png" ng-if="li.is_like == 0">
+                                <img class="icon icon-zan zaned" ng-click="dianzan($event,li.id,li.create_user) "src="/home/images/zan.png" ng-if="li.is_like == 1">
+                                {/eq}
+                            </div>
+                        </div>
+                    </li>
+                    <div id="load" ng-if="list.length > 4" ng-click="load($event,li.id,$index)">
+                        <img src="/home/images/load.png">
+                        <span>点击加载更多评论</span>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {eq name="visit" value="0"}
+    <div class="foot">
+        <div ng-class="{collected : isCollect == 1}" class="small" id="collect" ng-click="collect($event)">
+            <img src="/home/images/star-border.png" ng-if="isCollect == 0">
+            <img src="/home/images/star-green.png" ng-if="isCollect == 1">
+            <p ng-if="isCollect == 0">收藏</p>
+            <p ng-if="isCollect == 1">已收藏</p>
+        </div>
+        <div class="signing" ng-click="sign()">
+            <span id="signing" ng-if="isEnroll == 0">我要报名</span>
+            <span id="signing" ng-if="isEnroll == 1">查看名单</span>
+        </div>
+        <div class="small" id="comment" ng-click="myAlert(li.id,li.create_user,li.nickname)">
+            <img src="/home/images/comment-border.png">
+            <p>评论</p>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="inputbox">
+        <span id="send" ng-click="send(li.id)">发送</span>
+        <input type="text" name="reason" placeholder="写评论" value="">
+    </div>
+    <div class="success" id="success">
+        <img src="/home/images/success.png">
+        <p>恭喜报名成功</p>
+    </div>
+    <div class="list" id="list">
+        <div class="list-top">已报名名单</div>
+        <div class="list-body" id="listBox">{{form}}</div>
+    </div>
+    <div class="shadow" style="display: none;"></div>
+    {/eq}
+</div>
+{/block}
+
+{block name="script"}
+<script src="/static/js/angular/angular.min.js"></script>
+<script type="text/javascript">
+    (function(){
+        var  app= angular.module("hotactivity",[]);
+        app
+                .factory("data",["$http",function($http){
+                    return{
+                        click:function(){
+                            return {$list};
+                        },
+                        collectData : function () {
+                            return {$collect};
+                        },
+                        collect: function () {
+                            return $.ajax({
+                                    type:"post",
+                                    url:"{:Url('Activity/collect')}",
+                                    data:{id:{$list['id']}}
+                                })
+                        },
+                        list: function(){
+                            return{$comment};
+                        },
+                        getName:function(){
+                            return {$is_nickname};
+                        },
+                        getForm:function(){
+                            return {$enroll};
+                        },
+                        load:function(){
+                            $.ajax({
+                                type:"post",
+                                url:"",
+                                data:{activity_id:{$list['id']}},
+                            })
+                        },
+                        isSign:function(){
+                            return {$is_enroll};
+                        },
+                        plAlert: function(options){
+                            defaults = {
+                                checkCallback:function(){},
+                                cancelCallback:function(){}
+                            };
+                            var opts = $.extend({},defaults,options);
+                            var $alert = $("<div class='pl'>"
+                                +"<div class='pl-top'>"
+                                +"<img src='/home/images/nickname.png'></div>"
+                                +"<div class='pl-body'>"
+                                +"<input type='text' placeholder='请输入昵称'>"
+                                +"<img src='/home/images/wrong.png' style='display: none;'></div>"
+                                +"<div class='pl-foot'><ul>"
+                                +"<li id='no'><p>取消</p></li>"
+                                +"<li id='yes'><p>确定</p></li>"
+                                +"</ul></div>"
+                                +"</div>");
+                            angular.element("body").append($alert);
+                            $alert.find("#yes").on('click',function(e){
+                                var nickname = angular.element(".pl-body input").val();
+                                if(nickname) {
+                                    angular.element(".shadow").hide();
+                                    $alert.fadeOut(300,function(){
+                                        $alert.remove();
+                                    });
+                                    if(opts.checkCallback)opts.checkCallback.call($alert);
+                                    e.stopPropagation();
+                                } else {alert("请输入昵称!");}
+                            });
+                            $alert.find("#no").on('click',function(e){
+                                angular.element(".shadow").hide();
+                                $alert.fadeOut(300,function(){
+                                    $alert.remove();
+                                });
+                                if(opts.cancelCallback)opts.cancelCallback.call($alert);
+                                e.stopPropagation();
+                            });
+                            $alert.find(".pl-body input").on("keydown",function(){
+                                angular.element(".pl-body img").show();
+                            });
+                            $alert.find(".pl-body img").on('click',function(){
+                                $alert.find(".pl-body input").val("");
+                                $alert.find(".pl-body img").hide();
+                            });
+                            angular.element(".shadow").on('click',function(e){
+                                angular.element(".shadow").hide();
+                                $alert.fadeOut(300,function(){
+                                    $alert.remove();
+                                });
+                                if(opts.cancelCallback)opts.cancelCallback.call($alert);
+                                e.stopPropagation();
+                            });
+                        },
+                        myAjax : function(url, data){
+                            return $.ajax({
+                                type : "post",
+                                url : url,
+                                data : data
+                            })
+                        }
+                    }
+                }])
+                .controller("allCtrl",["$scope","data", function ($scope,data){
+                    var myData = data.click();
+                    $scope.bannerLength = myData.carousel;
+                    var myName = data.getName();
+                    $scope.commentCount = myData.comments;
+                    $scope.form = data.getForm().join("，");
+                    //是否报名
+                    $scope.isEnroll = data.isSign();
+                    $scope.collection = myData.collect;
+                    //循环输出的评论数据源；
+                    $scope.list = data.list();
+                    $scope.zan = 0;
+                    /* 假设 收藏了 为 1 ，未收藏为 0 */
+                    $scope.isCollect = data.collectData();
+                    //console.log($scope.isCollect)
+                    $scope.collect = function(ele){
+                        var target = ele.currentTarget,
+                            status = angular.element(target).attr("class");
+                        if(status == 'small none' || status == 'small') {
+                            angular.element(target).find("img").attr("src","/home/images/star-green.png");
+                            angular.element(target).find("p").text("已收藏");
+                            $scope.isCollect = 1;
+                            //返回成功收藏+1
+                            $scope.collection ++;
+                        } else {
+                            angular.element(target).find("img").attr("src","/home/images/star-border.png");
+                            angular.element(target).find("p").text("收藏");
+                            $scope.isCollect = 0;
+                            //取消收藏-1
+                            if($scope.collection == 0){ $scope.collection = 0; return; }
+                            $scope.collection --;
+                        }
+                        data.collect();
+                    };
+
+                    $scope.dianzan = function(ele, id,useId){
+                        var target = ele.currentTarget,
+                            status = angular.element(target).attr("class");
+                        angular.forEach($scope.list, function (data) {
+                            if(data.id == id){
+                                if(status.indexOf("zaned") == -1) {
+                                    angular.element(target).attr("src","/home/images/zan.png");
+                                    angular.element(target).addClass("zaned");
+                                    data.likes ++;
+                                } else {
+                                    angular.element(target).removeClass("zaned");
+                                    angular.element(target).attr("src","/home/images/zan-grey.png");
+                                    data.likes --;
+                                }
+                            }
+                        });
+                        data.myAjax(
+                            "{:Url('Activity/like')}",
+                            {id:id,user_id:useId}
+                        );
+                    };
+                    $scope.sign = function(){
+                        if($scope.isEnroll == 0) {
+                            data.myAjax(
+                                "{:Url('Activity/enroll')}",
+                                {type:1,id:myData.id}
+                            ).success(function(data){
+                                angular.element("#success").addClass("succeed");
+                                angular.element("#signing").text("查看名单");
+                                setTimeout(function(){
+                                    angular.element("#success").fadeOut(1000);
+                                },1500);
+                                $scope.form = data.data.join("，");
+                                $scope.isEnroll = 1;
+                            });
+                            return;
+                        } else{
+                            angular.element("#list").removeClass("xia").addClass("shang");
+                            angular.element(".all").css("overflow-y","hidden");
+                            angular.element(".shadow").show();
+                            angular.element(".shadow").on('click',function(){
+                                angular.element("#list").removeClass("shang").addClass("xia");
+                                angular.element(".all").css("overflow-y","scroll");
+                                angular.element(".shadow").hide();
+                            });
+                        }
+                    };
+                    $scope.myAlert = function(commentId,receiveId,nickName){
+                        if(myName == 0) {
+                            angular.element(".shadow").show();
+                            data.plAlert({
+                                checkCallback:function(){
+                                    var name = angular.element(".pl-body input").val();
+                                    data.myAjax(
+                                        "{:Url('User/setName')}",
+                                        {nickname:name}
+                                    ).success(function(){
+                                        setTimeout(function(){
+                                            myName = name;
+                                            $scope.comment(commentId,receiveId,nickName);
+                                        },300);
+                                    });
+                                }
+                            })
+                        } else {
+                            $scope.comment(commentId,receiveId,nickName);
+                        }
+                    }
+                    $scope.comment = function(commentId,receiveId,nickName){
+
+                        angular.element(".inputbox input").data({
+                            "commentId":commentId,
+                            "receiveId":receiveId
+                        });
+                        var width = angular.element(window).width();
+                        var input_width = width - 82;
+                        angular.element(".inputbox input").width(input_width);
+                        if(commentId != undefined) {
+                            angular.element(".inputbox input").val("@" + nickName + "：")
+                        }
+                        angular.element(".all").css("overflow-y","hidden");
+                        setTimeout(function(){
+                            angular.element(".inputbox").removeClass("down").addClass("up");
+                            angular.element(".shadow").show();
+                        },1);
+
+                        angular.element(".shadow").on('click',function(){
+                            angular.element(".inputbox").removeClass("up").addClass("down");
+                            angular.element(".all").css("overflow-y","scroll");
+                            angular.element(".inputbox input").val("");
+                            angular.element(".shadow").hide();
+                        });
+                    };
+                    $scope.send = function(){
+                        var input = angular.element("input[name='reason']").val().trim();
+                        input = input.substring(input.indexOf('：')+1);
+                        //var reply_id = angular.element(".inputbox input").data("replyId");
+                        var comment_id = angular.element(".inputbox input").data("commentId");
+                        var receive_id = angular.element(".inputbox input").data("receiveId");
+                        //reply_id = reply_id == undefined ? "" : reply_id;
+                        comment_id = comment_id == undefined ? "" : comment_id;
+                        receive_id = receive_id == undefined ? "" : receive_id;
+                        if(input) {
+                            data.myAjax(
+                                "{:Url('Activity/addComment')}",
+                                {
+                                    activity_id:myData.id,
+                                    replay_id:myData.user,
+                                    parent_id:comment_id,
+                                    receive_id:receive_id,
+                                    content:input
+                                }
+                            ).success(function(data){
+                                $scope.commentCount++;
+                                setTimeout(function(){
+                                    angular.element("#send").css("color","#999");
+                                    angular.element("#send").text("发送");
+                                    angular.element(".inputbox input").val("");
+                                    angular.element(".inputbox").removeClass("up").addClass("down");
+                                    angular.element(".shadow").hide();
+                                    angular.element(".all").css("overflow-y","scroll");
+                                },1);
+                                if(data.data.status == 1) {
+                                    if(data.data.parent_id == 0) {
+                                        $scope.$apply(function(){
+                                            $scope.list.push(data.data);
+                                        });
+                                    } else {
+                                        angular.forEach($scope.list,function(datas){
+                                            if(datas.id == data.data.parent_id) {
+                                                $scope.$apply(function(){                                                           datas.notes.push(data.data);
+                                                });
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    };
+                    $scope.load = function(ele,commentId,index){
+                        var target = ele.currentTarget;
+                        commentId = commentId == undefined ? "" : commentId;
+                        var length;
+                        if(index != undefined){
+                            length = $scope.list[index].notes.length;
+                        } else {
+                            length = $scope.list.length;
+                        }
+                        data.myAjax(
+                            "{:Url('Activity/more')}",
+                            {
+                                activity_id:myData.id,
+                                parent_id:commentId,
+                                total:length
+                            }
+                        ).success(function(data){
+//                            console.log(data);
+                            if(data.code == 0) {
+                                angular.element(target).text("已加载全部评论");
+                                angular.element(target).unbind("click");
+                                return;
+                            }
+                            if(data.data.info == 1) {
+                                $scope.$apply(function(){
+                                    for(var key in data.data){
+                                        if(typeof data.data[key] === "object"){
+                                            $scope.list.push(data.data[key]);
+                                        }
+                                    }
+                                });
+                            } else {
+                                angular.forEach($scope.list,function(datas){
+                                    if(datas.id == commentId) {
+                                        $scope.$apply(function(){
+                                            for(var key in data.data){
+                                                if(typeof data.data[key] === "object"){
+                                                    datas.notes.push(data.data[key]);
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+
+                    }
+                    $scope.selfDel = function(id){
+                        data.myAjax(
+                            "{:Url('Activity/commentdel')}",
+                            {id:id}
+                        ).success(function(data){
+                            if(data.code == 1) {
+                                angular.forEach($scope.list,function(datas, index){
+                                    if(datas.id == id) {
+                                        $scope.$apply(function(){                                                               $scope.list.splice(index, 1);
+                                        });
+                                    }
+                                })
+                            }
+                        });
+                    }
+                }])
+    })();
+</script>
+<script type="text/javascript">
+    (function(){
+        $("#focus").find("li").eq(0).addClass("focuson");
+        /* 评论框的样式 */
+        $(".body ul li").each(function(){
+            var height = $(this).find(".content .word").height();
+            var margin_top = (50 - height) / 2;
+            $(this).find(".content .word").css('padding-top', margin_top);
+        });
+        myclick();
+        /* 下拉 */
+        function myclick(){
+            $(".require #angle").on('click',function(){
+                var classname = $("#require-content").attr("class");
+                if(classname == "require-content") {
+                    $("#require-content").removeClass().addClass("require-all");
+                    $(".require").find("#angle").removeClass("fa fa-angle-down").addClass("fa fa-angle-up");
+
+                } else {
+                    $("#require-content").removeClass().addClass("require-content");
+                    $(".require").find("#angle").removeClass("fa fa-angle-up").addClass("fa fa-angle-down");
+                }
+            });
+        }
+        //聚焦
+        $(".inputbox input").focus(function(){
+            $("#send").text("提交");
+            $("#send").css("color","#f43c4a");
+        })
+        $(".inputbox input").blur(function(){
+            var input = $(".inputbox input").val().trim();
+            if(!input) {
+                $("#send").text("发送");
+                $("#send").css("color","#999");
+            }
+        });
+    })();
+</script>
+<script type="text/javascript">
+    //banner
+    var banner = $('#banner');
+    var win_w = $(window).width();
+    var li_height = win_w * 0.48;
+    var li_len = banner.find('li').length;
+    var index = 0;
+    $(".top").height(li_height);
+    banner.css('width',win_w*(li_len));
+    banner.find('img').css('width',win_w);
+    if(li_len >1) {
+        //往左滑
+        function left(switchButton){
+            if(switchButton) {
+                switchButton = false;
+                var bannerLi = banner.find('li');
+                var firstLi = bannerLi.eq(0);
+                var lastLi = bannerLi.eq(li_len - 1);
+
+                index++;
+                if(index > li_len-1){index = 0}
+                bannerSel(index);
+
+                banner.animate({'left': -win_w}, 400);
+
+                setTimeout(function(){
+                    banner.animate({'left': 0}, 0);
+                    firstLi.insertAfter(lastLi);
+                    banner.animate({'left': 0}, 0);
+                },410);
+                setTimeout(function () {
+                    switchButton = true;
+                }, 400);
+            }
+        }
+            //往右滑
+        function right(switchButton){
+            if(switchButton) {
+                var switchButton = false;
+                var bannerLi = banner.find('li');
+                var firstLi = bannerLi.eq(0);
+                var lastLi = bannerLi.eq(li_len-1);
+
+                index--;
+                if(index < 0){index = li_len-1;}
+                bannerSel(index);
+
+                banner.animate({'left': -win_w}, 0);
+                banner.animate({'left': 0}, 400);
+                lastLi.insertBefore(firstLi);
+                setTimeout(function () {
+                    switchButton = true;
+                }, 400);
+            }
+        }
+
+        window.onload = function(){
+            touch({
+                banner:'banner',
+                rotate:'left',
+                leftFn:leftFn
+            });
+            touch({
+                banner:'banner',
+                rotate:'right',
+                rightFn:rightFn
+            });
+            setInterval(function(){
+                leftFn();
+            },4000);
+        }
+        function  leftFn(){
+            var switchButton = true;
+            left(switchButton);
+        }
+        function  rightFn(){
+            var switchButton = true;
+            right(switchButton);
+        }
+        /* banner 焦点 */
+        var focus_width = $("#focus").width();
+        var focus_left = (win_w - focus_width) / 2;
+        $("#focus").css("left",focus_left);
+
+        function bannerSel(index){
+            $("#focus").find("li").eq(index).addClass("focuson").siblings().removeClass("focuson");
+        }
+    }
+</script>
+<script type="text/javascript">
+    (function(){
+        var touch = function (opts){
+            var startX,startY,x,y,startTime,endTime;
+            var banner = document.getElementById(opts.banner);
+            init();
+            function init(){
+                banner.addEventListener("touchstart",touchstart,false);
+                banner.addEventListener("touchmove", touchmover, false);
+                banner.addEventListener("touchend", touchend, false);
+            }
+            /*开始触屏*/
+            function touchstart (event){
+                event.preventDefault();
+                if(!event.touches.length)return;
+                var touch = event.touches[0];
+                startX = touch.pageX;
+                startY = touch.pageY;
+                startTime = new Date()*1;
+            };
+            /*触屏移动*/
+            function touchmover (event){
+                if(!event.touches.length)return;
+                var touch = event.touches[0];
+                x = touch.pageX - startX;
+                y = touch.pageY - startY;
+            };
+            function touchend (event){
+                endTime = new Date()*1;
+                if(Math.abs(x) > Math.abs(y)){
+                    /*根据滑动时间来进行判断，是否为快速滑动*/
+                    if((endTime - startTime) <= 200){
+                        if(x >= 80){
+                            if(opts.rightFn)opts.rightFn();
+                        }
+                        if(x <= -80){
+                            if(opts.leftFn)opts.leftFn();
+                        }
+                    } else {
+                        if(x >= 120){
+                            if(opts.rightFn)opts.rightFn();
+                        }
+                        if(x <= -120){
+                            if(opts.leftFn)opts.leftFn();
+                        }
+                    }
+                }
+            }
+        };
+        window['touch'] = touch;
+    })();
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+<script>
+    //---微信接口JS-SDK的调用
+    wx.config({
+        debug: false,
+        appId: '{$jsSign.appid}', // 必填，公众号的唯一标识
+        timestamp: {$jsSign['timestamp']}, // 必填，生成签名的时间戳，切记时间戳是整数型，别加引号
+        nonceStr: '{$jsSign.noncestr}', // 必填，生成签名的随机串
+        signature: '{$jsSign.signature}', // 必填，签名，见附录1
+        jsApiList: [
+            'checkJsApi',
+            'chooseImage',
+            'previewImage',
+            'uploadImage',
+            'downloadImage',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+        ]
+    });
+
+    wx.ready(function () {
+        //分享到朋友圈
+        wx.onMenuShareTimeline({
+            title: '{$list.name}',
+            link: "{$list.link}",
+            imgUrl: '{$list.share_image}',
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+        //分享给朋友
+        wx.onMenuShareAppMessage({
+            title: '{$list.name}', // 分享标题
+            desc: '{$list.desc}', // 分享描述
+            link: '{$list.link}', // 分享链接
+            imgUrl: '{$list.share_image}', // 分享图标
+            type: '', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+    });
+    wx.error(function (res) {
+        alert('wx.error: '+JSON.stringify(res));
+    });
+</script>
+{/block}

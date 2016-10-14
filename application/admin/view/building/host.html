@@ -1,0 +1,100 @@
+{extend name="base/common"}
+
+{block name="style"}
+{/block}
+
+{block name="page-header"}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>小区管理</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="{:Url('Building/index')}">楼房列表</a>
+            </li>
+            <li class="active">
+                <strong>户主管理</a></strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+{/block}
+
+{block name="main"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>户主列表</h5>
+                    <div class="ibox-tools">
+                        <a data-toggle="modal" class="btn btn-primary" href="{:Url('Building/add')}">新增</a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th><input class="i-checks check-all" type="checkbox"></th>
+                                <th>编号</th>
+                                <th>户主姓名</th>
+                                <th>性别</th>
+                                <th>房屋面积(m²)</th>
+                                <th>用途</th>
+                                <th>性质</th>
+                                <th>地址</th>
+                                <th>电话</th>
+                                <th>停车位</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {volist name='host' id='vo'}
+                            <tr>
+                                <td><input type="checkbox" class="i-checks" name="input[]"></td>
+                                <td>{$vo->id}</td>
+                                <td>{$vo->name}</td>
+                                <td>{eq name='$vo->sex' value='0'}女{else/}男{/eq}</td>
+                                <td>{$vo->area}</td>
+                                <td>{$vo->use}</td>
+                                <td>{$vo->type}</td>
+                                <td>{$vo->address}</td>
+                                <td>{$vo->tel}</td>
+                                <td>{$vo->carport}</td>
+                                <td>
+                                    <a href="{:Url('Building/edit?id='.$vo->getBuild())}" class="confirm">编辑</a>
+                                </td>
+                            </tr>
+                            {/volist}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="9">
+                                    <div class="page">{$host->render()}</div>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script src="/admin/js/plugins/iCheck/icheck.min.js"></script>
+<script>
+    $(function(){
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green'
+        });
+    })
+</script>
+
+{/block}

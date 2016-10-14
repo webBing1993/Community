@@ -1,0 +1,199 @@
+{extend name="public/common"}
+
+{block name="style"}
+<link rel="stylesheet" href="/home/css/myAct.css">
+{/block}
+
+{block name="body"}
+<div class="top">
+    <div class="menu" m_sta="0">
+        <span class="chosen">参加的</span>
+    </div>
+    <div class="menu" m_sta="1">
+        <span>收藏的</span>
+    </div>
+</div>
+<div class="listBox">
+
+    {volist name="list" id="vo"}
+    <div class="listBlock">
+        <a href="{:Url('Activity/hotactivity?id='.$vo['id'])}">
+            <div class="list" sta="0">
+                <img src="{$vo.front_cover|get_cover='path'}">
+                <span class="title">{$vo.name}</span>
+                <span class="sent_time">
+                    <span>{$vo.create_time|time_format="Y.m.d"}</span>发布
+                </span>
+                <span class="state" state="{$vo.class}"></span>
+                <span class="fa fa-angle-right"></span>
+                {eq name="vo.act_status" value="-1"}
+                <div class="lose">已失效</div>
+                {/eq}
+            </div>
+
+        </a>
+    </div>
+    <div class="delete" onclick="deleteList({$vo.id},this)">删除</div>
+    {/volist}
+    {volist name="collect" id="co"}
+    <div class="listBlock collect">
+        <a href="{:Url('Activity/hotactivity?id='.$co['id'])}">
+            <div class="list" sta="1">
+                <img src="{$co.front_cover|get_cover='path'}">
+                <span class="title">{$co.name}</span>
+                <span class="sent_time">
+                    <span>{$co.create_time|time_format="Y.m.d"}</span>发布
+                </span>
+                <span class="state" state="{$co.class}"></span>
+                <span class="fa fa-angle-right"></span>
+                {eq name="co.act_status" value="-1"}
+                <div class="lose">已失效</div>
+                {/eq}
+            </div>
+        </a>
+    </div>
+    <div class="delete" onclick="deleteList({$co.id},this)">删除</div>
+    {/volist}
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    $('.state').each(function(){
+        var state = $(this).attr('state');
+        if(state == -1){
+            $(this).text('未开始').css('color','#ffc125');
+        }else if(state == 0){
+            $(this).text('进行中').css('color','#3dc353');
+        }else {
+            $(this).text('已结束').css('color','#f43c4a');
+        }
+    });
+    $(function(){
+        var list = $('.list');
+        var menu = $(".menu");
+        var dlt = $(".delete");
+        var listBlock=$(".listBlock");
+        var len = listBlock.length;
+        var lastX;
+        var pressedObj;
+        var lastLeftObj;
+        var start; //按下的点
+        //已失效透明层的位置
+        listBlock.each(function(){
+            var it = $(this);
+            var lose = it.find(".lose");
+            lose.css({"position":"absolute",top:0});
+            //console.log(lose.length);
+        });
+        // 滑动删除
+        for (var i = 0; i < len; ++i) {
+            //当前滑动的点
+            listBlock[i].addEventListener('touchstart', function(e){
+                lastX = e.changedTouches[0].pageX;
+                pressedObj = this;
+                var touches = event.touches[0];
+                start = {
+                    x: touches.pageX,
+                    y: touches.pageY
+                };
+            });
+            //阻止纵向滚动
+            listBlock[i].addEventListener('touchmove',function(e){
+                var touches = event.touches[0];
+                delta = {
+                    x: touches.pageX - start.x,
+                    y: touches.pageY - start.y
+                };
+                if (Math.abs(delta.x) > Math.abs(delta.y)) {
+                    event.preventDefault();
+                }
+            });
+            listBlock[i].addEventListener('touchend', function(e){
+                var diffX = e.changedTouches[0].pageX - lastX;
+                var dlt =$(this).next(".delete");
+                var fa = $(this ).find(".fa");
+                var lose = $(this ).find(".lose");
+                var menuh = $(".top" ).height();
+                var top = $(this ).offset().top-menuh;
+                if (diffX < -5) {
+                    // 左滑
+                    $(pressedObj).animate({marginLeft:"-50px"}, 500);
+                    dlt.show();
+                    dlt.css({top:top});
+                    fa.animate({right:"70px"},500);
+                    dlt.animate({right:0}, 500);
+                    lose.animate({right:"25px"}, 500);
+                    // 重置
+                    lastLeftObj && lastLeftObj != pressedObj &&
+                    $(lastLeftObj).animate({marginLeft:0}, 500)&&
+                    $(lastLeftObj).find(".lose").animate({right:0}, 500)&&
+                    $(lastLeftObj).find(".fa").animate({right:"20px"},500)&&
+                    $(lastLeftObj).next(".delete").animate({right:"-60px"}, 500)&&
+                    $(lastLeftObj).next(".delete").hide();
+                    lastLeftObj = pressedObj;
+                } else if (diffX > 5) {
+                    // 右滑
+                    $(pressedObj).animate({marginLeft:"0"}, 500);
+                    fa.animate({right:"20px"},500);
+                    dlt.animate({right:"-60px"}, 500);
+                    lose.animate({right:"0"}, 500);
+                    setTimeout(dlt.hide(),500);
+                    //重置
+                    lastLeftObj = null;
+                }
+            });
+        }
+
+        //切换菜单
+        menu.on('click',function(){
+            var it = $(this);
+            var m_sta = it.attr('m_sta');
+            //重置
+            $(lastLeftObj).css({marginLeft:"0"});
+            $(lastLeftObj).find(".fa").css({right:"20px"});
+            $(lastLeftObj).next(".delete").css({right:"-60px"});
+            $(lastLeftObj).find(".lose").css({right:0}, 500);
+            $(lastLeftObj).next(".delete" ).hide();
+            lastLeftObj = null;
+            //显示
+            it.find('span').addClass('chosen');
+            it.siblings().find('span').removeClass('chosen');
+            list.each(function(){
+                var listit = $(this);
+                var listitp = $(listit.parent()).parent();
+                var sta = listit.attr('sta');
+                if(sta == m_sta){
+                    listitp.show();
+                }else{
+                    listitp.hide();
+                }
+            });
+        });
+    });
+    //删除某个列表
+    function deleteList(id,it){
+        var list = $(it).prev();
+        var sta = list.find(".list" ).attr("sta");
+        list.remove();
+        it.remove();
+        //console.log(sta+','+id);
+        $.ajax({
+            type:"post",
+            url:"{:Url('User/activity_del')}",
+            data:{
+                sta:sta,//0:参加的，1：收藏的
+                id:id
+            },
+            success:function(data){
+                //console.log(data);
+                //var list = $(it).prev();
+                //list.remove();
+                //it.remove();
+            }
+        });
+    }
+</script>
+
+
+{/block}

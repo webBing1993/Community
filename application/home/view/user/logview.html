@@ -1,0 +1,35 @@
+{extend name="public/common"}
+
+{block name="style"}
+<link rel="stylesheet" href="/home/css/logview.css">
+{/block}
+
+{block name="body"}
+<div class="top">{$log.create_time|time_format="Y年m月d日"}</div>
+<div class="viewBox">
+    <div class="workContent">
+        <p>*工作内容</p>
+        <article>
+            {$log.content}
+        </article>
+    </div>
+    <div class="hurdle"></div>
+    <div class="workSchedule">
+        <p>*工作阶段</p>
+        <article>
+           {$log.complete}
+        </article>
+    </div>
+    <div class="hurdle"></div>
+    <div class="workFell">
+        <p>*反思与心得</p>
+        <article>
+            {$log.experience}
+        </article>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+
+{/block}

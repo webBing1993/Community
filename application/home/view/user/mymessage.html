@@ -1,0 +1,391 @@
+{extend name="public/common"}
+
+{block name="style"}
+<link rel="stylesheet" href="/home/css/myMsg.css" xmlns="http://www.w3.org/1999/html">
+{/block}
+
+{block name="body"}
+<div class="allbox">
+<ul class="menu">
+    <li class="chosen" m_sta="0" >@我</li>
+    <li m_sta="1" >赞我<span>{if condition="$likeNumber > 99"}99+{else/}{$likeNumber}{/if}</span></li>
+    <li m_sta="2" >通知<span>{if condition="$noteNumber > 99"}99+{else/}{$noteNumber}{/if}</span></li>
+</ul>
+
+    <div class="paddingBox">
+        {volist name="comment" id="vo"}
+        <div class="reply list" sta="0">
+            <img class="user_log" src="{$vo.create_user|get_header}">
+            <span class="user_id" data-id="{$vo.create_user}">{$vo->user->nickname}</span>
+            <span class="reply_time">{$vo.create_time|time_format="Y.m.d"}</span>
+            <img class="to_reply" src="/home/images/reply.png" onclick="reply(this)">
+            <div class="reply_detail">
+                回复我：
+                <span>{$vo.content}</span>
+            </div>
+            <div class="my_po">
+                <div class="triangle"></div>
+                我的评论：
+                {eq name="vo.type" value="5"}
+                <span class="p_detail">{$vo.title}</span>
+                {else/}
+                <span class="p_detail">{$vo->comment->content}</span>
+                {/eq}
+            </div>
+        </div>
+        {/volist}
+
+        {volist name="like" id="co"}
+        <div class="agree list" sta="1">
+            <img class="user_log" src="{$co.create_user|get_header}">
+            <span class="user_id">{$co->user->nickname}</span>
+            <span class="reply_time">{$co.create_time|time_format="Y.m.d"}</span>
+            <span class="tip">赞了我的评论</span>
+            <div class="reply_detail">{$co->comment->content}</div>
+        </div>
+
+
+        {/volist}
+
+        {volist name="note" id="note"}
+        <div class="list inform" sta="2">
+            <div class="title">{$note->activity->name}</div>
+            <div class="time">
+                <img src="/home/images/time.png">
+                <span class="inform_detail" >{$note->activity->date} </span>
+            </div>
+            <div class="address">
+                <img src="/home/images/address.png">
+                <span class="inform_detail">{$note->activity->address}</span>
+            </div>
+            <div class="tips">温馨提示：请按时出席！（提前五分钟到场）</div>
+        </div>
+        {/volist}
+    </div>
+    <div class="lastTips"></div>
+    <div class="shadow" style="display: none"></div>
+</div>
+<div class="inputbox">
+    <span id="send" onclick="send()">发送</span>
+    <input type="text" name="reason" placeholder="" value="">
+</div>
+{/block}
+
+{block name="script"}
+<script>
+$(function(){
+
+    var li = $('.menu').find('li');
+    var len = $('.reply').length;
+    if(len<5){
+        $('.lastTips').text('');
+    }else if(len == 5){
+        $('.lastTips').text('上拉加载更多');
+    }
+    changeScroll('.reply');
+    $.ajax({
+        type:'POST',
+        url:"{:Url('User/setStatus')}",
+        data:{class:"0"},
+        dataType:'json'
+    });
+    li.on('click',function(){
+        $(this).addClass('chosen').siblings().removeClass('chosen');
+        var m_sta = $(this).attr('m_sta');
+        var className;
+        if(m_sta == 0){
+            className = ".reply";
+        } else if(m_sta == 1){
+            className = ".agree";
+        } else {
+            className =".inform";
+        }
+        //调用加载更多方法
+        changeScroll(className);
+        $(this).find('span').hide();
+        $.ajax({
+            type:'POST',
+            url:"{:Url('User/setStatus')}",
+            data:{class:m_sta},
+            dataType:'json',
+            success:function(data){
+                //1 清除未读成功
+                //                console.log(data.code);
+                var d_code = data.code;
+                if(d_code == 1){
+                    $(this).find('span').hide();
+                }
+            }
+        });
+        var len = 0;
+        $('.paddingBox').find('.list').each(function(){
+            var sta = $(this).attr('sta');
+            var tips = $('.lastTips');
+            if(sta == m_sta){
+                $(this).show();
+                len++;
+                if(sta == 0 || sta == 2){
+                    if(len<5){
+                        tips.text('');
+                    }else{
+                        tips.text('上拉加载更多');
+                    }
+                }else if(sta == 1){
+                    if(len<10){
+                        tips.text('');
+                    }else{
+                        tips.text('上拉加载更多');
+                    }
+                }
+            }else {
+                $(this).hide();
+            }
+        });
+    });
+
+    li.find('span').each(function(){
+        var num = $(this).text();
+        if(num < 1 || num == ''){
+            $(this).hide();
+        }else if(num > 99){
+            var txt = '99+';
+            $(this).text(txt);
+        }
+    });
+
+    //        var input =  $('.inputBox').find('input');
+    //        $('.to_reply').on('click',function(){
+    //            $('.inputBox').show().css("z-index",10000);
+    //            var this_parents = $(this).parents('.reply');
+    //            var rt_Person = '回复'+this_parents.find('.user_id').text();
+    //            var userId = this_parents.find('.user_id').data('id');
+    //            var their_content = this_parents.find('.reply_detail').find('span').text();
+    //            input.attr('placeholder',rt_Person);
+    //            input.focus();
+    //            $('.inputBox').on('click','.send',function(){
+    //                var my_reply = $('input').val();
+    //                if(my_reply == ''){
+    //                    alert('请填写回复内容');
+    //                }else{
+    //                    $.ajax({
+    //                        type:'POST',
+    //                        url:"{:Url('User/replay')}",
+    //                        data:{
+    //                            receive_id:userId,
+    //                            title:their_content,
+    //                            content:my_reply
+    //                        },
+    //                        dataType:'json',
+    //                        success:function(){
+    //                            $('input').val('');
+    //                            $('.inputBox').hide();
+    //                        }
+    //                    });
+    //                }
+    //            });
+    //        });
+});
+
+//function reply(replyi){
+//    var replyIcon =$(replyi);
+//    var inputBox =$(".inputBox");
+//    var input = inputBox.find('input');
+//    inputBox.show().css("z-index",10000);
+//    var replyp = replyIcon.parents('.reply');
+//    var rt_Person = '回复'+replyp.find('.user_id').text();
+//    var userId = replyp.find('.user_id').data('id');
+//    var their_content = replyp.find('.reply_detail').find('span').text();
+//    input.attr('placeholder',rt_Person);
+//    input.focus();
+//    console.log(userId);
+//    inputBox.on('click','.send',function(){
+//        var my_reply = $('input').val();
+//        if(my_reply == ''){
+//            alert('请填写回复内容');
+//        }else{
+//            $.ajax({
+//                type:'POST',
+//                url:"{:Url('User/replay')}",
+//                data:{
+//                    receive_id:userId,
+//                    title:their_content,
+//                    content:my_reply
+//                },
+//                dataType:'json',
+//                success:function(){
+//                    $('input').val('');
+//                    $('.inputBox').hide();
+//                }
+//            });
+//        }
+//    });
+//}
+function reply(my){
+    var reply = $(my).parents(".reply");
+    var width = $(window).width();
+    var input_width = width - 90;
+    var replyName = "回复@" + reply.find(".user_id").text();
+    var userId = reply.find('.user_id').data('id');
+    var content = reply.find('.reply_detail').find('span').text();
+    $('.allbox').addClass('all');
+    $(".shadow").show();
+    $(".inputbox input").focus();
+    $(".inputbox input").data({
+        'userId':userId,
+        'content':content
+    });
+    $(".inputbox input").width(input_width);
+    $(".inputbox input").val("");
+//    $(".inputbox").removeClass("down").addClass("up");
+    $(".inputbox" ).animate({'bottom':0},500);
+    $(".inputbox input").attr("placeholder",replyName);
+}
+function send(){
+    var my_reply = $(".inputbox input").val().trim();
+    var userId = $(".inputbox input").data("userId");
+    var their_content = $(".inputbox input").data("content");
+        if(my_reply == ''){
+            alert('请填写回复内容');
+        }else{
+            $.ajax({
+                type:'POST',
+                url:"{:Url('User/replay')}",
+                data:{
+                    receive_id:userId,
+                    title:their_content,
+                    content:my_reply
+                },
+                dataType:'json',
+                success:function(){
+                    $('.inputBox input').val('');
+//                    $(".inputbox").removeClass("up").addClass("down");
+                    $(".inputbox" ).animate({'bottom':'-50px'},500);
+                    $('.allbox').removeClass('all');
+                }
+            });
+        }
+}
+//聚焦
+$(".inputbox input").focus(function(){
+    $("#send").text("提交");
+    $("#send").css("color","#f43c4a");
+    $(".all").css("overflow-y","hidden");
+})
+$(".inputbox input").blur(function(){
+    var input = $(".inputbox input").val().trim();
+    $(".shadow").hide();
+    if(!input) {
+        $("#send").text("发送");
+        $("#send").css("color","#999");
+        $(".all").css("overflow-y","scroll");
+    }
+//    $(".inputbox").removeClass("up").addClass("down");
+    $(".inputbox" ).animate({'bottom':'-50px'},500);
+});
+$(".shadow").on('click',function(){
+    $(".shadow").hide();
+    $(".inputbox input").blur();
+    $('.allbox').removeClass('all');
+});
+
+/**
+ * [changeScroll] 调用加载更多方法
+ * @type [number] legnth
+ * @type [number] m_sta
+ * @return ""
+ * */
+function changeScroll(className){
+    $(window).off("scroll").on("scroll",function(){
+        var doc_h = $(document).height();//获取文本高度
+        var w_h = $(window).height();//获取屏幕高度
+        var scroll_top  = $(window).scrollTop();//获取滚动条到顶部的高度
+        var s_w_h = w_h+scroll_top+10;
+        var length = $(".paddingBox").find(className).length;
+        var c_sta = $(".paddingBox").find(className).attr('sta');
+        if(s_w_h >=doc_h ){
+            $('.lastTips').text('');
+            $.ajax({
+                type:"post",
+                url:"{:Url('User/moremessage')}",
+                data:{
+                    type: c_sta,
+                    length : length
+                },
+                success: function (msg) {
+                    if(msg.code == 1){
+                        if(msg.code == 1){
+                            if(c_sta == 0){
+                                jointMe(msg.data);
+                            } else if(c_sta == 2){
+                                jointInfo(msg.data);
+                            }else if(c_sta == 1){
+                                jointAgree(msg.data);
+                            }
+                            if(msg.data.length==5){
+                                $('.lastTips').text('上拉加载更多');
+                            }
+                        }
+                    }else{
+                        $('.lastTips').text('已没有更多');
+                        $(window).off("scroll");
+                    }
+                }
+            });
+        }
+    });
+}
+// 拼接方法
+function jointMe(data){
+    var newHtml = "";
+    for(var i = 0, len = data.length; i < len; i++){
+        var Data = data[i];
+        newHtml += '<div class="reply list" sta="0">'+
+                   '<img class="user_log" src="'+Data.header+'">'+
+                   '<span class="user_id" data-id="'+Data.create_user+'">'+Data.nickname+'</span>'+
+                   '<span class="reply_time">'+Data.time+'</span>'+
+                   '<img class="to_reply" src="/home/images/reply.png" onclick="reply(this)">'+
+                   '<div class="reply_detail">回复我：<span>'+Data.content+'</span></div>'+
+                   '<div class="my_po">'+
+                   '<div class="triangle"></div>    我的评论：   ';
+        if(Data.type == 5){
+            newHtml +='<span class="p_detail">'+Data.title+'</span>';
+        } else {
+            newHtml +='<span class="p_detail">'+Data.c_content+'</span>';
+        }
+        newHtml += '</div>'+
+                   '</div>';
+    }
+    $('.paddingBox').append(newHtml);
+}
+function jointInfo(data){
+    for(var i = 0, len = data.length; i < len; i++) {
+        var Data = data[i];
+        var newHtml1 = '<div class="list inform" sta="2" style="display: block;">' +
+                       '<div class="title">'+Data.name+'</div>' +
+                       '<div class="time">' +
+                       '<img src="/home/images/time.png">' +
+                       '<span>'+Data.date+'</span>' +
+                       '</div>' +
+                       '<div class="address">' +
+                       '<img src="/home/images/address.png">' +
+                       '<span>'+Data.address+'</span>' +
+                       '</div>' +
+                       '<div class="tips">温馨提示：请按时出席！（提前五分钟到场）</div>' +
+                       '</div>';
+        $('.paddingBox').append(newHtml1);
+    }
+}
+function jointAgree(data){
+    for(var i = 0, len = data.length; i < len; i++) {
+        var Data = data[i];
+        var newHtml2 = '<div class="agree list" sta="1" style="display: block;">' +
+                       '<img class="user_log" src="'+Data.header+'">' +
+                       '<span class="user_id">'+Data.nickname+'</span>' +
+                       '<span class="reply_time">'+Data.time+'</span>' +
+                       '<span class="tip">赞了我的评论</span>' +
+                       '</div>';
+        $('.paddingBox').append(newHtml2);
+    }
+}
+</script>
+{/block}

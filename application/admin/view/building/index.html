@@ -1,0 +1,121 @@
+{extend name="base/common"}
+
+{block name="style"}
+{/block}
+
+{block name="page-header"}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>小区管理</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="{:Url('Building/host')}">户主管理</a>
+            </li>
+            <li class="active">
+                <strong>楼房列表</a></strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+{/block}
+
+{block name="main"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>列表显示</h5>
+                    <div class="ibox-tools">
+                        <a data-toggle="modal" class="btn btn-primary" href="{:Url('Building/add')}">新增</a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th><input class="i-checks check-all" type="checkbox"></th>
+                                <th>编号</th>
+                                <th>小区名称</th>
+                                <th>栋号</th>
+                                <th>单元号</th>
+                                <th>楼层号</th>
+                                <th>门牌号</th>
+                                <th>户主信息</th>
+                                <th>创建时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {volist name='build' id='vo'}
+                            <tr>
+                                <td><input type="checkbox" class="i-checks" name="input[]"></td>
+                                <td>{$vo->id}</td>
+                                <td>{$vo->community}</td>
+                                <td>{$vo->build}</td>
+                                <td>{$vo->element}</td>
+                                <td>{$vo->floor}</td>
+                                <td>{$vo->number}</td>
+                                <td>{$vo->getHost()}</td>
+                                <td>{$vo->create_time|date='Y-m-d',###}</td>
+                                <td>
+                                    <a class="confirm" onclick="editMenu1({$vo->host})">查看详情</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                                    <a href="{:Url('Building/edit?id='.$vo['id'])}" class="confirm">编辑</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                                    <a href="{:Url('Building/del?id='.$vo['id'])}" class="confirm ajax-del">删除</a>
+                                </td>
+                            </tr>
+                            {/volist}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="9">
+                                    <div class="page">{$build->render()}</div>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script src="/admin/js/plugins/iCheck/icheck.min.js"></script>
+<script src="/admin/js/layer/layer.js"></script>
+<script>
+    $(function(){
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green'
+        });
+    });
+
+    function editMenu1(Id) {
+        $.ajax({
+            type:"post",
+            url:"{:Url('Building/detail')}",
+            data:"id="+Id,
+            success:function(data){
+                var obj=JSON.parse(data);
+                parent.layer.open({
+                    type: 1,
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['600px', '600px'], //宽高
+                    content:"户主姓名:"+"<b>"+obj.name+"</b>"+"<hr/>"+"户主性别:"+"<b>"+(obj.sex==0?'女':'男')+"</b>"+"<hr/>"+"房屋面积:"+"<b>"+obj.area+"m²</b>"+"<hr/>"
+                    +"用途:"+"<b>"+obj.use+"</b>"+"<hr/>"+"性质:"+"<b>"+obj.type+"</b>"+"<hr/>"+"户主电话:"+"<b>"+obj.tel+"</b>"+"<hr/>"+"地址:"+"<b>"+obj.address+"</b>"+"<hr/>"
+                    +"停车位:"+"<b>"+obj.carport+"</b>"+"<hr/>"
+                });
+            }
+        });
+
+    }
+</script>
+
+{/block}

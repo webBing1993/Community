@@ -1,0 +1,185 @@
+{extend name="public/common"}
+
+{block name="style"}
+<title>文件通知详情</title>
+<style type="text/css">
+    *{margin:0;padding:0;}
+    a{text-decoration:none;}
+    ul li{list-style:none;}
+    body{font-size:12px;font-family:"微软雅黑",sans-serif;color:#666;}
+    .text{position:relative;padding: 0 10px;}
+    .z_title{width:calc(100vw - 20px);text-align:center;font-size:18px;color:#111;padding-top:20px;overflow:hidden;text-overflow:ellipsis;display:box;display:-webkit-box;line-clamp:2;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-weight:800;}
+    .z_bottom{margin-top:15px;height:25px;border-bottom:1px solid #f1f1f1;}
+    .z_bottom .z_left{float:left;}
+    .z_bottom .z_left .z_services{color:#999;font-size:12px;}
+    .z_bottom .z_left .z_times{color:#999;font-size:12px;margin-left:10px;}
+    .z_bottom .z_right{float:right;}
+    .z_bottom .z_right img{width:15px;height:15px;}
+    .z_bottom .z_right .z_number{font-size:12px;color:#999;position:relative;top:2px;}
+
+    .z_text{width:100%;font-size:16px;color:#333;padding: 20px 0}
+	.z_text table{width:calc(100vw - 15px )}
+	@media (max-width:320px ) {
+		.z_text table{width:290px}
+	}
+
+	.people{width: 100%;padding: 0 10px;}
+	.people .signed{color: #3dc353;width: 100%;line-height: 35px;border-bottom: 1px solid #e5e5e5;}
+	.people ul{margin: 0;}
+	.people ul li{border-bottom: 1px dashed #f1f1f1;}
+	.people ul li span{font-size: 14px;margin: 10px 0;display: inline-block;}
+	.people ul li .count{font-size: 12px;color: #999;float: right;}
+	.people ul li .department{}
+    .z_notify{width:100%;height:50px;text-align:center;line-height:50px;background:#f43c4a;font-size:18px;position:fixed;bottom:0;}
+    .z_notify a{color:#fff;text-decoration:none;}
+	.to{width:40px;height:80px;position: fixed;bottom: 150px;right:13px;background-color: rgba(0, 0, 0, 0.41) }
+	.to .totop{height: 40px;border-bottom: 1px solid #ffffff;}
+	.to .tobottom,.to .totop{line-height: 40px;text-align: center;font-size: 24px;color: #ffffff}
+</style>
+{/block}
+
+{block name="body"}
+<div>
+	<div class="text">
+		<div class="z_title">
+			{$list.title}
+		</div>
+		<div class="z_bottom">
+			<div class="z_left">
+				<span class="z_times">{$list.create_time|time_format="Y-m-d"}</span>
+				<span class="z_services">{$list.publisher}</span>
+			</div>
+			<div class="z_right">
+				<img src="/home/images/scan.png"/>
+				<span class="z_number">{$list.views}</span>
+			</div>
+		</div>
+		<div class="z_text">
+			{$list.content}
+		</div>
+	</div>
+	<div class="people">
+		<div class="signed">
+			<span>*已阅读名单</span>
+		</div>
+		<ul>
+			{volist name="msg" id="vo"}
+			<li>
+				<span class="department">{$vo.name}</span>
+				<span class="count">{$vo.count} / {$vo.counts}  人</span>
+			</li>
+			{/volist}
+		</ul>
+	</div>
+	<div class="z_notify">
+		<a href="/home/focus/filelist.html">通知中心</a>
+	</div>
+	<div class="to" style="display: none">
+		<div class="totop"><span class="fa  fa-angle-up"></span></div>
+		<div class="tobottom"><span class="fa  fa-angle-down"></span></div>
+	</div>
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+	$(function(){
+		var list_height = $(".people").height(),
+			height = $(window).height(),
+			content_height = $(".text").height();
+		if(list_height + content_height < height -50) {
+			$(".people").css({
+				'position':'absolute',
+				'bottom':'50px',
+				'left':'0'
+			});
+		} else{
+			$(".people").css('margin-bottom','50px');
+		}
+		//ue图片限定
+		var win = $(window);
+		var img = $(".z_text" ).find("img");
+		var wWin = win.width();
+		var wImg = img.width();
+		var hImg = img.height();
+		while(wImg > wWin || hImg>500){
+			if((wImg / wWin) > (hImg/500)){
+				hImg = hImg*wWin/wImg;
+				wImg = wWin -20;
+				img.width(wImg);
+			}else{
+				wImg = wImg*500/hImg;
+				hImg = 500;
+				img.width(wImg);
+				img.height(hImg);
+			}
+		}
+		$(window).on('scroll',function(){
+			if(document.body.scrollTop > 0 ){
+				$('.to' ).fadeIn();
+			}else{
+				$('.to' ).fadeOut();
+			}
+		});
+		$('.totop' ).on('click',function(){
+			$('body').animate({scrollTop: '0px'}, 800);
+		});
+		$('.tobottom' ).on('click',function(){
+			$('body').animate({scrollTop: document.body.clientHeight+'px'}, 800);
+		})
+	});
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+<script>
+	//---微信接口JS-SDK的调用
+	wx.config({
+		debug: false,
+		appId: '{$jsSign.appid}', // 必填，公众号的唯一标识
+		timestamp: {$jsSign['timestamp']}, // 必填，生成签名的时间戳，切记时间戳是整数型，别加引号
+		nonceStr: '{$jsSign.noncestr}', // 必填，生成签名的随机串
+		signature: '{$jsSign.signature}', // 必填，签名，见附录1
+		jsApiList: [
+			'checkJsApi',
+			'chooseImage',
+			'previewImage',
+			'uploadImage',
+			'downloadImage',
+			'onMenuShareTimeline',
+			'onMenuShareAppMessage',
+		]
+	});
+
+	wx.ready(function () {
+		wx.onMenuShareTimeline({
+			title: '{$list.title}',
+			link: "{$list.link}",
+			imgUrl: '{$list.share_image}',
+			success: function () {
+				// 用户确认分享后执行的回调函数
+			},
+			cancel: function () {
+				// 用户取消分享后执行的回调函数
+			}
+		});
+
+		wx.onMenuShareAppMessage({
+			title: '{$list.name}', // 分享标题
+			desc: '{$list.desc}', // 分享描述
+			link: '{$list.link}', // 分享链接
+			imgUrl: '{$list.share_image}', // 分享图标
+			type: '', // 分享类型,music、video或link，不填默认为link
+			dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+			success: function () {
+				// 用户确认分享后执行的回调函数
+			},
+			cancel: function () {
+				// 用户取消分享后执行的回调函数
+			}
+		});
+
+	});
+	wx.error(function (res) {
+		alert('wx.error: '+JSON.stringify(res));
+	});
+</script>
+{/block}

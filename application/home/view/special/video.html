@@ -1,0 +1,938 @@
+{extend name="public/common"}
+
+{block name="style"}
+<title>视频专题</title>
+<!--css-->
+<style type="text/css">
+    body,div,ul,li,a,img,input{padding: 0;margin: 0;}
+    body{font-family: "Microsoft yahei",sans-serif;}
+    a{text-decoration:none;}
+    li{list-style-type:none;}
+    .all{position: absolute;width: 100%;height: 100%;left: 0;top: 0;overflow-y: scroll;-webkit-overflow-scrolling: touch;margin: 0 auto;}
+    /*视频*/
+    .video{height:180px;width: 100%;background-color: #000000 }
+    .video .videocon{width:100%;height:180px;position:absolute;}
+    .video .play{position:absolute;top:65px;left:calc(44%);width: 50px;height: 50px;opacity:0.5;}
+    .video .curve{height:10px;width:100%;position:absolute;top:171px;}
+    .audiobox{width: 100%;height:180px;background-image: url(/home/images/special/music_1.jpg);background-size: 100% 100%}
+    .audio{width: 100%;position: absolute;top: 150px;opacity: 1!important;}
+    .title{height:40px;}
+    .title .botton{border-bottom:1px solid #f1f1f1;height:40px;}
+    .title .botton .videoLeft{width:40%;height:40px;float:left;font-size:14px;line-height:40px;color:#999;}
+    .title .botton .videoLeft span{color:#ff9800;}
+    .title .botton .videoRight{width:59%;height:40px;float:right;font-size:14px;line-height:40px;color:#666;text-align:-webkit-right;}
+    .title .botton .videoRight img{width:14px;height:14px;margin-top:-5px;}
+
+    /*标题*/
+    .row{margin: 0;}
+    .z_top .c_tilte{font-family: "Microsoft yahei",sans-serif;;font-size:18px;color:#111;font-weight:700;padding-top:10px;}
+    .z_top .c_tilte .icon{float:right;padding-top:15px;padding-right:5px;color:#ccc;}
+    .z_top .c_time{font-size:12px;font-family: "Microsoft yahei",sans-serif;color:#ccc;padding-bottom:10px;padding-top:10px;}
+    .z_top .c_time span{color:#999;margin-right:10px;}
+    .z_text{display:none;font-family: "Microsoft yahei",sans-serif;font-size:16px;color:#666;padding:0 15px 10px 15px;}
+    .z_text img{width:100%;height:180px;padding:10px 0 10px 0;}
+    .z_text span{color:#333;font-size:16px;}
+    .z_botton{background:#f6f6f6;line-height:36px;font-size:13px;font-family: "Microsoft yahei",sans-serif;color:#999;text-align:center;}
+
+    /*讨论*/
+    .discuss .z_discuss{width:100%;height:130px;border-bottom:1px solid #e5e5e5;position:relative;}
+    .discuss .z_discuss .sp1,.sp2{display:block;height:0;width:0;position:absolute;font-size:0;line-height:0;}
+    .discuss .z_discuss .sp1{bottom:-1px;left:48%;border-top:0;border-bottom:6px solid #e5e5e5;border-right:6px solid white;border-left:6px solid white;}
+    .discuss .z_discuss .sp2{bottom:-6px;left:-3px;border-top:0;border-bottom:3px solid white;border-right:3px solid #e5e5e5;border-left:3px solid #e5e5e5;}
+    .discuss .z_discuss ul{width:100%;height:100%;position:relative;}
+    .discuss .z_discuss ul li{display:inline-block;position:absolute;float:left;background-size: 100% 100%;width:192px;height: 80px;}
+    .discuss .z_discuss ul li div{padding:5px 10px 0 10px;text-align:center;color:#FFD18D;font-size:14px;border:1px solid #FFD18D;border-radius:5px;height:64px;}
+
+    .discuss .z_discuss ul .sel{border-radius:5px;}
+    .discuss .z_discuss ul .sel div{padding:10px 10px 0 10px;text-align:center;color:#ff9800;font-size:16px;border:1px solid #ff9800;border-radius:5px;background:#fff;height:80px;}
+
+
+
+
+    /*评论*/
+    .comment{margin-top: 10px;margin-bottom: 50px;}
+    .comment-body{}
+    .comment-body ul li{margin-top: 15px;}
+    .comment-body .image{height: 44px;padding: 0 10px;}
+    .comment-body .image img{width: 24px;height: 24px;border-radius: 12px;margin-right: 10px;}
+    .comment-body .image .name{font-size: 14px;color: #999;position: relative;top: 1px;}
+    .comment-body .image .time{font-size: 12px;color: #ccc;float: right;}
+    .comment-body .detail{margin-left: 44px;padding-right: 10px;position: relative;}
+    .comment-body .detail:before{content: '';width: 200%;height: 200%;position: absolute;border-bottom: 1px solid #f1f1f1;-webkit-transform-origin: 0 0;transform-origin: 0 0;-webkit-transform: scale(0.5, 0.5);transform: scale(0.5, 0.5);-webkit-box-sizing: border-box;box-sizing: border-box;left: 0;}
+    .comment-body .detail .detail-main{color: #333;font-size: 14px;margin-bottom: 15px;word-break:break-all;}
+    .comment-body .detail .detail-second{background: #f1f1f1;padding: 10px 10px;margin-bottom: 20px;z-index: 1;position: relative;font-size: 12px;}
+    .comment-body .detail .detail-second ul li{margin-top: 10px;}
+    .comment-body .detail .detail-second ul li:first-child{margin-top: 0
+
+    ;}
+    .comment-body .detail .detail-second .reply-name{color: #3dc353;display: inline-block;float: left;min-width: 20%;}
+    .comment-body .detail .detail-second .reply-content{color: #999;display: inline-block;max-width: 80%;word-break:break-all;}
+    .comment-body .detail .detail-second p{font-size: 12px;color: #999;text-align: center;margin-top: 10px;}
+    .comment-body .detail .detail-foot{position: relative;height: 30px;}
+    .comment-body .detail .detail-foot .icon{width: 18px;}
+    .comment-body .detail .detail-foot .icon-del{position: absolute;right: 150px;}
+    .comment-body .detail .detail-foot .icon-comment{position: absolute;right: 80px;}
+    .comment-body .detail .detail-foot .icon-zan{position: absolute;right: 10px;}
+    .comment-body .detail .detail-foot span{font-size: 12px;color: #999;position: absolute;right: 34px;bottom: 10px;}
+    .comment-body .detail .detail-foot .zaned{animation:dou 300ms ease;-webkit-animation:dou 300ms ease;}
+    @keyframes dou {
+        0%{transform: rotate(1deg);}
+        10%{transform: rotate(10deg);}
+        30%{transform: rotate(-10deg);}
+        50%{transform: rotate(10deg);}
+        70%{transform: rotate(-10deg);}
+        90%{transform: rotate(10deg);}
+        100%{transform: rotate(0deg);}
+    }
+    @-webkit-keyframes dou {
+        0%{transform: rotate(1deg);}
+        10%{transform: rotate(10deg);}
+        30%{transform: rotate(-10deg);}
+        50%{transform: rotate(10deg);}
+        70%{transform: rotate(-10deg);}
+        90%{transform: rotate(10deg);}
+        100%{transform: rotate(0deg);}
+    }
+    .comment-body .load{width: 100%;text-align: center;font-size: 14px;color: #999;padding: 15px 0;}
+    .comment-body .load img{width: 18px;margin-right: 4px;}
+    .pl{width: 72%;height: 120px;position: fixed;left: 14%;top: 40%;z-index: 5;border-radius: 4px;background: #fff;margin: 0;padding: 0;text-align: center;}
+    .pl .pl-top{display: inline-block;height: 50px;width: 50px;border-radius: 25px;position: relative;bottom: 25px;background: #fff;}
+    .pl .pl-top img{width: 44px;height: 44px;border-radius: 22px;position: relative;top: 3px;}
+    .pl .pl-body{padding: 0 7.5%;text-align: left;}
+    .pl .pl-body input{border: none;outline: none;border-bottom: 1px solid #f1f1f1;width: 80%;padding-left: 10px;margin-left: 4%;}
+    .pl .pl-body img{width: 14px;margin-left: 15px;}
+    .pl .pl-foot ul li{width: 50%;float: left;}
+    #no p{font-size: 14px;color: #999;padding: 5px 0;margin: 9.5px 0;border-right: 1px solid #f1f1f1;}
+    #yes p{font-size: 16px;color: #333;margin: 13.5px 0;}
+    @media screen and (max-width: 359px) {
+        .comment-body .detail .detail-second .reply-name{color: #3dc353;display: inline-block;float: left;min-width: 23%;}
+        .comment-body .detail .detail-second .reply-content{color: #999;display: inline-block;max-width: 77%;}
+    }
+    /*发表*/
+
+    .spoke{height:50px;border-top:1px solid #f1f1f1;background:#fff;position:fixed;bottom:0;width:100%;z-index:1;left: 0;}
+    .spoke .z_keep{text-align:center;padding:6px 0px 0px 0px;}
+    .spoke .z_keep img{width:22px;height:22px;}
+    .spoke .z_keep div{font-size:12px;padding-top:2px;color:#999;}
+    .spoke .z_keep div span{display:inline-block;padding-left:3px;}
+    .spoke .z_input{padding:7px 0 0 0;}
+    .spoke .z_input input{background:#f1f1f1;height:36px;border:1px solid #e5e5e5;border-radius:5px;width:100%;padding-left:10px;font-size:14px;color:#333;outline:none;}
+    .spoke .z_input input::-webkit-input-placeholder{color: #ccc;}
+    .spoke .z_sent{text-align:center;font-size:16px;color:#999;line-height:50px;padding:0 0 0 0;}
+
+    .shadow{width:100%;height: 100%;position: fixed;top: 0;left: 0;z-index: 2;background: rgba(66,66,66,0.3);}
+
+</style>
+{/block}
+
+{block name="body"}
+<!--视频-->
+<div class="container-fluid" ng-app="video" ng-controller="allCtrl">
+    <div class="all">
+        <div class="video">
+            {eq name="list.type" value="1"}
+            {neq name="list.video_path" value=""}
+            <!--本地视频-->
+            <video class="videocon" src="{$list.video_path}"></video>
+            <img src="/home/images/special/video.png" class="play videoplay" alt="播放">
+            {else/}
+            <!--链接视频-->
+            <iframe class="videocon" frameborder="0" src="{$list.net_path}" allowfullscreen></iframe>
+            {/neq}
+            {else/}
+            <!--本地音频-->
+            <div class="audiobox">
+                <audio src="{$list.music_path}" class="audio"></audio>
+                <img src="/home/images/special/music.png" class="play audioplay" alt="播放">
+            </div>
+            {/eq}
+            <img src="/home/images/curve.png" class="curve"/>
+        </div>
+        <!--标题-->
+        <div class="row">
+            <div class="title col-xs-12 col-md-12">
+                <div class="botton">
+                    <div class="videoLeft"><span>{$list.views}</span>人在学</div>
+                    <div class="videoRight">
+                        推荐指数：
+                        {for start="0" end="5"}
+                        {if condition="$list.star gt $i"}
+                        <img src="/home/images/special/xx-1.png" />
+                        {else/}
+                        <img src="/home/images/special/xx.png" />
+                        {/if}
+                        {/for}
+                    </div>
+                </div>
+            </div>
+            <div class="z_top col-xs-12 col-md-12">
+                <div class="c_tilte">{$list.title}
+                    <i class="fa fa-angle-down icon" id="show"></i>
+                    <i class="fa fa-angle-up icon" id="hide" style="display:none;"></i>
+                </div>
+                <div class="c_time"><span>{$list.publisher}</span>{$list.create_time|time_format="Y-m-d"}</div>
+            </div>
+            <!--图文-->
+            <div class="z_text col-xs-12 col-md-12">{$list.content}</div>
+            <div class="z_botton col-xs-12 col-md-12">—&nbsp;互动讨论区&nbsp;—</div>
+        </div>
+        <!--讨论区-->
+        <div class="row discuss">
+            <div class="col-xs-12 col-md-12">
+                <div class="z_discuss" id="banner_box">
+                    <ul id="banner">
+                        <li ng-repeat="comment in list">
+                            <div banner="{{comment.id}}">
+                                {{comment.title}}
+                            </div>
+                        </li>
+                    </ul>
+                    <!--下划线的尖角-->
+                    <span class="sp1">
+                        <span class="sp2"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!--评论1-->
+        <div id="p_banner">
+            <div class="comment" ng-repeat="comment in list">
+                <div class="comment-body" bodyid="{{comment.id}}">
+                    <ul>
+                        <li ng-repeat="li in comment.comment">
+                            <div class="image">
+                                <img src="{{li.header}}">
+                                <span class="name">{{li.nickname}}</span>
+                                <span class="time">{{li.create_time * 1000 | date:"yyyy-MM-dd"}}</span>
+                            </div>
+                            <div class="detail">
+                                <div class="detail-main">{{li.content}}</div>
+                                <div class="detail-second" ng-if="li.notes.length > 0">
+                                    <ul>
+                                        <li ng-repeat="ul in li.notes">
+                                            <span class="reply-name">{{ul.nickname}}：</span>
+                                            <span class="reply-content">{{ul.content}}</span>
+                                            <div class="clear"></div>
+                                        </li>
+                                        <p ng-if="li.notes.length > 4" ng-click="load($event,comment.id,$index,li.id)" name="2">更多评论</p>
+                                    </ul>
+                                </div>
+                                <div class="detail-foot">
+                                    {eq name="visit" value="0"}
+                                    <img class= "icon icon-del" src="/home/images/del.png" ng-click="selfDel(li.id)" ng-if="li.self == 1">
+                                    <img class="icon icon-comment" ng-click="myAlert(li.id,li.create_user,li.nickname)" src="/home/images/comment-grey.png">
+                                    <span ng-bind="li.likes"></span>
+                                    <img class="icon icon-zan" ng-click="dianzan($event,li.id,li.create_user)" src="/home/images/zan-grey.png" ng-if="li.is_like == 0">
+                                    <img class="icon icon-zan zaned" ng-click="dianzan($event,li.id,li.create_user) "src="/home/images/zan.png" ng-if="li.is_like == 1">
+                                    {/eq}
+                                </div>
+                            </div>
+                        </li>
+                        <div class="load" ng-if="comment.comments > 4" ng-click="load($event,comment.id,$index,li.id)" name="1">
+                            <img src="/home/images/load.png">
+                            <span>点击加载更多评论</span>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {eq name="visit" value="0"}
+    <!--输入框-->
+    <div class="row spoke">
+        <div class="z_keep col-xs-2 col-md-2" ng-click="collect($event)">
+            <img ng-if="isCollect == 0" src="/home/images/special/xx-2.png" class="click_sc">
+            <img ng-if="isCollect == 1" src="/home/images/special/xx-1.png" class="click_qx">
+            <br />
+            <div>收藏<span>{{collection}}</span></div>
+        </div>
+        <div class="z_input col-xs-8 col-md-8">
+            <input  ng-click="myAlert(li.id,li.create_user,li.nickname)" type="text" placeholder="说说你的感想！">
+        </div>
+        <div class="z_sent col-xs-2 col-md-2" ng-click="send()">发送</div>
+    </div>
+    <div class="shadow" style="display: none;"></div>
+    {/eq}
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript" src="/static/js/angular/angular.min.js"></script>
+<script type="text/javascript">
+    (function () {
+        var app = angular.module("video",[]);
+        app.factory("data",["$http",function($http){
+                    return{
+                        click:function(){
+                            return {$list};
+                        },
+                        collectData : function () {
+                            return {$collect};
+                        },
+                        collect: function () {
+                            return $.ajax({
+                                type:"post",
+                                url:"{:Url('Special/collect')}",
+                                data:{id:{$list['id']}}
+                            })
+                        },
+                        list: function(){
+                            return{$comment};
+                        },
+                        getName:function(){
+                            return {$is_nickname};
+                        },
+                        plAlert: function(options){
+                            defaults = {
+                                checkCallback:function(){},
+                                cancelCallback:function(){}
+                            };
+                            var opts = $.extend({},defaults,options);
+                            var $alert = $("<div class='pl'>"
+                                    +"<div class='pl-top'>"
+                                    +"<img src='/home/images/nickname.png'></div>"
+                                    +"<div class='pl-body'>"
+                                    +"<input type='text' placeholder='请输入昵称'>"
+                                    +"<img src='/home/images/wrong.png' style='display: none;'></div>"
+                                    +"<div class='pl-foot'><ul>"
+                                    +"<li id='no'><p>取消</p></li>"
+                                    +"<li id='yes'><p>确定</p></li>"
+                                    +"</ul></div>"
+                                    +"</div>");
+                            angular.element("body").append($alert);
+                            $alert.find(".pl-body input").focus();
+                            $alert.find("#yes").on('click',function(e){
+                                var nickname = angular.element(".pl-body input").val();
+                                if(nickname) {
+                                    angular.element(".shadow").hide();
+                                    $alert.fadeOut(300,function(){
+                                        $alert.remove();
+                                    });
+                                    if(opts.checkCallback)opts.checkCallback.call($alert);
+                                    e.stopPropagation();
+                                } else {alert("请输入昵称!");}
+                            });
+                            $alert.find("#no").on('click',function(e){
+                                angular.element(".shadow").hide();
+                                $alert.fadeOut(300,function(){
+                                    $alert.remove();
+                                });
+                                if(opts.cancelCallback)opts.cancelCallback.call($alert);
+                                e.stopPropagation();
+                            });
+                            $alert.find(".pl-body input").on("keydown",function(){
+                                angular.element(".pl-body img").show();
+                            });
+                            $alert.find(".pl-body img").on('click',function(){
+                                $alert.find(".pl-body input").val("");
+                                $alert.find(".pl-body img").hide();
+                            });
+                            angular.element(".shadow").on('click',function(e){
+                                angular.element(".shadow").hide();
+                                $alert.fadeOut(300,function(){
+                                    $alert.remove();
+                                });
+                                if(opts.cancelCallback)opts.cancelCallback.call($alert);
+                                e.stopPropagation();
+                            });
+                        },
+                        myAjax : function(url, data){
+                            return $.ajax({
+                                type : "post",
+                                url : url,
+                                data : data
+                            })
+                        }
+                    }
+                }])
+                .controller("allCtrl",["$scope","data", function ($scope,data){
+                    var myData = data.click();
+                    var myName = data.getName();
+                    $scope.collection = myData.collect;
+                    //循环输出的评论数据源；
+                    $scope.list = data.list();
+                    //点赞
+                    $scope.zan = 0;
+                    /* 假设 收藏了 为 1 ，未收藏为 0 */
+                    $scope.isCollect = data.collectData();
+                    //收藏方法
+                    $scope.collect = function(ele){
+                        var target = ele.currentTarget,
+                                status = angular.element(target).find("img").attr("class"),
+                                isexit = status.indexOf("click_sc");
+                        if(isexit == 0) {
+                            angular.element(target).find("img").attr("src","/home/images/special/xx-1.png");
+                            $scope.isCollect = 1;
+                            //返回成功收藏+1
+                            $scope.collection ++;
+                        } else {
+                            angular.element(target).find("img").attr("src","/home/images/special/xx-2.png");
+                            $scope.isCollect = 0;
+                            //取消收藏-1
+                            if($scope.collection == 0){ $scope.collection = 0; return; }
+                            $scope.collection --;
+                        }
+                        data.collect();
+                    };
+                    //点赞方法
+                    $scope.dianzan = function(ele, id,useId){
+                        var mytopic,
+                                liLength = angular.element("#banner li").length;
+                        if(liLength == 1){
+                            mytopic = angular.element("#banner li").find("div").attr("banner");
+                        } else {
+                            angular.element("#banner li").each(function(){
+                                var z_index = angular.element(this).css("zIndex"),
+                                        bannerid = angular.element(this).find("div").attr("banner");
+                                if(z_index == 1) {
+                                    mytopic = bannerid;
+                                    return;
+                                }
+                            });
+                        }
+                        var target = ele.currentTarget,
+                            status = angular.element(target).attr("class");
+                        angular.forEach($scope.list,function(datas) {
+                            if (datas.id == mytopic) {
+                                angular.forEach(datas.comment, function (data) {
+                                    if (data.id == id) {
+                                        if (status.indexOf("zaned") == -1) {
+                                            angular.element(target).attr("src", "/home/images/zan.png");
+                                            angular.element(target).addClass("zaned");
+                                            data.likes++;
+                                        } else {
+                                            angular.element(target).removeClass("zaned");
+                                            angular.element(target).attr("src", "/home/images/zan-grey.png");
+                                            data.likes--;
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                        data.myAjax(
+                                "{:Url('Activity/like')}",
+                                {id:id,user_id:useId}
+                        );
+                    };
+                    //是否已有昵称
+                    $scope.myAlert = function(commentId,receiveId,nickName){
+                        if(myName == 0) {
+                            angular.element(".shadow").show();
+                            data.plAlert({
+                                checkCallback:function(){
+                                    var name = angular.element(".pl-body input").val();
+                                    data.myAjax(
+                                            "{:Url('User/setName')}",
+                                            {nickname:name}
+                                    ).success(function(){
+                                        setTimeout(function(){
+                                            myName = name;
+                                            $scope.comment(commentId,receiveId,nickName);
+                                        },300);
+                                    });
+                                }
+                            })
+                        } else {
+                            $scope.comment(commentId,receiveId,nickName);
+                        }
+                    }
+                    $scope.comment = function(commentId,receiveId,nickName){
+                        angular.element(".z_input input").data({
+                            "commentId":commentId,
+                            "receiveId":receiveId,
+                        });
+                        if(commentId != undefined) {
+                            angular.element(".z_input input").val("@" + nickName + "：");
+                            angular.element(".z_input input").focus();
+                        }
+                        //angular.element(".all").css("overflow-y","hidden");
+                    };
+                    $scope.send = function(){
+                        var mytopic,
+                            liLength = angular.element("#banner li").length;
+                        if(liLength == 1){
+                            mytopic = angular.element("#banner li").find("div").attr("banner");
+                        } else {
+                            angular.element("#banner li").each(function(){
+                                var z_index = angular.element(this).css("zIndex"),
+                                    bannerid = angular.element(this).find("div").attr("banner");
+                                if(z_index == 1) {
+                                    mytopic = bannerid;
+                                    return;
+                                }
+                            });
+                        }
+                        var input = angular.element(".z_input input").val().trim();
+                        input = input.substring(input.indexOf('：')+1);
+                        var comment_id = angular.element(".z_input input").data("commentId");
+                        var receive_id = angular.element(".z_input input").data("receiveId");
+                        comment_id = comment_id == undefined ? "" : comment_id;
+                        receive_id = receive_id == undefined ? "" : receive_id;
+                        if(input) {
+                            data.myAjax(
+                                    "{:Url('Activity/addComment')}",
+                                    {
+                                        course_id:myData.id,
+                                        topic_id: mytopic,
+                                        replay_id:myData.user,
+                                        parent_id:comment_id,
+                                        receive_id:receive_id,
+                                        content:input
+                                    }
+                            ).success(function(data){
+                                angular.element(".z_input input").val("");
+                                angular.element(".z_sent").css("color","#999");
+                                angular.element(".z_sent").text("发送");
+                                if(data.data.status == 1) {
+                                    angular.forEach($scope.list,function(datas){
+                                        if(datas.id == mytopic) {
+                                            if(data.data.parent_id == 0) {
+                                                $scope.$apply(function(){
+                                                    datas.comment.push(data.data);
+                                                });
+                                            } else {
+                                                angular.forEach(datas.comment,function(mydata){
+                                                    if(mydata.id == data.data.parent_id) {
+                                                        $scope.$apply(function(){                                                           mydata.notes.push(data.data);
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    })
+                                }
+                            });
+                        }
+                    };
+                    $scope.load = function(ele,topicId,index,commentId){
+                        var target = ele.currentTarget;
+                        var name = angular.element(target).attr("name");
+                        topicId = topicId == undefined ? "" : topicId;
+                        commentId = commentId == undefined ? "" : commentId;
+                        var length;
+                        var mytopic,
+                            liLength = angular.element("#banner li").length;
+                        if(liLength == 1){
+                            mytopic = angular.element("#banner li").find("div").attr("banner");
+                        } else {
+                            angular.element("#banner li").each(function(){
+                                var z_index = angular.element(this).css("zIndex"),
+                                        bannerid = angular.element(this).find("div").attr("banner");
+                                if(z_index == 1) {
+                                    mytopic = bannerid;
+                                    return;
+                                }
+                            });
+                        }
+                        angular.forEach($scope.list,function(data){
+                            if(data.id == mytopic) {
+                                if(name == 2){
+                                    length = data.comment[index].notes.length;
+                                    return;
+                                } else {
+                                    length = data.comment.length;
+                                    return;
+                                }
+                            }
+                        });
+                        data.myAjax(
+                                "{:Url('Special/commentmore')}",
+                                {
+                                    course_id:myData.id,
+                                    topic_id:topicId,
+                                    total:length,
+                                    parent_id:commentId
+                                }
+                        ).success(function(data){
+                            if(data.code == 0) {
+                                angular.element(target).text("已加载全部评论");
+                                angular.element(target).unbind("click");
+                                return;
+                            }
+
+                                angular.forEach($scope.list,function(datas){
+                                    if(mytopic == datas.id) {
+                                        if(data.data.info == 1) {
+                                            $scope.$apply(function(){
+                                                for(var key in data.data){
+                                                    if(typeof data.data[key] === "object"){
+                                                        datas.comment.push(data.data[key]);
+                                                    }
+                                                }
+                                            });
+                                        } else {
+                                            $scope.$apply(function(){
+                                                for(var key in data.data){
+                                                    if(typeof data.data[key] === "object"){
+                                                        datas.comment[index].notes.push(data.data[key]);
+                                                    }
+                                                }
+                                            });
+
+                                        }
+                                    }
+                                })
+
+                        });
+                    }
+                    $scope.selfDel = function(id){
+                        var mytopic,
+                            liLength = angular.element("#banner li").length;
+                        if(liLength == 1){
+                            mytopic = angular.element("#banner li").find("div").attr("banner");
+                        } else {
+                            angular.element("#banner li").each(function(){
+                                var z_index = angular.element(this).css("zIndex"),
+                                        bannerid = angular.element(this).find("div").attr("banner");
+                                if(z_index == 1) {
+                                    mytopic = bannerid;
+                                    return;
+                                }
+                            });
+                        }
+                        data.myAjax(
+                                "{:Url('Activity/commentdel')}",
+                                {id:id}
+                        ).success(function(data){
+                            angular.forEach($scope.list,function(mydata){
+                                if(mydata.id == mytopic) {
+                                    if(data.code == 1) {
+                                        angular.forEach(mydata.comment,function(datas, index){
+                                            if(datas.id == id) {
+                                                $scope.$apply(function(){                                                               mydata.comment.splice(index, 1);
+                                                });
+                                            }
+                                        })
+                                    }
+                                }
+                            })
+                        });
+                    }
+                }])
+    })();
+</script>
+<script type="text/javascript">
+    (function(){
+        $(".z_input input").focus(function(){
+            $(".z_sent").text("提交");
+            $(".z_sent").css("color","#f43c4a");
+        })
+        $(".z_input input").blur(function(){
+            var input = $(".z_input input").val().trim();
+            if(!input) {
+                $(".z_sent").text("发送");
+                $(".z_sent").css("color","#999");
+            }
+        });
+    })();
+</script>
+<script type="text/javascript">
+    $(function(){
+        //播放视频
+        $(".videoplay" ).click(function(){
+            var video=$(".videocon");
+            var play = $(this);
+            play.hide();
+            video[0].play();
+            video.attr({controls:"controls"});
+        });
+        //播放音频
+        $('.audioplay' ).click(function(){
+            var audio = $(".audio");
+            var it = $(this );
+            it.hide();
+            audio[ 0 ].play();
+            audio.attr({controls:"controls"});
+            //背景图切换
+            setTimeout(imgsChange,4000);
+            var imgsInterval =setInterval(imgsChange,10000);
+            audio.on('pause',function(){
+                clearInterval(imgsInterval);
+                audio.on('play',function(){
+                    setTimeout(imgsChange,3000);
+                    imgsInterval =setInterval(imgsChange,10000);
+                });
+            });
+            audio.on('ended',function(){
+                clearInterval(imgsInterval);
+                audio.removeAttr('controls');
+                it.show();
+            })
+        });
+        var n = 1;
+        var imgsChange = function(){
+            $('.audiobox' ).animate({'opacity':0.2},1000,function(){
+                if(n==3){
+                    n= 1;
+                }else{
+                    n++;
+                }
+                $(this ).css({'background-image':'url(/home/images/special/music_'+n+'.jpg)'})
+                        .animate({'opacity':1},2500);
+            });
+        };
+        $("#show").click(function(){
+            $(".z_text").slideDown(600);
+            $("#show").hide();
+            $("#hide").show();
+        });
+        $("#hide").click(function(){
+            $(".z_text").slideUp(600);
+            $("#show").show();
+            $("#hide").hide();
+        });
+        carousel($("#banner"),"li")
+        //banner
+        function carousel(banenr,li) {
+            var arr = [];
+            var ul = $(banenr);
+            var li = ul.find(li);
+            // 复制第一份和最后一份
+            var firstLi = li.first(),
+                    lastLi = li.last(),
+                    l_w = li.width(),
+                    l_h = li.height(),
+                    liItems = li.slice(1),
+                    liSize = liItems.size() / 2,
+                    rightSlice = liItems.slice(0, liSize),
+                    level = Math.floor(li.size() / 2),
+                    leftSlice = liItems.slice(liSize),
+                    gap = ((ul.width() - l_w) / 2) / level,
+                    firstLeft = (ul.width() - l_w) / 2,//水平居中
+                    fixOffsetleft = firstLeft + l_w,
+                    scale = 0.8,
+                    flag = true;
+            // 设置第一帧的  宽高
+            firstLi.css({
+                width: l_w,
+                height: l_h,
+                zIndex: Math.floor(li.size() / 2),
+                left: firstLeft,
+                top: (ul.height() - l_h) / 2.5,  //竖直居中
+            });
+            firstLi.addClass("sel");
+            rightSlice.each(function (i) {
+                level--;
+                l_w = l_w * scale;
+                l_h = l_h * scale;
+                var j = i;
+                $(this).css({
+                    width: l_w,
+                    height: l_h,
+                    zIndex: level,
+                    // opacity : 1/(i+2),
+                    left: fixOffsetleft + (++j) * gap - l_w,
+                    top: (ul.height() - l_h) / 2.1
+                });
+                //console.log($(this)[0].style.left);
+            });
+            var lw = rightSlice.last().width(),
+                    lh = rightSlice.last().height(),
+                    oloop = Math.floor(li.size() / 2);
+            leftSlice.each(function (i) {
+                var j = i;
+                $(this).css({
+                    width: lw,
+                    height: lh,
+                    zIndex: j,
+                    // opacity : 1/(oloop+1),
+                    left: i * gap,
+                    top: (ul.height() - lh) / 2.1
+                });
+                lw = lw / scale;
+                lh = lh / scale;
+                oloop--;
+            });
+            // 操作
+            var zIndexArr = [];
+            var leftFn = function () {
+                event.preventDefault();
+                li.each(function () {
+                    var self = $(this),
+                            prev = self.prev().get(0) ? self.prev() : lastLi,
+                            width = prev.width(),
+                            height = prev.height(),
+                            zIndex = prev.css("zIndex"),
+                    //opacity = prev.css("opacity"),
+                            left = prev.css("left"),
+                            top = prev.css("top");
+                    zIndexArr.push(zIndex);
+                    self.stop(true, true).animate({
+                        width: width,
+                        height: height,
+                        zIndex: zIndex,
+                        // opacity : opacity,
+                        left: left,
+                        top: top
+                    }, function () {
+                    });
+                    if (zIndex == 1) {
+                        self.addClass("sel").siblings().removeClass("sel");
+                        var bannertd = $(this).find("div").attr("banner");
+                        changePage(bannertd);
+                    }
+                });
+                li.each(function (i) {
+                    $(this).css("zIndex", zIndexArr[i]);
+                });
+            }
+            var rightFn = function () {
+                event.preventDefault();
+                li.each(function () {
+                    var self = $(this),
+                            next = self.next().get(0) ? self.next() : firstLi,
+                            width = next.width(),
+                            height = next.height(),
+                            zIndex = next.css("zIndex"),
+                    //opacity = next.css("opacity"),
+                            left = next.css("left"),
+                            top = next.css("top");
+                    zIndexArr.push(zIndex);
+                    self.stop(true, true).animate({
+                        width: width,
+                        height: height,
+                        zIndex: zIndex,
+                        //opacity : opacity,
+                        left: left,
+                        top: top
+                    }, function () {
+                    });
+                    if (zIndex == 1) {
+                        self.addClass("sel").siblings().removeClass("sel");
+                        var bannertd = $(this).find("div").attr("banner");
+                        changePage(bannertd);
+                    }
+                });
+                li.each(function (i) {
+                    $(this).css("zIndex", zIndexArr[i]);
+                });
+            }
+            window.onload = function () {
+                touch({
+                    banner: 'banner',
+                    rotate: 'left',
+                    leftFn: leftFn
+                });
+                touch({
+                    banner: 'banner',
+                    rotate: 'right',
+                    rightFn: rightFn
+                });
+                var bannertd = $("#banner").find("div").attr("banner");
+                changePage(bannertd);
+            }
+            function changePage(num){
+                $("#p_banner").find(".comment").each(function(){
+                    var index = $(this).find(".comment-body").attr("bodyid");
+                    if(index == num) {
+                        $(this).show().siblings().hide();
+                    }
+                });
+            }
+        }
+    })
+</script>
+<script type="text/javascript">
+    (function(){
+        var touch = function (opts){
+            var startX,startY,x,y,startTime,endTime;
+            var banner = document.getElementById(opts.banner);
+            init();
+            function init(){
+                banner.addEventListener("touchstart",touchstart,false);
+                banner.addEventListener("touchmove", touchmover, false);
+                banner.addEventListener("touchend", touchend, false);
+            }
+            /*开始触屏*/
+            function touchstart (event){
+                event.preventDefault();
+                if(!event.touches.length)return;
+                var touch = event.touches[0];
+                startX = touch.pageX;
+                startY = touch.pageY;
+                startTime = new Date()*1;
+            };
+            /*触屏移动*/
+            function touchmover (event){
+                if(!event.touches.length)return;
+                var touch = event.touches[0];
+                x = touch.pageX - startX;
+                y = touch.pageY - startY;
+            };
+            function touchend (){
+                endTime = new Date()*1;
+                if(Math.abs(x) > Math.abs(y)){
+                    /*根据滑动时间来进行判断，是否为快速滑动*/
+                    if((endTime - startTime) <= 200){
+                        if(x >= 60){
+                            if(opts.rightFn)opts.rightFn();
+                        }
+                        if(x <= -60){
+                            if(opts.leftFn)opts.leftFn();
+                        }
+                    } else {
+                        if(x >= 100){
+                            if(opts.rightFn)opts.rightFn();
+                        }
+                        if(x <= -100){
+                            if(opts.leftFn)opts.leftFn();
+                        }
+                    }
+                }
+            }
+        };
+        window['touch'] = touch;
+    })();
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+<script>
+    //---微信接口JS-SDK的调用
+    wx.config({
+        debug: false,
+        appId: '{$jsSign.appid}', // 必填，公众号的唯一标识
+        timestamp: {$jsSign['timestamp']}, // 必填，生成签名的时间戳，切记时间戳是整数型，别加引号
+        nonceStr: '{$jsSign.noncestr}', // 必填，生成签名的随机串
+        signature: '{$jsSign.signature}', // 必填，签名，见附录1
+        jsApiList: [
+            'checkJsApi',
+            'chooseImage',
+            'previewImage',
+            'uploadImage',
+            'downloadImage',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+        ]
+    });
+
+    wx.ready(function () {
+        wx.onMenuShareTimeline({
+            title: '{$list.title}',
+            link: "{$list.link}",
+            imgUrl: '{$list.share_image}',
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+        wx.onMenuShareAppMessage({
+            title: '{$list.title}', // 分享标题
+            desc: '{$list.desc}', // 分享描述
+            link: '{$list.link}', // 分享链接
+            imgUrl: '{$list.share_image}', // 分享图标
+            type: '', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+    });
+
+</script>
+{/block}
