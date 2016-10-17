@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <link rel="stylesheet" href="/community/css/framework7.ios.min.css">
+    <!-- Path to Framework7 color related styles, iOS Theme -->
+    <link rel="stylesheet" href="/community/css/framework7.ios.colors.min.css">
+    <title>邻里</title>
+    <style>
+        body{
+
+        }
+        *{
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei';
+        }
+        body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, form,  input, p, table, th, td ,select,option{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        /*点击后没有阴影*/
+        a {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+        }
+        a{
+            text-decoration: none;
+        }
+        a:hover{
+            text-decoration: none;
+        }
+        .clearfix:before{
+            display:table;
+            content:'';
+        }
+        .clearfix:after{
+            display:table;
+            content:'';
+            clear:both;
+        }
+       /**/
+        .tabbar i.icon {
+            height: 25px;
+            width: 25px;
+        }
+        /*暂用*/
+        .demo-icon-1{
+            background-image: url('/community/images/toolbar-1.png');
+        }
+        .demo-icon-2{
+            background-image: url('/community/images/toolbar-2.png');
+        }
+        .demo-icon-3{
+            background-image: url('/community/images/toolbar-3.png');
+        }
+        .demo-icon-4{
+            background-image: url('/community/images/toolbar-4.png');
+        }
+        .tabbar-labels a.link, .tabbar-labels a.tab-link {
+            padding-top: 6px;
+        }
+        .tabbar a.active {
+            color: #43ac45;
+        }
+        .tabbar a.active>.demo-icon-1{
+            background-image: url('/community/images/toolbar-1-1.png');
+        }
+        .tabbar a.active>.demo-icon-2{
+            background-image: url('/community/images/toolbar-2-1.png');
+        }
+        .tabbar a.active>.demo-icon-3{
+            background-image: url('/community/images/toolbar-3-1.png');
+        }
+        .tabbar a.active>.demo-icon-4{
+            background-image: url('/community/images/toolbar-4-1.png');
+        }
+        .nav-top{
+            height:46px;
+            width: 100vw;
+            background-color:  rgba(247,247,248,1);
+            border-bottom:0.5px solid #c4c4c4;
+            position:absolute;
+            z-index:5;
+            transition: all linear .25s;
+        }
+        .nav-top .nav-main{
+             height:35px;
+             width:40vw;
+             margin:0 auto;
+             margin-top:5px;
+             border:1px solid #43ac45;
+             border-radius: 3px;
+        }
+        .nav-top .nav-main a{
+            width:50%;
+            line-height: 34px;
+            text-align: center;
+            float:left;
+            font-size:15px;
+            color: #43ac45;
+        }
+        .nav-top .nav-main a.active{
+            background-color:#43ac45;
+            color:#fff;
+        }
+        .home .page-content{
+            padding-top:46px;
+            padding-bottom:50px;
+        }
+        .page-banner{
+            width: 100vw;
+            height:22.4vh;
+            background-color: #fff;
+        }
+        .page-banner img,.page-banner a{
+            width: 100vw;
+            height:22.4vh;
+            display:block;
+        }
+        .page-add{
+            width:50px;
+            height:50px;
+            background:url("/community/images/forum-add.png") no-repeat center center;
+            background-size:cover ;
+            position:fixed;
+            bottom:90px;
+            right:4vw;
+            border-radius: 50%;
+        }
+        .page-list{
+            width:100vw;
+            background-color:#fff;
+            margin-top:10px;
+            padding-top:18px;
+            padding-bottom:18px;
+            padding-left:3.4vw;
+            padding-right:3.4vw;
+        }
+        .page-list-top{
+            border-bottom: 1px solid #e8e8e8;
+            padding-bottom:10px;
+            height:51px;
+        }
+        .page-list-top>img{
+            width:40px;
+            height:40px;
+            border-radius: 50%;
+            background:url("/community/images/forum-add.png") no-repeat ;
+            background-size:cover ;
+            overflow: hidden;
+            float:left;
+        }
+        .page-list-top-name{
+            width:calc(100% - 40px - 4vw);
+            float: left;
+            height:40px;
+            margin-left:4vw;
+        }
+        .page-list-top-name>div:first-child{
+            font-size: 14px;
+            color:#666;
+            line-height: 14px;
+            overflow : hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            word-break:break-all;
+            margin-top:3px;
+            height:14px;
+        }
+        .page-list-top-name>div:last-child{
+            margin-top:10px;
+            font-size: 12px;
+            color:#999;
+            line-height: 12px;
+            height:12px;
+        }
+        .page-list-main{
+            margin-top:10px;
+            font-size: 14px;
+            line-height: 20px;
+            color:#666;
+            overflow : hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            word-break:break-all;
+            margin-bottom: 2.6vw;
+        }
+        .page-list-Img{
+            /*height:21vw;*/
+        }
+        .page-list-Img>div:nth-child(n+4){
+            margin-top:10px;
+        }
+        .page-list-Img>div{
+            display:block;
+            /*width:calc((100vw - 6.8vw - 31px )/ 4);*/
+            /*height:calc((100vw - 6.8vw - 31px )/ 4);*/
+            height:29.2vw;
+            width: 29.2vw;
+            float:left;
+            margin-right:2.6%;
+            background: no-repeat center center;
+            background-size: cover;
+        }
+        .page-list-Img>div:nth-child(3n){
+            margin-right:0;
+        }
+        .page-list-footer{
+            margin-top:10px;
+            margin-bottom:15px;
+        }
+        .page-list-footer>div{
+            color:#999;
+            font-size:12px;
+            line-height: 12px;
+            overflow : hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            word-break:break-all;
+            height:12px;
+        }
+        .page-list-footer>div:first-child{
+            margin-bottom: 5px;
+        }
+        .page-list-footer>div>a{
+            color:#43ac45;
+        }
+        .page-list-function{
+            margin-top:15px;
+            height:15px;
+            line-height: 15px;
+        }
+        .page-list-function>a{
+            float:left;
+            color: #43ac45;
+        }
+        .page-list-function>div{
+            float:right;
+            margin-left:6vw;
+            height:15px;
+        }
+        .page-list-function>div>a{
+            width:15px;
+            height:15px;
+            background: url("/community/images/good.png") no-repeat 0 0;
+            background-size:cover;
+            display: inline-block;
+        }
+        .page-list-function>div>span{
+            font-size: 15px;
+            color:#999;
+            display:inline-block;
+            padding-left:2vw;
+            line-height: 15px;
+            vertical-align: top;
+        }
+        .page-list-function>div.comment1>a{
+            background-image: url("/community/images/comment.png");
+        }
+        .infinite-scroll-preloader {
+            margin-top:10px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .infinite-scroll-preloader .preloader {
+            width:24px;
+            height:24px;
+        }
+        .classify>a{
+            width:92.2vw;
+            display:block;
+            margin-left:3.4vw;
+            margin-right:3.4vw;
+            margin-bottom:10px;
+        }
+        .classify>a>img{
+            width:100%;
+        }
+        .views{
+            position:absolute;
+            top:0;
+            left:0;
+        }
+        .home{
+            left:0vw;;
+        }
+        .add{
+            left: 100vw;
+        }
+        input{
+            outline: none;
+            background-color:#fff;
+            box-shadow: none;
+            border:none;
+            /*input内阴影*/
+            -webkit-appearance:none;
+        }
+        #add1, .main1 .page-content{
+            display:block!important;
+        }
+        #add1 .add-1{
+            width:100vw;
+            height:45px;
+            padding-left:3.4vw;
+            padding-right:3.4vw;
+            font-size:14px;
+            color:#666;
+            border-bottom: 1px solid #e8e8e8;
+            border-radius: 0;
+        }
+        #add1 .add-1::-webkit-input-placeholder,#add textarea::-webkit-input-placeholder{
+            font-size:14px;
+            color:#999;
+        }
+        #add1 textarea{
+            width:100vw;
+            resize:none;
+            word-break:break-all;
+            outline: none;
+            border:none;
+            height: 140px;
+            font-size: 14px;
+            color:#666;
+            padding-left: 3.4vw;
+            padding-right:3.4vw;
+            padding-top:10px;
+            float:left;
+            border-bottom: 1px solid #e8e8e8;
+            display:block;
+            overflow:auto;
+            border-radius: 0;
+            padding-bottom: 0;
+        }
+        .list-block{
+            margin:0;
+            background-color: #fff;
+        }
+        .list-block .item-inner:after {
+           display:none;
+        }
+        .list-block .item-content{
+            padding-left:3.4vw;
+        }
+        .item-inner>span{
+            width:15px;
+            height:15px;
+            float:left;
+            background: url("/community/images/forum-add-1.png") no-repeat 0 0;
+            background-size: cover;
+        }
+        .item-inner>p{
+            float: left;
+            margin:0;
+            position: absolute;
+            left:calc(15px + 2.6%);
+            font-size: 13px;
+            color:#999;
+            line-height: 29px;
+        }
+        .accordion-item-content{
+            background-color:#efeff4;
+            /*background-color:#fff;*/
+        }
+        .accordion-item-content>div{
+            padding:15px 3.4vw;
+            padding-bottom:0px;
+        }
+        .accordion-item-content>div a{
+            float:left;
+            border:1px solid #e8e8e8;
+            background-color:#fff;
+            line-height: 30px;
+            height:30px;
+            padding:0 10px;
+            font-size: 14px;
+            margin-right:3.4vw;
+            margin-bottom:15px;
+            color:#999;
+            border-radius: 3px;
+        }
+        .publish{
+            height:55px;
+            border-top: 1px solid #e8e8e8;
+            border-bottom: 1px solid #e8e8e8;
+            background-color: #fff;
+            padding: 0 3.4vw;
+        }
+        .publish>span{
+            width: 30px;
+            height:30px;
+            background: url("/community/images/forum-add-img.png") no-repeat 0 0;
+            background-size: cover;
+            float:left;
+            margin-top:12px;
+        }
+        .publish>span.check{
+            background-image: url("/community/images/forum-add-img-1.png");
+        }
+        .publish>a{
+            float:right;
+            width:81px;
+            height:34px;
+            color:#fff;
+            line-height: 34px;
+            border-radius: 4px;
+            background-color: #43ac45;
+            text-align: center;
+            margin-top:11px;
+        }
+        .publish>b{
+            width: 30px;
+            height:30px;
+            background: url("/community/images/forum-expression.png") no-repeat 0 0;
+            background-size: cover;
+            float:left;
+            margin-top:12px;
+            margin-left:3.4vw;
+        }
+        .publish>b.check{
+            background-image: url("/community/images/forum-expression-1.png");
+        }
+        /*图片上传*/
+        .imglist{
+            height: 29.2vw;
+            width: 29.2vw;
+            display:block;
+        }
+        .testDiv{
+            height: 29.2vw;
+            width: 29.2vw;
+            float: left;
+            position:relative;
+            margin-top:15px;
+            margin-left:2%;
+            margin-right:2%;
+            float:left;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .testDiv>a{
+            width:22px;
+            height:22px;
+            position:absolute;
+            right:5px;
+            top:5px;
+            background:url("/community/images/forum-add-3.png") no-repeat 0 0;
+            background-size: cover;
+            display: block;
+        }
+        #imgAdd>input{
+            height: 21.2vw;
+            width: 21.2vw;
+            outline: none;
+            display: block;
+            float:left;
+            opacity: 0;
+            margin-top:4vw;
+            margin-left:4vw;
+        }
+        #imgAdd{
+            height: 29.2vw;
+            width: 29.2vw;
+            float: left;
+            position: relative;
+            margin-top: 15px;
+            margin-left: 2%;
+            margin-right: 2%;
+            float: left;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        #imgAdd>a{
+            height: 21.2vw;
+            width: 21.2vw;
+            margin-top:4vw;
+            margin-left:4vw;
+            outline: none;
+            display: block;
+            background-color: #000;
+            border-radius: 3px;
+            background:url("/community/images/forum-add-2.png") no-repeat 0 0;
+            background-size: cover;
+        }
+        #Img:after{
+            content:'';
+            display:table;
+            clear: both;
+        }
+        #Img:before{
+            content: '';
+            display:table;
+        }
+        html.ios-gt-8 .modal-title {
+            font-weight: normal;
+        }
+        html.ios-gt-8 .modal-button.modal-button-bold {
+            font-weight: normal;
+        }
+        .expression{
+            height:190px;
+        }
+        .expression>div{
+            width:100vw;
+            height:150px;
+        }
+        .expression ul{
+            margin:0 auto;
+            height:151px;
+            width:calc(241px  + 18% );
+            padding-left:2vw;
+        }
+        .expression ul>li{
+            height:50px;
+        }
+        .expression ul>li>img{
+            width:30px;
+            height:30px;
+            margin-right:2vw;
+            display:block;
+            float:left;
+            margin-top:20px;
+        }
+        #swiper-container2{
+            overflow: hidden;
+            height:0px;
+            visibility: hidden;
+        }
+        .item-title-row{
+            float:right;
+        }
+        .notifications{
+            background-color: rgba(0,0,0,.4);;
+        }
+        .notifications .item-text{
+            line-height: 19px;
+            font-weight: normal;
+        }
+        .list-block .item-content {
+            min-height: 45.5px;
+        }
+        /*详情页*/
+        .main1{
+            left:100vw;
+        }
+        .send1{
+            height:50px;
+            background-color:#fff;
+        }
+        #sendIn{
+            height:35px;
+            outline: none;
+            background-color: #eee;
+            -webkit-appearance:none;
+            border:none;
+            width:70%;
+            border-radius: 3px;
+            margin-left:8%;
+            float:left;
+            font-size: 14px;
+            padding-left:2.6%;
+        }
+        #sendIn+a{
+            height:35px;
+            line-height: 35px;
+            color:#fff;
+            background-color:#43ac45;
+            width:13%;
+            text-align: center;
+            font-size: 14px;
+            border-radius:3px;
+            float:left;
+            display:block;
+            margin-right:5.3%;
+        }
+        .toolbar-inner{
+            padding:0;
+        }
+        .main1 .page-list{
+            margin-top:0;
+        }
+        .main1 .page-list-top{
+            background-color:#fff;
+        }
+        .main1 .page-list-Img{
+            height:auto;
+        }
+        .main1 .page-list-main{
+            display:block;
+        }
+        .main1 .page-list-Img>div:nth-child(n+4){
+            margin-top:10px;
+        }
+        .comment1{
+            height:30px;
+        }
+        .comment1-top{
+            padding-left:3.4%;
+            background-color:#efeff4;
+            line-height: 30px;
+            font-size: 14px;
+            color:#666;
+        }
+        .comment1-main{
+            padding-bottom: 60px;
+        }
+        .comment1-list{
+            padding-top:15px;
+            padding-left:3.4%;
+            background-color:#fff;
+            border-bottom:1px solid #e8e8e8;
+        }
+        .comment1-list>.comment1-img{
+            float:left;
+        }
+        .comment1-list>.comment1-img>img{
+            width:40px;
+            height:40px;
+            display:block;
+            border-radius: 50%;
+        }
+        .comment1-list>.comment1-content{
+            margin-left:4%;
+            float:left;
+        }
+        .comment1-list>.comment1-content>div:first-child{
+            font-size: 12px;
+            color: #666;
+            margin-top:5px;
+            line-height:12px;
+            height:12px;
+            overflow : hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            width:calc(90vw - 40px);
+
+        }
+        .comment1-list>.comment1-content>div:last-child{
+            margin-top:8px;
+            font-size: 11px;
+            color:#999;
+            line-height: 11px;
+            height:11px;
+        }
+        .comment1-list>.comment1-main1{
+            margin-top:50px;
+            margin-left:calc(4% + 40px);
+            margin-bottom:15px;
+            font-size: 14px;
+            color:#333;
+            overflow : hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+        .look{
+            background-image: url("/community/images/lookView.png")!important;
+        }
+        .main1 .page-content{
+
+        }
+    </style>
+</head>
+<body>
+<!-- Views -->
+<div class="view home">
+    <!-- Your main view -->
+    <div class="view view-main">
+        <div class="pages">
+            <div class="page" data-page="home">
+                <div class="nav-top clearfix">
+                    <div class="nav-main">
+                        <a class="active" onclick="navTop(this,'#page1',true)">全部</a>
+                        <a onclick="navTop(this,'#page2',false)">圈子</a>
+                    </div>
+                    <div class="page-add" onclick="sideslip('.add')"></div>
+                </div>
+                <div class="page-content infinite-scroll pull-to-refresh-content" id="page1">
+                    <!-- 默认的下拉刷新层 -->
+                    <div class="pull-to-refresh-layer">
+                        <div class="preloader"></div>
+                        <div class="pull-to-refresh-arrow"></div>
+                    </div>
+                    <div class="all-main ">
+                        <!--<div class="page-banner">-->
+                            <!--<img src="/community/images/forum-banner-all.png" alt="">-->
+                        <!--</div>-->
+                        <div class="swiper-container" id="swiper-container1">
+                            <div class="swiper-wrapper page-banner">
+                                <div class="swiper-slide">
+                                    <a href="">
+                                        <img src="/community/images/forum-banner-all.png" alt="" >
+                                    </a>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="">
+                                        <img src="/community/images/forum-classify-1.png" alt="" >
+                                    </a>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="">
+                                        <img src="/community/images/forum-classify-3.png" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="swiper-pagination"></div>
+                        </div>
+                        <div id="list ">
+                            <div class="page-list" onclick="sideslip('.main1')">
+                                <div class="page-list-top">
+                                    <img src="/community/images/forum-banner-all.png" alt="">
+                                    <div class="page-list-top-name">
+                                        <div>小虎123</div>
+                                        <div>2分钟前</div>
+                                    </div>
+                                </div>
+                                <div class="page-list-main">
+                                    生前好友得知乔任梁逝世噩耗 陈乔恩哭到泪如雨下
+                                    生前好友得知乔任梁逝世噩耗 陈乔恩哭到泪如雨下
+                                    生前好友得知乔任梁逝世噩耗 陈乔恩哭到泪如雨下
+                                    生前好友得知乔任梁逝世噩耗 陈乔恩哭到泪如雨下
+                                </div>
+                                <div class="page-list-Img clearfix">
+                                    <div  data-background="/community/images/forum-classify-1.png" class="lazy"></div>
+                                    <div  data-background="/community/images/forum-classify-2.png" class="lazy"></div>
+                                    <div  data-background="/community/images/forum-classify-3.png" class="lazy"></div>
+                                    <div  data-background="/community/images/forum-classify-4.png" class="lazy"></div>
+                                    <div  data-background="/community/images/forum-classify-5.png" class="lazy"></div>
+                                    <div  data-background="/community/images/forum-classify-6.png" class="lazy"></div>
+                                </div>
+                                <div class="page-list-footer">
+
+                                </div>
+                                <div class="page-list-function">
+                                    <a>#家庭生活#</a>
+                                    <div class="comment1"><a class="comment"></a><span>9</span></div>
+                                    <div class="good1 clearfix"><a class="good" onclick="good(this)"></a><span>8</span></div>
+                                </div>
+                            </div>
+                            <div class="page-list" onclick="location.href='1.html'">
+                                <div class="page-list-top">
+                                    <img src="/community/images/forum-banner-all.png" alt="">
+                                    <div class="page-list-top-name">
+                                        <div>小虎123</div>
+                                        <div>2分钟前</div>
+                                    </div>
+                                </div>
+                                <div class="page-list-main">
+                                    生前好友得知乔任梁逝世噩耗 陈乔恩哭到泪如雨下
+                                    生前好友得知乔任梁逝世噩耗 陈乔恩哭到泪如雨下
+                                    生前好友得知乔任梁逝世噩耗 陈乔恩哭到泪如雨下
+                                    生前好友得知乔任梁逝世噩耗 陈乔恩哭到泪如雨下
+                                </div>
+                                <div class="page-list-Img clearfix">
+                                    <div  data-background="/community/images/forum-classify-1.png" class="lazy"></div>
+                                    <div  data-background="/community/images/forum-classify-2.png" class="lazy"></div>
+                                    <div  data-background="/community/images/forum-classify-3.png" class="lazy"></div>
+                                    <div  data-background="/community/images/forum-classify-4.png" class="lazy"></div>
+                                    <div  data-background="/community/images/forum-classify-5.png" class="lazy"></div>
+                                    <div  data-background="/community/images/forum-classify-6.png" class="lazy"></div>
+                                </div>
+                                <div class="page-list-footer">
+
+                                </div>
+                                <div class="page-list-function">
+                                    <a>#家庭生活#</a>
+                                    <div class="comment1"><a class="comment"></a><span>9</span></div>
+                                    <div class="good1 clearfix"><a class="good" onclick="good(this)"></a><span>8</span></div>
+                                </div>
+                            </div>
+                            <div class="page-list" onclick="location.href='1.html'">
+                                <div class="page-list-top">
+                                    <img src="/community/images/forum-banner-all.png" alt="">
+                                    <div class="page-list-top-name">
+                                        <div>小虎123</div>
+                                        <div>2分钟前</div>
+                                    </div>
+                                </div>
+                                <div class="page-list-main">
+                                    生前好友得知乔任梁逝世噩耗 陈乔恩哭到泪如雨下
+                                    生前好友得知乔任梁逝世噩耗 陈乔恩哭到泪如雨下
+                                    生前好友得知乔任梁逝世噩耗 陈乔恩哭到泪如雨下
+                                    生前好友得知乔任梁逝世噩耗 陈乔恩哭到泪如雨下
+                                </div>
+                                <div class="page-list-Img clearfix">
+                                    <div  data-background="/community/images/forum-classify-1.png" class="lazy"></div>
+                                    <div  data-background="/community/images/forum-classify-2.png" class="lazy"></div>
+                                    <div  data-background="/community/images/forum-classify-3.png" class="lazy"></div>
+                                    <div  data-background="/community/images/forum-classify-4.png" class="lazy"></div>
+                                    <div  data-background="/community/images/forum-classify-5.png" class="lazy"></div>
+                                    <div  data-background="/community/images/forum-classify-6.png" class="lazy"></div>
+                                </div>
+                                <div class="page-list-footer">
+
+                                </div>
+                                <div class="page-list-function">
+                                    <a>#家庭生活#</a>
+                                    <div class="comment1"><a class="comment"></a><span>9</span></div>
+                                    <div class="good1 clearfix"><a class="good" onclick="good(this)"></a><span>8</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="infinite-scroll-preloader">
+                            <div class="preloader"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-content" id="page2" style="display:none;">
+                    <div class="classify">
+                        <a href=""><img src="" alt="" data-src="/community/images/forum-classify-1.png" class="lazy"></a>
+                        <a href=""><img src="" alt="" data-src="/community/images/forum-classify-2.png" class="lazy"></a>
+                        <a href=""><img src="" alt="" data-src="/community/images/forum-classify-3.png" class="lazy"></a>
+                        <a href=""><img src="" alt="" data-src="/community/images/forum-classify-4.png" class="lazy"></a>
+                        <a href=""><img src="" alt="" data-src="/community/images/forum-classify-5.png" class="lazy"></a>
+                        <a href=""><img src=" " alt="" data-src="/community/images/forum-classify-6.png" class="lazy"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="toolbar tabbar tabbar-labels">
+            <div class="toolbar-inner">
+                <a href="#tab1" class="tab-link">
+                    <i class="icon demo-icon-1"></i>
+                    <span class="tabbar-label">首页</span>
+                </a>
+                <a href="#tab2" class="tab-link">
+                    <i class="icon demo-icon-2">
+                        <span class="badge bg-red">5</span>
+                    </i>
+                    <span class="tabbar-label">众筹</span>
+                </a>
+                <a href="#tab3" class="tab-link active">
+                    <i class="icon demo-icon-3"></i>
+                    <span class="tabbar-label">邻里</span>
+                </a>
+                <a href="#tab4" class="tab-link">
+                    <i class="icon demo-icon-4"></i>
+                    <span class="tabbar-label">我的</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--编写页面-->
+<div class="views add">
+    <!-- Your main view -->
+    <div class="view view-main">
+        <div class="pages">
+            <div class="page" data-page="home">
+                <div class="page-content" id="add1" >
+                    <input type="text" maxlength="25" class="add-1" placeholder="标题，4-25个字" id="title1" tabindex="-1">
+                    <textarea placeholder="内容，10-700个字" maxlength="700" id="text1" tabindex="-1" ></textarea>
+                    <div class="list-block">
+                        <div class="accordion-item">
+                            <a class="item-content item-link">
+                                    <div class="item-inner">
+                                        <span></span>
+                                        <p id="topic">请选择话题标签</p>
+                                        <div></div>
+                                    </div>
+                            </a>
+                            <div class="accordion-item-content">
+                                    <div class="clearfix" id="choose">
+                                        <a onclick="choose(this)">会生活</a>
+                                        <a onclick="choose(this)">爱美食</a>
+                                        <a onclick="choose(this)">运动健身</a>
+                                        <a onclick="choose(this)">当好爸妈</a>
+                                        <a onclick="choose(this)">同城运动</a>
+                                        <a onclick="choose(this)">家有萌宠</a>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="publish">
+                        <span class="check" onclick="change1(1)"></span>
+                        <b onclick="change1(2)"></b>
+                        <a onclick="submit1()">发表</a>
+                    </div>
+                    <!--上传图片-->
+                    <div id="pic">
+                        <div id="Img">
+                            <div id="imgAdd">
+                                <input type="file" accept="image/jpeg" multiple id="aaa"/>
+                                <a></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--表情-->
+                    <div id="swiper-container2" style="height:1px;">
+                        <div class="swiper-container" >
+                            <div class="swiper-wrapper expression">
+                                <div class="swiper-slide">
+                                    <ul>
+                                        <li>
+                                            <img src="/community/images/emoji/1.png" alt="" onclick="faceChange(1,this)">
+                                            <img src="/community/images/emoji/2.png" alt="" onclick="faceChange(2,this)">
+                                            <img src="/community/images/emoji/3.png" alt="" onclick="faceChange(3,this)">
+                                            <img src="/community/images/emoji/4.png" alt="" onclick="faceChange(4,this)">
+                                            <img src="/community/images/emoji/5.png" alt="" onclick="faceChange(5,this)">
+                                            <img src="/community/images/emoji/6.png" alt="" onclick="faceChange(6,this)">
+                                            <img src="/community/images/emoji/7.png" alt="" onclick="faceChange(7,this)">
+                                            <img src="/community/images/emoji/8.png" alt="" onclick="faceChange(8,this)">
+                                        </li>
+                                        <li>
+                                            <img src="/community/images/emoji/9.png" alt="" onclick="faceChange(9,this)">
+                                            <img src="/community/images/emoji/10.png" alt="" onclick="faceChange(10,this)">
+                                            <img src="/community/images/emoji/11.png" alt="" onclick="faceChange(11,this)">
+                                            <img src="/community/images/emoji/12.png" alt="" onclick="faceChange(12,this)">
+                                            <img src="/community/images/emoji/13.png" alt="" onclick="faceChange(13,this)">
+                                            <img src="/community/images/emoji/14.png" alt="" onclick="faceChange(14,this)">
+                                            <img src="/community/images/emoji/15.png" alt="" onclick="faceChange(15,this)">
+                                            <img src="/community/images/emoji/16.png" alt="" onclick="faceChange(16,this)">
+                                        </li>
+                                        <li>
+                                            <img src="/community/images/emoji/17.png" alt="" onclick="faceChange(17,this)">
+                                            <img src="/community/images/emoji/18.png" alt="" onclick="faceChange(18,this)">
+                                            <img src="/community/images/emoji/19.png" alt="" onclick="faceChange(19,this)">
+                                            <img src="/community/images/emoji/20.png" alt="" onclick="faceChange(20,this)">
+                                            <img src="/community/images/emoji/21.png" alt="" onclick="faceChange(21,this)">
+                                            <img src="/community/images/emoji/22.png" alt="" onclick="faceChange(22,this)">
+                                            <img src="/community/images/emoji/23.png" alt="" onclick="faceChange(23,this)">
+                                            <img src="/community/images/emoji/24.png" alt="" onclick="faceChange(24,this)">
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="swiper-slide">
+                                    <ul>
+                                        <li>
+                                            <img src="/community/images/emoji/25.png" alt="" onclick="faceChange(25,this)">
+                                            <img src="/community/images/emoji/26.png" alt="" onclick="faceChange(26,this)">
+                                            <img src="/community/images/emoji/27.png" alt="" onclick="faceChange(27,this)">
+                                            <img src="/community/images/emoji/28.png" alt="" onclick="faceChange(28,this)">
+                                            <img src="/community/images/emoji/29.png" alt="" onclick="faceChange(29,this)">
+                                            <img src="/community/images/emoji/30.png" alt="" onclick="faceChange(30,this)">
+                                            <img src="/community/images/emoji/31.png" alt="" onclick="faceChange(31,this)">
+                                            <img src="/community/images/emoji/32.png" alt="" onclick="faceChange(32,this)">
+                                        </li>
+                                        <li>
+                                            <img src="/community/images/emoji/33.png" alt="" onclick="faceChange(33,this)">
+                                            <img src="/community/images/emoji/34.png" alt="" onclick="faceChange(34,this)">
+                                            <img src="/community/images/emoji/35.png" alt="" onclick="faceChange(35,this)">
+                                            <img src="/community/images/emoji/36.png" alt="" onclick="faceChange(36,this)">
+                                            <img src="/community/images/emoji/37.png" alt="" onclick="faceChange(37,this)">
+                                            <img src="/community/images/emoji/38.png" alt="" onclick="faceChange(38,this)">
+                                            <img src="/community/images/emoji/39.png" alt="" onclick="faceChange(39,this)">
+                                            <img src="/community/images/emoji/40.png" alt="" onclick="faceChange(40,this)">
+                                        </li>
+                                        <li>
+                                            <img src="/community/images/emoji/41.png" alt="" onclick="faceChange(41,this)">
+                                            <img src="/community/images/emoji/42.png" alt="" onclick="faceChange(42,this)">
+                                            <img src="/community/images/emoji/43.png" alt="" onclick="faceChange(43,this)">
+                                            <img src="/community/images/emoji/44.png" alt="" onclick="faceChange(44,this)">
+                                            <img src="/community/images/emoji/45.png" alt="" onclick="faceChange(45,this)">
+                                            <img src="/community/images/emoji/46.png" alt="" onclick="faceChange(46,this)">
+                                            <img src="/community/images/emoji/47.png" alt="" onclick="faceChange(47,this)">
+                                            <img src="/community/images/emoji/48.png" alt="" onclick="faceChange(48,this)">
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="swiper-pagination"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--详情页面-->
+<div class="views main1">
+    <!-- Your main view -->
+    <div class="view view-main">
+        <div class="pages">
+            <div class="page" data-page="home">
+                <div class="page-content"  >
+                    <div class="page-list" >
+                        <div class="page-list-top">
+                            <img src="/community/images/forum-banner-all.png" alt="">
+                            <div class="page-list-top-name">
+                                <div>小虎123</div>
+                                <div>2分钟前</div>
+                            </div>
+                        </div>
+                        <div class="page-list-main">
+                            生前好友得知乔任梁逝世噩耗 陈乔恩哭到泪如雨下
+                            生前好友得知乔任梁逝世噩耗 陈乔恩哭到泪如雨下
+                            生前好友得知乔任梁逝世噩耗 陈乔恩哭到泪如雨下
+                            生前好友得知乔任梁逝世噩耗 陈乔恩哭到泪如雨下
+                        </div>
+                        <div class="page-list-Img clearfix">
+                            <div  style="background-image: url('/community/images/forum-classify-1.png')"></div>
+                            <div  style="background-image: url('/community/images/forum-classify-2.png')"></div>
+                            <div  style="background-image: url('/community/images/forum-classify-3.png')"></div>
+                            <div  style="background-image: url('/community/images/forum-classify-4.png')"></div>
+                            <div  style="background-image: url('/community/images/forum-classify-5.png')"></div>
+                            <div  style="background-image: url('/community/images/forum-classify-6.png')"></div>
+                        </div>
+                        <div class="page-list-footer">
+
+                        </div>
+                        <div class="page-list-function">
+                            <a>#家庭生活#</a>
+                            <div class="comment1"><a class="comment look"></a><span>9 </span></div>
+                            <div class="good1 clearfix"><a class="good" onclick="good(this)"></a><span>8</span></div>
+                        </div>
+                    </div>
+                    <div class="comment1">
+                        <div class="comment1-top">
+                            <span>10</span>条回复
+                        </div>
+                        <div class="comment1-main">
+                            <div class="comment1-list clearfix">
+                                <div class="comment1-img">
+                                    <img src="/community/images/forum-classify-6.png" alt="">
+                                </div>
+                                <div class="comment1-content">
+                                    <div>风信</div>
+                                    <div>12分钟前</div>
+                                </div>
+                                <div class="comment1-main1">
+                                    带上我吧,带上我对发生的发生地方发大法手动发送大师傅水电费圣达菲手动
+                                </div>
+                            </div>
+                            <div class="comment1-list clearfix">
+                                <div class="comment1-img">
+                                    <img src="/community/images/forum-classify-6.png" alt="">
+                                </div>
+                                <div class="comment1-content">
+                                    <div>风信</div>
+                                    <div>12分钟前</div>
+                                </div>
+                                <div class="comment1-main1">
+                                    带上我吧,带上我对发生的发生地方发大法手动发送大师傅水电费圣达菲手动
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="toolbar send1">
+                    <div class="toolbar-inner">
+                        <input type="text" id="sendIn" tabindex="1" placeholder="我要评论">
+                        <a>发送</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- -->
+<script src="/community/js/jquery-1.11.1.min.js"></script>
+<script src="/community/js/framework7.js"></script>
+<script src="/community/js/velocity.min.js"></script>
+<script>
+    var myApp=new Framework7;
+    $('div.lazy').trigger('lazy');
+    // 加载flag
+    var loading = false;
+    var timer;
+    //本次上传的个数
+    var numfirst=0;
+    //当前上传图片base64码数组
+    var numlist=[];
+    //当前图片数量
+    var imgNum=0;
+    // 指向内面侧滑对象
+    var objNow;
+    //轮播对象配置
+    var mySwiper = new Swiper('#swiper-container1', {
+        autoplay: 3000,//可选选项，自动滑动
+        loop : true,//一直切换
+        autoplayDisableOnInteraction : false,//用户操作后不会停止轮播
+        pagination : '.swiper-pagination'
+    });
+    //表情切换
+    var mySwiper1 = new Swiper('#swiper-container2>div', {
+        pagination : '.swiper-pagination',//分页器
+    });
+    //下拉对象
+    var ptrContent = $('.pull-to-refresh-content');
+    //页面滑动时导航变透明
+    $('.page-content').scroll(scrollWihte);
+    //下拉加载更多数据
+    $('.infinite-scroll').on('infinite',loadNow);
+    //上传图片改变事件
+    $('#aaa').change(function() {
+        if (imgNum <6|| numlist.length < 6){
+            myApp.showIndicator();
+            first = 0;
+            zeng();
+        } else {
+            $('#aaa').val('');
+            myApp.alert('一共最多上传6张图片', '提醒');
+        }
+    });
+    //文本域修改光标bug
+    $('#text1').focus(function() {
+        moveCaretToEnd(this);
+        var me =this;
+        window.setTimeout(function() {
+            moveCaretToEnd(this);
+        }, 1);
+    });
+    //下拉事件绑定
+    ptrContent.on('refresh',pullTo);
+    //图片预览模式
+    var myPhotoBrowser = myApp.photoBrowser({
+        zoom: 400,
+        photos: [
+            '/community/images/forum-classify-1.png',
+            '/community/images/forum-classify-2.png',
+            '/community/images/forum-classify-3.png',
+            '/community/images/forum-classify-4.png',
+            '/community/images/forum-classify-5.png',
+            '/community/images/forum-classify-6.png'
+        ],
+        navbar:false,
+        toolbar:false,
+        theme:'dark',
+//        swipeToClose:false,
+        lazyLoading:true,
+        onClick:function(swiper, event){
+            myPhotoBrowser.close();
+////            $('.photo-browser').remove();
+//            //    myPhotoBrowser.open();
+        }
+    });
+    //图片打开
+    $('.main1 .page-list-Img>div').click(function(){
+        myPhotoBrowser.open($(this).index());
+    });
+    //系统加载后读取函数
+    $(function(){
+        setTimeout(function(){
+            pushHistory();
+            window.addEventListener("popstate", back1,false);
+        },250);
+    });
+    /**
+     * @param a this
+     * @param b 对应的div
+     * @param c 对应的编写按钮
+     * 切换头部导航
+     */
+    function navTop(a,b,c){
+        if(!$(a).hasClass('active')){
+            $(a).siblings(".active").removeClass('active');
+            $(a).addClass('active');
+            $('.page-content').hide();
+            $(b).show();
+            if(c){
+                $('.page-add').show();
+            }else{
+                $('.page-add').hide();
+            }
+        }
+    }
+    /**
+     * 页面滑动时导航变透明
+     */
+    function scrollWihte(){
+        clearTimeout(timer);
+        $('.nav-top').css({opacity:'.5'});
+        $('.nav-top').css({backgroundColor:'rgba(247,247,248,.5)'});
+        timer=setTimeout(function(){
+            $('.nav-top').css({opacity:'1'});
+            $('.nav-top').css({'background-color':'rgba(247,247,248,1)'});
+        },300);
+    }
+    /**
+     * 下滚加载更多
+     */
+    function loadNow() {
+        // 如果正在加载，则退出
+        if (loading) return;
+        myApp.detachInfiniteScroll($('.infinite-scroll'));//取消事件
+        $('.infinite-scroll-preloader').fadeOut(250);
+        alert('模拟加载成功!')
+        // 设置flag
+        loading = true;
+    }
+    /**
+     * 话题选择
+     * @param a this
+     */
+    function choose(a){
+        $('#topic').html($(a).html()).css('color','#666');
+        myApp.accordionClose('.accordion-item');
+    }
+    /**
+     * 上传图片进行处理
+     */
+    function zeng(){
+
+        if(!$('#aaa')[0].files[first]){
+//            $('#aaa').val('');
+            myApp.hideIndicator();
+//            myApp.alert('一共最多上传6张图片', '');
+            return ;
+        }
+        if(numlist.length>6){
+//            $('#aaa').val('');
+            myApp.alert('一共最多上传6张图片', '提醒');
+            return ;
+        }
+        if(imgNum<=6){
+            if(imgNum>=6){
+//                $('#aaa').val('');
+                myApp.alert('一共最多上传6张图片', '提醒');
+                return ;
+            }
+            imgNum++;
+            var  result= new Image();
+            var file = $('#aaa')[0].files[first];
+            first++;
+            var size=(file.size/1024);
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+                if(size>200&&size<9999){
+                    load(this.result,size);
+                }else if(size>9999){
+                    //大于10m拒绝上传;
+                    myApp.alert('不支持大于10M的照片上传', '提醒');
+                    imgNum--;
+                }else{
+                    $(result).addClass('imglist');
+                    $(result).attr("src", this.result);
+                    var testDiv=document.createElement("div");
+                    var z=document.createElement("a");
+                    $(z).click(del);
+                    $(testDiv).append(z);
+                    $(testDiv).append(result).addClass('testDiv');
+                    $('#imgAdd').before(testDiv);
+                    numlist.push(this.result);
+                    if(numlist.length==6){
+                        myApp.hideIndicator();
+                    }
+                }
+                $(result).click(del);
+                zeng();//
+            }
+        }else{
+            $('#aaa').val('');
+            myApp.alert('一共最多上传6张图片', '提醒');
+            return ;
+        }
+    }
+    /**
+     * canvas 第二步 图片超出范围动用canvas压缩
+     * @param beauty img对象
+     * @param c 图片压缩比例
+     */
+    function drawBeauty(beauty,c){
+        var mycv =document.createElement('canvas');
+        var myctx = mycv.getContext("2d");
+        mycv.width=beauty.width;
+        mycv.height=beauty.height;
+        myctx.drawImage(beauty, 0, 0);
+        var  result= new Image();
+        var d=mycv.toDataURL("image/jpeg", .9);
+        numlist.push(d);
+        if(numlist.length==6){
+            myApp.hideIndicator();
+        }
+        $(result).attr("src", d);
+        $(result).addClass('imglist');
+        var testDiv=document.createElement("div");
+        var z=document.createElement("a");
+        $(z).click(del);
+        $(testDiv).append(z);
+        $(testDiv).append(result).addClass('testDiv');
+        $('#imgAdd').before(testDiv);
+    }
+    /**
+     * canvas 第一步
+     * @param a base64码
+     * @param b 压缩图片比例
+     */
+    function load(a,b){
+        var beauty = new Image();
+        beauty.src = a;
+        $(beauty).css('background-color','#fff');
+        var c=(10-parseInt(b/1000))*0.1;
+        if(beauty.complete){
+            drawBeauty(beauty,c);
+        }else{
+            beauty.onload = function(){
+                drawBeauty(beauty,c);
+            };
+        };
+    }
+    /**
+     * 图片生成后的处理事件
+     * @param b 当前是第几张图片
+     */
+    function del(b){
+        numlist.splice($(b).parent().index(),1);
+        $(this).parent().fadeOut(250).delay(100).remove();
+        imgNum--;
+    }
+    /**
+     * 切换图片跟表情
+     * @param a 代表图片或者表情
+     */
+    function change1(a){
+        if(a==1){
+            if(!$('.publish span').hasClass('check')){
+                $('.publish b').removeClass('check');
+                $('#swiper-container2').css({
+                    height:'0px',
+                    visibility:'hidden'
+                });
+                $('.publish span').addClass('check');
+                $('#pic').show();
+            }
+        }else if(a==2){
+            if(!$('.publish b').hasClass('check')){
+                $('.publish span').removeClass('check');
+                $('#pic').hide();
+                $('.publish b').addClass('check');
+                $('#swiper-container2').css({
+                    height:'190px',
+                    visibility:'visible'
+                });
+            }
+        }
+    }
+    /**
+     * 表情到输入框
+     * @param a 哪种图片
+     * @param b this
+     */
+    function faceChange(a,b){
+        $('#text1').val($('#text1').val()+'[em-'+a+']');
+        $(b).animate({
+            'opacity':'.3'
+        },150).animate({
+            'opacity':'1'
+        },150);
+    }
+    /**
+     *提交函数判断
+     */
+    function submit1(){
+        var a=$('#title1').val();
+        var b=$('#text1').val();
+        if(a.trim().length<4){
+            myApp.alert('标题不能少于4个字', '提醒');
+            $('.modal-button-bold').one('click',function(){
+                $('#title1').focus();
+            });
+        }else if(b.trim().length<10){
+            myApp.alert('内容不能少于10个字', '提醒');
+            $('.modal-button-bold').one('click',function(){
+                $('#text1').focus();
+            });
+        }else if($('#topic').html()=='请选择话题标签'){
+            myApp.alert('请选择话题标签', '提醒');
+            $('.modal-button-bold').one('click',function(){
+                myApp.accordionOpen($('.accordion-item'));
+            });
+        }else{
+            myApp.showIndicator();
+            setTimeout(function(){
+                myApp.hideIndicator();
+                myApp.addNotification({message: '发帖成功'});
+                setTimeout(function(){myApp.closeNotification($('.notification-item'))},1000);
+                objNow.velocity({'left':'100vw',},'normal');
+                $('.home').velocity({'left':'0',},'normal');
+                objNow=null;
+                myApp.pullToRefreshTrigger(ptrContent);
+                setTimeout(function () {
+                    // 加载完毕需要重置
+                    myApp.pullToRefreshDone();
+                }, 1000);
+            },1000);
+        }
+    }
+    /**
+     * textarea光标bug
+     * @param el dom
+     */
+    function moveCaretToEnd(el) {
+        if (typeof el.selectionStart == "number") {
+            el.selectionStart = el.selectionEnd = el.value.length;
+        } else if (typeof el.createTextRange != "undefined") {
+            el.focus();
+            var range = el.createTextRange();
+            range.collapse(false);
+            range.select();
+        }
+    }
+    /**
+     * 新页面侧滑函数
+     * @param a
+     */
+    function sideslip(a){
+        objNow=$(a);
+        objNow.velocity({
+            left:'0'
+        },'normal');
+        $('.home').velocity({
+            left:'-20vw'
+        },'normal');
+    }
+    //返回事件处理函数
+    function back1() {
+        if(objNow){
+            objNow.velocity({'left':'100vw',},'normal');
+            $('.home').velocity({'left':'0',},'normal');
+            objNow=null;
+            pushHistory();
+        }else{
+            history.back();
+        }
+    }
+    //增加历史记录函数
+    function pushHistory(){
+        var state = {
+            title: "title"
+        };
+        if(window.history.state===null){
+            window.history.pushState(state, "title");
+        }
+    }
+    //下拉刷新数据函数
+    function pullTo() {
+        setTimeout(function () {
+           // 加载完毕需要重置
+            myApp.pullToRefreshDone();
+        }, 1000);
+    }
+    //点赞函数
+    function good(a){
+        $(a).css({
+            'background-image':'url("/community/images/good-1.png")'
+        });
+    }
+</script>
+</body>
+</html>

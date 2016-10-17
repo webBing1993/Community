@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		
+		<script type="text/javascript" src="/community/js/swfobject.js">
+		</script>
+		<script type="text/javascript">
+			function hideUrlBar() {
+				// hide URL field on the iPhone/iPod touch
+				var p = String(navigator.platform);
+				container = document.getElementById("container");
+				if( p === 'iPad' || p === 'iPhone' || p === 'iPod touch' ){
+					var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+					if (parseInt(v[1], 10)>=7) {
+						// iOS >=7
+						if (container) {
+							container.style.top=(0) + "px";
+							container.style.left=(0) + "px";
+							container.style.width=(window.innerWidth) + "px";
+							container.style.height=(window.innerHeight) + "px";
+							if (pano) {
+								pano.setViewerSize(window.innerWidth, window.innerHeight);
+							}						}
+						window.scrollTo(0, 0);
+					} else {
+						if (container) {
+							var cheight;
+							switch(window.innerHeight) {
+								case 208:cheight=268; break; // landscape
+								case 260:cheight=320; break; // landscape, fullscreen
+								case 336:cheight=396; break; // portrait, in call status bar
+								case 356:cheight=416; break; // portrait 
+								case 424:cheight=484; break; // portrait iPhone5, in call status bar
+								case 444:cheight=504; break; // portrait iPhone5 
+								default: cheight=window.innerHeight;
+							}
+							if ((cheight) && ((container.offsetHeight!=cheight) || (window.innerHeight!=cheight))) {
+								container.style.height=cheight + "px";
+							}
+						}
+						document.getElementsByTagName("body")[0].style.marginTop="1px";
+						window.scrollTo(0, 1);
+					}
+				}
+			}            
+			if (window.addEventListener) {
+				window.addEventListener("load", hideUrlBar);
+				window.addEventListener("resize", hideUrlBar);
+				window.addEventListener("orientationchange", hideUrlBar);
+			}
+	
+		</script>
+		<style type="text/css" title="Default">
+			body, div, h1, h2, h3, span, p {
+				font-family: Verdana,Arial,Helvetica,sans-serif;
+				color: #000000; 
+			}
+			*{
+				font-family: "Microsoft YaHei", "黑体", "宋体", sans-serif;
+			}
+			body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, form,  input, p, table, th, td ,select,option{
+				padding: 0;
+				margin: 0;
+				list-style: none;
+			}
+			/* fullscreen */
+			html {
+				height:100%;
+			}
+			body {
+				height:100%;
+				margin: 0px;
+				overflow:hidden; /* disable scrollbars */
+			}
+			body {
+			  font-size: 10pt;
+			  background : #ffffff; 
+			}
+			table,tr,td {
+				font-size: 10pt;
+				border-color : #777777;
+				background : #dddddd; 
+				color: #000000; 
+				border-style : solid;
+				border-width : 2px;
+				padding: 5px;
+				border-collapse:collapse;
+			}
+			h1 {
+				font-size: 18pt;
+			}
+			h2 {
+				font-size: 14pt;
+			}
+			.warning { 
+				font-weight: bold;
+			} 
+			/* fix for scroll bars on webkit & Mac OS X Lion */ 
+			::-webkit-scrollbar {
+				background-color: rgba(0,0,0,0.5);
+				width: 0.75em;
+			}
+			::-webkit-scrollbar-thumb {
+    			background-color:  rgba(255,255,255,0.5);
+			}
+			/*搜索框*/
+			.top1{
+				width:100%;
+				height:50px;
+				background-color: rgba(0,0,0,.3);
+				position:absolute;
+				top:0;
+				left:0;
+				z-index:10000;
+				padding-top:5px;
+				box-sizing: border-box;
+			}
+			.top1>input{
+				float:left;
+				margin-left:3.2%;
+				height:40px;
+				width:75%;
+				outline: none;
+				background-color: transparent;
+				border:1px solid #fff;
+				border-radius: 5px;
+				box-sizing: border-box;
+				padding-left:2.6%;
+				-webkit-appearance:none;
+				color:#ccc;
+				font-size: 14px;
+			}
+			.top1>input::-webkit-input-placeholder{
+				font-size: 14px;
+				color:#ccc;
+			}
+			.top1>b{
+				float:left;
+				margin-left:-34px;
+				width:24px;
+				height:24px;
+				background-color:#000;
+				margin-top:8px;
+				background: url('/community/images/zheng/search.png') no-repeat  0  0;
+				background-size: cover;
+			}
+			.top1>.top1-button{
+				width:21%;
+				float:left;
+				height:45px;
+			}
+			.top1>.top1-button>a{
+				display:block;
+				text-align: center;
+				color:#fff;
+				font-size: 14px;
+				line-height: 25px;
+			}
+			.top1>.top1-button>a>b{
+				width:25px;
+				height:20px;
+				background:url('/community/images/zheng/view-style.png') no-repeat 0 0;
+				background-size:cover;
+				display:block;
+				margin:0 auto;
+			}
+			.top1>.top1-button>#cancel1{
+				line-height: 40px;
+				display:block;
+				display:none;
+			}
+			.main1{
+				width:100%;
+				height:calc(100vh - 50px);
+				position:absolute;
+				top:50px;
+				left:0;
+				background-color: #fff;
+				z-index: 10000;
+			}
+			.main1>ul{
+				padding-left:3.2%;
+				box-sizing: border-box;
+				width:100%;
+			}
+			.main1>ul>li{
+				width: 100%;
+				box-sizing: border-box;
+				border-bottom: 1px solid #999;
+				line-height: 40px;
+				font-size: 15px;
+				color:#333;
+				height:40px;
+			}
+		</style>	
+	</head>
+	<body>
+		<script type="text/javascript" src="/community/js/pano2vr_player.js">
+		</script>
+		<div class="top1">
+			<input type="text" placeholder="请输入业主姓名">
+			<b></b>
+			<div class="top1-button">
+				<a id="changeView">
+					<b></b>
+					列表模式
+				</a>
+				<a id="cancel1">
+					取消
+				</a>
+			</div>
+		</div>
+		<div class="main1" style="display:none">
+			<ul id="topList">
+				<li>
+
+				</li>
+			</ul>
+		</div>
+		<div id="container" style="width:100%;height:100%;">
+
+		</div>
+		<script type="text/javascript">
+	
+		// check for CSS3 3D transformations and WebGL
+		if (ggHasHtml5Css3D() || ggHasWebGL()) {
+		// use HTML5 panorama
+	
+			// create the panorama player with the container
+			pano=new pano2vrPlayer("container");
+			pano.readConfigUrl("/community/js/zheng_out.xml");
+			// hide the URL bar on the iPhone
+			setTimeout(function() { hideUrlBar(); }, 10);
+		} else if (swfobject.hasFlashPlayerVersion("10.0.0")) {
+			var flashvars = {};
+			var params = {};
+			// enable javascript interface
+			flashvars.externalinterface="1";
+			params.quality = "high";
+			params.bgcolor = "#ffffff";
+			params.allowscriptaccess = "sameDomain";
+			params.allowfullscreen = "true";
+			var attributes = {};
+			attributes.id = "pano";
+			attributes.name = "pano";
+			attributes.align = "middle";
+			flashvars.panoxml="/community/js/zheng_out.xml";
+			params.base=".";
+			swfobject.embedSWF(
+				"pano2vr_player.swf", "container", 
+				"100%", "100%",
+				"9.0.0", "", 
+				flashvars, params, attributes);
+			
+		}
+		</script>
+		<script src="/community/js/jquery-1.11.1.min.js"></script>
+		<script>
+			$(function(){
+				$('.main1').click(close);
+				$('input').focus(showList);
+			});
+			function close(e){
+				if(e.target.nodeName=='LI'){
+					alert(1);
+				}else{
+					$('.main1').hide();
+				}
+			}
+			function showList(){
+//				$('.main1').html('');
+				$('.main1').show();
+			}
+			$.ajax({
+				type:'post',
+				url:"",
+				data:{'name':'王建国'},
+				success:function(data){
+					console.log(data);
+				}
+			})
+			$('input').keyup(function(){
+				if($(this).val()){
+					$('#changeView').hide();
+					$('#cancel1').show().css({'display':'block'});
+				}else{
+					$('#changeView').show();
+					$('#cancel1').hide();
+				}
+			});
+
+			$('#cancel1').click(function(){
+				$('input').val('');
+				$('.main1').html('');
+				$('.main1').hide();
+				$('#changeView').show();
+				$('#cancel1').hide();
+			})
+
+		</script>
+	</body>
+</html>
