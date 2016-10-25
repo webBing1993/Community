@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>业主管理</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <meta content="telephone=no" name="format-detection">
+    <link rel="stylesheet" href="/community/css/framework7.ios.min.css">
+    <!-- Path to Framework7 color related styles, iOS Theme -->
+    <link rel="stylesheet" href="/community/css/framework7.ios.colors.min.css">
+    <style>
+        *{
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "黑体", "宋体", sans-serif;
+        }
+        body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, form,  input, p, table, th, td ,select,option{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .page{
+            background: url("/community/images/list/bk-1.png") no-repeat 0 0;
+            background-size: cover;
+        }
+        .clearfix:before{
+            display:table;
+            content:'';
+        }
+        .clearfix:after{
+            display:table;
+            content:'';
+            clear:both;
+        }
+        /*本页css*/
+        .mainBk{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 13000;
+            visibility: visible;
+            opacity: 1;
+            -webkit-transition-duration: .4s;
+            transition-duration: .4s;
+        }
+        .mainBk>div.mainTop{
+            background-color: rgba(0,0,0,.3);
+            width:100%;
+            height:100%;
+            margin:0 auto;
+            /*margin-top:calc( 50vh - 160px);*/
+            /*margin-bottom: 50px;*/
+            /*border-radius: 5px;*/
+            overflow: hidden;
+
+        }
+        .mainBk>div.mainTop>ul{
+            height:40px;
+            width:100%;
+        }
+        .mainBk>div.mainTop>ul>li{
+            width:25%;
+            height:40px;
+            line-height: 40px;
+            text-align: center;
+            float:left;
+            color:#fff;
+            font-size: 14px;
+            border-bottom:1px solid #e6e6e6;
+        }
+        .mainBk>div.mainTop>ul>li.active{
+            color:#43ac45;
+            line-height: 40px;
+            height:40px;
+            border-bottom:2px solid #43ac45;
+        }
+        .mainBk>div.mainTop>ul>li:not(:last-child):after{
+            content:'';
+            display:block;
+            width:1px;
+            height:12px;
+            background-color:#43ac45;
+            float:right;
+            margin-top:14px;
+        }
+        .mainM>ul>li{
+            height:40px;
+            padding-left:3%;
+            line-height: 40px;
+            color:#fff;
+            border-bottom:1px solid #e6e6e6;
+        }
+        .mainM>ul>li>a{
+            color:#fff;
+        }
+        .mainM>ul>li>a.click{
+            color:#43ac45;
+        }
+        .mainClose{
+            height:40px;
+            width:100%;
+            background: url("/community/images/list/close.png") no-repeat center center;
+            background-size: 160px 30px;
+        }
+        b.num{
+            width:14px;
+            height:14px;
+            display:inline-block;
+            background: url("/community/images/list/num-1.png") no-repeat 0 0;
+            background-size:cover;
+            vertical-align:middle;
+            top: -1px;
+            position:relative;
+        }
+        b.tel{
+            width:14px;
+            height:14px;
+            display:inline-block;
+            background: url("/community/images/list/tel-1.png") no-repeat 0 0;
+            background-size:cover;
+            vertical-align: middle;
+            top: -1px;
+            position:relative;
+        }
+    </style>
+</head>
+<body>
+<div class="view home">
+    <div class="view view-main">
+        <div class="pages">
+            <div class="page" data-page="home">
+                <div class="page-content" id="page1">
+                    <div  class="mainText" style="">
+                        <div class="mainBk">
+                            <div class="mainTop">
+                                <ul>
+                                    <li class="active" onclick="cut2(this,1)">业主信息</li>
+                                    <li onclick="cut2(this,2)">房屋信息</li>
+                                    <li onclick="cut2(this,3)">租户信息</li>
+                                    <li onclick="cut2(this,4)">车辆信息</li>
+                                </ul>
+                                <div class="mainM">
+                                    <ul style="" data-num="1">
+                                        <li>业主姓名：<a>王建国（先生）</a></li>
+                                        <li>联系电话：<a class="click" onclick="window.location.href='tel:15700004138'">15700004138 <b class="tel"></b></a></li>
+                                        <li>身份证号码：<a>31022199405290576</a></li>
+                                        <li>户籍所在地：<a>浙江省杭州市余杭区</a></li>
+                                        <li>物业费：<a class="click">已欠费6个月 <b class="num"></b></a></li>
+                                        <li>备注：</li>
+                                    </ul>
+                                    <ul style="display:none;" data-num="2">
+                                        <li>房屋面积：<a>129m&sup2;</a></li>
+                                        <li>户型：<a>三室两厅两卫一厨</a></li>
+                                        <li>用途：<a>住宅</a></li>
+                                        <li>性质：<a>商品房</a></li>
+                                        <li>年代：<a>2009</a></li>
+                                        <li>产权：<a>70年</a></li>
+                                        <li>是否复式：<a>否</a></li>
+                                        <li>房屋地址：<a>余杭区海曙路130号</a></li>
+                                        <li>房屋坐落：<a>仓溢绿苑23幢1单元101室</a></li>
+                                        <li>备注：</li>
+                                    </ul>
+                                    <ul style="display:none;" data-num="3">
+                                        <li>租客姓名：<a>张三</a></li>
+                                        <li>联系电话：<a class="click" onclick="window.location.href='tel:15700004138'">15700004138 <b class="tel"></b></a></li>
+                                        <li>身份证号码：<a>31022199405290576</a></li>
+                                        <li>户籍所在地：<a>浙江省杭州市余杭区</a></li>
+                                        <li>备注：<a></a></li>
+                                    </ul>
+                                    <ul style="display:none;" data-num="4">
+                                        <li>车辆信息：<a>浙A8888</a></li>
+                                        <li>车位1：<a>A252（有效期至2018.12.31）</a></li>
+                                        <li>备注：<a></a></li>
+                                    </ul>
+                                </div>
+                                <!--<div class="mainClose" onclick="$('.mainText').hide();"></div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/community/js/jquery-1.11.1.min.js"></script>
+    <!--<script src="/community/js/framework7.js"></script>-->
+    <script>
+        //生成frame对象
+        //        var myApp=new Framework7;
+        //详情切换选择框
+        function cut2(a,b){
+            if(!$(a).hasClass('active')){
+                $(a).parent().find('.active').removeClass('active');
+                $(a).addClass('active');
+                $('.mainM>ul[data-num]').hide();
+                $('.mainM>ul[data-num='+ b+']').show();
+            }
+        }
+    </script>
+</div>
+</body>
+</html>

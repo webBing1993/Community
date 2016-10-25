@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
-		<title></title>
+		<meta http-equiv="Content-Type" content="charset=UTF-8">
+		<title>全景模式</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui" />
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-		
+		<!--<meta name="apple-mobile-web-app-capable" content="yes" />-->
+		<!--<meta name="apple-mobile-web-app-status-bar-style" content="black" />-->
+		<!--<link rel="stylesheet" href="/community/css/framework7.ios.min.css">-->
+		<!--&lt;!&ndash; Path to Framework7 color related styles, iOS Theme &ndash;&gt;-->
+		<!--<link rel="stylesheet" href="/community/css/framework7.ios.colors.min.css">-->
 		<script type="text/javascript" src="/community/js/swfobject.js">
 		</script>
 		<script type="text/javascript">
@@ -102,13 +103,13 @@
 				font-weight: bold;
 			} 
 			/* fix for scroll bars on webkit & Mac OS X Lion */ 
-			::-webkit-scrollbar {
-				background-color: rgba(0,0,0,0.5);
-				width: 0.75em;
-			}
-			::-webkit-scrollbar-thumb {
-    			background-color:  rgba(255,255,255,0.5);
-			}
+			/*::-webkit-scrollbar {*/
+				/*background-color: rgba(0,0,0,0.5);*/
+				/*width: 0.75em;*/
+			/*}*/
+			/*::-webkit-scrollbar-thumb {*/
+    			/*background-color:  rgba(255,255,255,0.5);*/
+			/*}*/
 			/*搜索框*/
 			.top1{
 				width:100%;
@@ -120,6 +121,8 @@
 				z-index:10000;
 				padding-top:5px;
 				box-sizing: border-box;
+				/*background: url("/community/images/list/bk-1.png") no-repeat 0 0;*/
+				/*background-size: cover;*/
 			}
 			.top1>input{
 				float:left;
@@ -133,7 +136,7 @@
 				box-sizing: border-box;
 				padding-left:2.6%;
 				-webkit-appearance:none;
-				color:#ccc;
+				color:#fff;
 				font-size: 14px;
 			}
 			.top1>input::-webkit-input-placeholder{
@@ -142,11 +145,11 @@
 			}
 			.top1>b{
 				float:left;
-				margin-left:-34px;
-				width:24px;
-				height:24px;
+				margin-left:-25px;
+				width:15px;
+				height:15px;
 				background-color:#000;
-				margin-top:8px;
+				margin-top:10.5px;
 				background: url('/community/images/zheng/search.png') no-repeat  0  0;
 				background-size: cover;
 			}
@@ -165,38 +168,71 @@
 			.top1>.top1-button>a>b{
 				width:25px;
 				height:20px;
-				background:url('/community/images/zheng/view-style.png') no-repeat 0 0;
+				background:url('/community/images/zheng/view-all.png') no-repeat 0 0;
 				background-size:cover;
 				display:block;
 				margin:0 auto;
 			}
 			.top1>.top1-button>#cancel1{
 				line-height: 40px;
-				display:block;
 				display:none;
 			}
 			.main1{
 				width:100%;
-				height:calc(100vh - 50px);
+				height:calc(100vh);
 				position:absolute;
-				top:50px;
+				top:0px;
 				left:0;
 				background-color: #fff;
-				z-index: 10000;
+				z-index: 9999;
+				overflow: hidden;
+				overflow-y: scroll;
+				-webkit-overflow-scrolling: touch;
+				padding-top:51px;
+				background: url("/community/images/list/bk-1.png") no-repeat 0 0;
+				background-size: cover;
 			}
 			.main1>ul{
-				padding-left:3.2%;
 				box-sizing: border-box;
 				width:100%;
+				height:calc(100vh - 51px);
+				overflow: scroll;
 			}
 			.main1>ul>li{
 				width: 100%;
+				padding-left:3.2%;
 				box-sizing: border-box;
-				border-bottom: 1px solid #999;
+				border-bottom: 1px solid rgba(255,255,255,.3);
 				line-height: 40px;
 				font-size: 15px;
-				color:#333;
+				color:#fff;
 				height:40px;
+				background-color:rgba(0,0,0,.3);
+			}
+			#topList>li>span{
+				color:#fff;
+				display:inline-block;
+				margin-right:3.7%;
+				margin-left:0;
+				float:left;
+				font-size: 14px;
+			}
+			#topList>li>span:first-child{
+				width:57px;
+			}
+			#noMess{
+				text-align: center;
+				color:#fff;
+				font-size: 14px;
+				margin-top:calc(50vh - 50px - 65px);
+				position:absolute;
+				top: 50px;
+				width:100%;
+			}
+			#noMess>img{
+				width:99px;
+				height:96px;
+				margin-bottom:10px;
 			}
 		</style>	
 	</head>
@@ -204,10 +240,10 @@
 		<script type="text/javascript" src="/community/js/pano2vr_player.js">
 		</script>
 		<div class="top1">
-			<input type="text" placeholder="请输入业主姓名">
+			<input type="text" placeholder="请输入业主姓名" id="input1">
 			<b></b>
 			<div class="top1-button">
-				<a id="changeView">
+				<a id="changeView" onclick="window.location.href='houseslist'">
 					<b></b>
 					列表模式
 				</a>
@@ -218,20 +254,24 @@
 		</div>
 		<div class="main1" style="display:none">
 			<ul id="topList">
-				<li>
-
-				</li>
+				<!--<li>-->
+					<!--<span>王建国</span>-->
+					<!--<span>23-1-301</span>-->
+				<!--</li>-->
 			</ul>
+			<div id="noMess" style="display:none;">
+				<img src="/community/images/noMess.png" alt=""><br>
+				抱歉，没有相关数据！
+			</div>
 		</div>
 		<div id="container" style="width:100%;height:100%;">
 
 		</div>
 		<script type="text/javascript">
-	
+
 		// check for CSS3 3D transformations and WebGL
 		if (ggHasHtml5Css3D() || ggHasWebGL()) {
 		// use HTML5 panorama
-	
 			// create the panorama player with the container
 			pano=new pano2vrPlayer("container");
 			pano.readConfigUrl("/community/js/zheng_out.xml");
@@ -257,52 +297,103 @@
 				"100%", "100%",
 				"9.0.0", "", 
 				flashvars, params, attributes);
-			
 		}
 		</script>
 		<script src="/community/js/jquery-1.11.1.min.js"></script>
+		<!--<script src="/community/js/framework7.js"></script>-->
 		<script>
+			//对于vh兼容性使用js进行空置
 			$(function(){
-				$('.main1').click(close);
-				$('input').focus(showList);
-			});
+				$('#noMess').css({'margin-top':document.body.clientHeight/2-50-65+'px'});
+				$('.mainBk>div.mainTop').css({'margin-top':document.body.clientHeight/2-160+'px'});
+			})
+			//判断刚开始的中文输入法没有完成
+			var lock;
+			//搜索主内容区点击关闭
+//			$('.main1').click(close);
+			//搜索框点击事件
+			$('#input1').focus(showList);
 			function close(e){
 				if(e.target.nodeName=='LI'){
-					alert(1);
 				}else{
 					$('.main1').hide();
-				}
-			}
-			function showList(){
-//				$('.main1').html('');
-				$('.main1').show();
-			}
-			$.ajax({
-				type:'post',
-				url:"",
-				data:{'name':'王建国'},
-				success:function(data){
-					console.log(data);
-				}
-			})
-			$('input').keyup(function(){
-				if($(this).val()){
-					$('#changeView').hide();
-					$('#cancel1').show().css({'display':'block'});
-				}else{
 					$('#changeView').show();
 					$('#cancel1').hide();
 				}
-			});
+			}
+			function showList(){
+				$('#container').hide();
+				$('.main1>ul').html('');
+				$('.main1').show();
+				setGet();
+				$('#changeView').hide();
+				$('#cancel1').show();
+				$('#cancel1').show().css({'display':'block'});
+			}
+			//定时器取数据
+			function setGet(){
+				setTimeout(function(){
+					$.ajax({
+						type:'post',
+						url:"{:Url('Community/search')}",
+						data:{'name':$('#input1').val()},
+						success:function(data){
+							if($('#input1').val()!=''){
+								var data=JSON.parse(data);
+								if(data==0){
+									$('.main1>ul').html('');
+									$('#noMess').show();
+								}else{
+									$('.main1>ul').html('');
+									$('#noMess').hide();
+									for(var i=0;i<data.length;i++){
+										$('.main1>ul').append(
+												'<li onclick=window.location.href="information"'+'><span>'+data[i].name+'</span><span>'+data[i].info+'</span></li>'
+										);
+									}
 
+								}
+							}
+						}
+					});
+				},200);
+			}
+			//在一些自带输入法判断中文输入完成
+			$('#input1').on('compositionstart',function(){
+				lock = true;
+			});
+			$('#input1').on('compositionend',function(){
+				lock = false;
+			});
+			$('#input1').on('input',function(){
+				if(!lock){
+					setGet();
+				}
+			});
+			//搜索框非中文输入处理
+			$('#input1').keyup(function(){
+				if($(this).val()){
+//            $('#changeView').hide();
+//            $('#cancel1').show().css({'display':'block'});
+					$('#noMess').hide();
+					setGet();
+				}else{
+					$('.main1>ul').html('');
+//            $('#changeView').show();
+//            $('#cancel1').hide();
+					$('#noMess').hide();
+				}
+			});
+			//myApp.showIndicator();等待框
+			//搜索取消按钮点击
 			$('#cancel1').click(function(){
+				$('#container').show();
 				$('input').val('');
-				$('.main1').html('');
+				$('.main1>ul').html('');
 				$('.main1').hide();
 				$('#changeView').show();
 				$('#cancel1').hide();
 			})
-
 		</script>
 	</body>
 </html>

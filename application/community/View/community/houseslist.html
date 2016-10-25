@@ -3,24 +3,1244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <link rel="stylesheet" href="__CSS__/framework7.ios.min.css">
+    <meta content="telephone=no" name="format-detection">
+    <link rel="stylesheet" href="/community/css/framework7.ios.min.css">
     <!-- Path to Framework7 color related styles, iOS Theme -->
-    <link rel="stylesheet" href="__CSS__/framework7.ios.colors.min.css">
+    <link rel="stylesheet" href="/community/css/framework7.ios.colors.min.css">
     <title>楼盘表</title>
     <style>
         *{
-            font-family: "Microsoft YaHei", "黑体", "宋体", sans-serif;
-        }
+               box-sizing: border-box;
+               font-family: "Microsoft YaHei", "黑体", "宋体", sans-serif;
+
+           }
         body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, form,  input, p, table, th, td ,select,option{
             padding: 0;
             margin: 0;
             list-style: none;
         }
+        .page{
+            background: url("/community/images/list/bk-1.png") no-repeat 0 0;
+            background-size: cover;
+        }
+        .clearfix:before{
+            display:table;
+            content:'';
+        }
+        .clearfix:after{
+            display:table;
+            content:'';
+            clear:both;
+        }
+        /*搜索框*/
+        .top1{
+            width:100%;
+            height:50px;
+            background-color: rgba(0,0,0,.3);
+            position:absolute;
+            top:0;
+            left:0;
+            z-index:10000;
+            padding-top:5px;
+            box-sizing: border-box;
+            /*background: url("/community/images/list/bk-1.png") no-repeat 0 0;*/
+            /*background-size: cover;*/
+        }
+        .top1>input{
+            float:left;
+            margin-left:3.2%;
+            height:40px;
+            width:75%;
+            outline: none;
+            background-color: transparent;
+            border:1px solid #fff;
+            border-radius: 5px;
+            box-sizing: border-box;
+            padding-left:2.6%;
+            /*-webkit-appearance:none;*/
+            color:#fff;
+            font-size: 14px;
+        }
+        .top1>input::-webkit-input-placeholder{
+            font-size: 14px;
+            color:#ccc;
+        }
+        .top1>b{
+            float:left;
+            margin-left:-25px;
+            width:15px;
+            height:15px;
+            background-color:#000;
+            margin-top:10.5px;
+            background: url('/community/images/zheng/search.png') no-repeat  0  0;
+            background-size: cover;
+        }
+        .top1>.top1-button{
+            width:21%;
+            float:left;
+            height:45px;
+        }
+        .top1>.top1-button>a{
+            display:block;
+            text-align: center;
+            color:#fff;
+            font-size: 14px;
+            line-height: 25px;
+        }
+        .top1>.top1-button>a>b{
+            width:25px;
+            height:20px;
+            background:url('/community/images/zheng/view-all.png') no-repeat 0 0;
+            background-size:cover;
+            display:block;
+            margin:0 auto;
+        }
+        .top1>.top1-button>#cancel1{
+            line-height: 40px;
+            display:none;
+        }
+        .main1{
+            width:100%;
+            height:calc(100vh);
+            position:absolute;
+            top:0px;
+            left:0;
+            background-color: #fff;
+            z-index: 9999;
+            overflow: hidden;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+            padding-top:51px;
+            background: url("/community/images/list/bk-1.png") no-repeat 0 0;
+            background-size: cover;
+        }
+        .main1>ul{
+            box-sizing: border-box;
+            width:100%;
+            height:calc(100vh - 51px);
+            overflow: scroll;
+        }
+        .main1>ul>li{
+            width: 100%;
+            padding-left:3.2%;
+            box-sizing: border-box;
+            border-bottom: 1px solid rgba(255,255,255,.3);
+            line-height: 40px;
+            font-size: 15px;
+            color:#fff;
+            height:40px;
+            background-color:rgba(0,0,0,.3);
+        }
+        #topList>li>span{
+            color:#fff;
+            display:inline-block;
+            margin-right:3.7%;
+            margin-left:0;
+            float:left;
+            font-size: 14px;
+        }
+        #topList>li>span:first-child{
+            width:57px;
+        }
+        #noMess{
+            text-align: center;
+            color:#fff;
+            font-size: 14px;
+            /*margin-top:calc(50vh - 50px - 65px);*/
+            top: 50px;
+            width:100%;
+        }
+        #noMess>img{
+            width:99px;
+            height:96px;
+            margin-bottom:10px;
+        }
+        /*楼盘列表css*/
+        .navbar1{
+            width:100%;
+            height:40px;
+            background-color: rgba(0,0,0,.3);
+        }
+        .page-content{
+            padding-top:51px;
+        }
+        .navbar1>a{
+            width:49.5%;
+            float:left;
+            height:40px;
+            line-height: 40px;
+            font-size: 15px;
+            text-align: center;
+            color:#fff;
+        }
+        .navbar1>a:first-child:after{
+            content:'';
+            display:block;
+            width:1px;
+            height:30px;
+            float:right;
+            background-color: rgba(0,0,0,.3);
+            margin-top:5px;
+        }
+        .navbar1>a.active{
+            color:#60c73d;
+        }
+        .mainList{
+            margin-top:10px;
+            margin-left:3.2%;
+            margin-right:3.2%;
+            border:1px solid rgba(255,255,255,.3);
+            background-color:rgba(0,0,0,.3);
+            border-radius: 5px;
+        }
+        .list-block {
+            margin: 0;
+        }
+        #picker-dependent{
+            text-align: center;
+            width:auto;
+            margin:0 auto;
+            font-size: 15px;
+            color:#fff;
+            line-height: 40px;
+            height:40px;
+            background: url("/community/images/list/downArrow.png") no-repeat 90% center;
+            background-size:14px 9px;
+        }
+        #picker-dependent::-webkit-input-placeholder{
+            color: #fff;
+        }
+        .open-popover{
+            float:right;
+            width:20px;
+            height:20px;
+            position:absolute;
+            right:2.6%;
+            background: url("/community/images/list/alert1.png") no-repeat 0 0 ;
+            background-size:cover;
+            top:10px;
+        }
+        .list-block ul{
+            background-color: transparent;
+        }
+        .list-block ul:after{
+            display:none;
+        }
+        .list-block ul:before{
+            display:none;
+        }
+        /*.item-input{*/
+            /*width:auto!important;*/
+            /*margin:0 auto;*/
+        /*}*/
+        .list-block .item-content{
+            margin:0;
+            padding:0;
+            height: 40px;
+            min-height: 40px;
+        }
+        .list-block .item-inner{
+            padding:0;
+            height: 40px;
+            min-height: 40px;
+        }
+        .content-block>ul>li{
+           height:25px;
+            color:#666;
+            line-height: 25px;
+            padding-left:10px;
+            margin-top:5px;
+            margin-bottom:5px;
+        }
+        .content-block>ul>li>img{
+            width:17px;
+            margin-right:5px;
+            top: 1px;
+            position:relative;
+        }
+        .popover {
+            width: 130px;
+            border-radius: 5px;
+        }
+        .content-block {
+            margin: 0;
+            padding: 0;
+        }
+        .mainListTitle{
+            height:30px;
+        }
+        .mainListTitle>span{
+            float:left;
+            color:#fff;
+            font-size: 14px;
+            height:30px;
+            line-height: 30px;
+            text-align: center;
+            width:83%;
+            border-top:1px solid rgba(255,255,255,.3);
+        }
+        .mainListTitle>span:first-child{
+            width:17%;
+            border-right:1px solid rgba(255,255,255,.3);
+        }
+        ul#mainListMain{
+            width:100%;
+        }
+        ul#mainListMain>li{
+            width:100%;
+            height:40px;
+        }
+        ul#mainListMain>li>span{
+            width:17%;
+            float:left;
+            height:40px;
+            border-top:1px solid rgba(255,255,255,.3);
+            border-right:1px solid rgba(255,255,255,.3);
+            color:#fff;
+            text-align: center;
+            line-height: 40px;
+        }
+        ul#mainListMain>li>a{
+            float:left;
+            border-top:1px solid rgba(255,255,255,.3);
+            border-right:1px solid rgba(255,255,255,.3);
+            width:20.75%;
+            text-align: center;
+            line-height: 40px;
+            color:#fff;
+            position:relative;
+        }
+        ul#mainListMain>li>a:last-child{
+            border-right:none;
+        }
+        ul#mainListMain>li>a>b{
+            width:19px;
+            height:14px;
+            position:absolute;
+            right:0;
+            top:-1px;
+            background: no-repeat 0 0 ;
+            background-size:cover;
+        }
+        ul#mainListMain>li>a>b+b{
+            right:18px;
+        }
+        ul#mainListMain>li>a>b+b+b{
+            right:36px;
+        }
+        .mainBk{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,.4);
+            z-index: 13000;
+            visibility: visible;
+            opacity: 1;
+            -webkit-transition-duration: .4s;
+            transition-duration: .4s;
+        }
+        .mainBk>div.mainTop{
+            background-color: #fff;
+            width:90%;
+            height:auto;
+            margin:0 auto;
+            margin-top:calc( 50vh - 160px);
+            margin-bottom: 50px;
+            border-radius: 5px;
+            overflow: hidden;
+
+        }
+        .mainBk>div.mainTop>ul{
+            height:40px;
+            width:100%;
+        }
+        .mainBk>div.mainTop>ul>li{
+            width:25%;
+            height:40px;
+            line-height: 40px;
+            text-align: center;
+            float:left;
+            color:#333;
+            font-size: 14px;
+            border-bottom:1px solid #e6e6e6;
+        }
+        .mainBk>div.mainTop>ul>li.active{
+            color:#43ac45;
+            line-height: 40px;
+            height:40px;
+            border-bottom:2px solid #43ac45;
+        }
+        .mainBk>div.mainTop>ul>li:not(:last-child):after{
+            content:'';
+            display:block;
+            width:1px;
+            height:12px;
+            background-color:#43ac45;
+            float:right;
+            margin-top:14px;
+        }
+        .mainM>ul>li{
+            height:40px;
+            padding-left:3%;
+            line-height: 40px;
+            color:#333;
+            border-bottom:1px solid #e6e6e6;
+        }
+        .mainM>ul>li>a{
+            color:#333;
+        }
+        .mainM>ul>li>a.click{
+            color:#43ac45;
+        }
+        .mainClose{
+            height:40px;
+            width:100%;
+            background: url("/community/images/list/close.png") no-repeat center center;
+            background-size: 160px 30px;
+        }
+        b.num{
+            width:14px;
+            height:14px;
+            display:inline-block;
+            background: url("/community/images/list/num-1.png") no-repeat 0 0;
+            background-size:cover;
+            vertical-align:middle;
+            top: -1px;
+            position:relative;
+        }
+        b.tel{
+            width:14px;
+            height:14px;
+            display:inline-block;
+            background: url("/community/images/list/tel-1.png") no-repeat 0 0;
+            background-size:cover;
+            vertical-align: middle;
+            top: -1px;
+            position:relative;
+        }
+        /*数据统计*/
+        .statistics{
+            margin:12px 3.2% 12px 3.2%;
+            background-color: rgba(0,0,0,.3);
+            border: 1px solid rgba(255,255,255,.3);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .statistics>div>h3{
+            margin-left:3.4%;
+            font-size: 15px;
+            color:#fff;
+            height:35px;
+            line-height: 35px;
+            font-weight: normal;
+        }
+        .statistics>div>div.mon{
+            width:122px;
+            height:22px;
+            border:1px solid #fff;
+            border-radius: 3px;
+            line-height: 22px;
+            font-size: 13px;
+            margin-bottom:10px;
+            float:right;
+            margin-right:3.2vw;
+        }
+        .statistics>div>div.mon>a{
+            width:40px;
+            float:left;
+            text-align: center;
+            color:#fff;
+            line-height: 21px;
+            height:21px;
+        }
+        .statistics>div>div.mon>a.active{
+            background-color:rgba(255,255,225,.4);
+            color:#78c752;
+        }
+        .statistics>div>div.mon>a:not(:last-child){
+            border-right:1px solid #fff;
+        }
+        .statistics>div.data1>.collect{
+            height:35px;
+        }
+        .statistics>div.data1>.collect>ul{
+            height:35px;
+            width:74.4%;
+            margin:0 auto;
+        }
+        .statistics>div.data1>.collect>ul>li{
+            width:25%;
+            height:35px;
+            float:left;
+            text-align: center;
+            color:#fff;
+            font-size: 12px;
+            line-height: 12px;
+        }
+        .statistics>div.data1>.collect>ul>li>span{
+            font-size: 18px;
+            line-height: 18px;
+            display:inline-block;
+            margin-bottom: 5px;
+            color:#91ef6f;
+        }
+        .statistics>div.data1>.roundness{
+            width:205px;
+            margin:8px auto;
+            height:205px;
+            position:relative;
+        }
+        .statistics>div.data1>.roundness>canvas{
+            margin-top:20px;
+            width:80px;
+            height:80px;
+        }
+        .statistics>div.data1>.roundness>canvas:nth-child(2n){
+           margin-left:40px;
+        }
+        .statistics>div.data1>.roundness>span{
+            position:absolute;
+            top:51px;
+            left:19px;
+            color:#fff;
+            font-size: 12px;
+            width:43px;
+            text-align: center;
+        }
+        .statistics>div.data1>.roundness>span:nth-child(6){
+            position:absolute;
+            top:51px;
+            left:142px;
+        }
+        .statistics>div.data1>.roundness>span:nth-child(7){
+            position:absolute;
+            top:156px;
+            left:19px;
+        }
+        .statistics>div.data1>.roundness>span:nth-child(8){
+            position:absolute;
+            top:156px;
+            left:142px;
+        }
+        .data1-base>ul{
+            height:44px;
+            width:205px;
+            margin:0 auto;
+            margin-bottom:10px;
+        }
+        .data1-base{
+            border-bottom:1px solid rgba(255,255,255,.3);
+        }
+        .data1-base>ul>li{
+            float:left;
+            width:80px;
+            text-align: center;
+            color:#fff;
+            font-size: 12px;
+            height:22px;
+            line-height: 22px;
+        }
+        .data1-base>ul>li:nth-child(2n){
+            margin-left:40px;
+        }
+        .data1-base>ul>li>span{
+            display:inline-block;
+            width:10px;
+            height:10px;
+            border-radius: 50%;
+            background-color:#fff;
+            margin-right:5px;
+        }
+        .data2,.data3,.data4{
+            border-bottom: 1px solid rgba(255,255,255,.3);
+        }
+        .data2>canvas,.data3>canvas,.data4>canvas,.data5>canvas{
+            width:100%;
+            height:150px;
+        }
+        /*选择框覆盖*/
+        .picker-items {
+            /* -webkit-mask-box-image: -webkit-linear-gradient(bottom,transparent,transparent 5%,#fff 20%,#fff 80%,transparent 95%,transparent); */
+            -webkit-mask-box-image: linear-gradient(to top,#fff,#fff 5%,#fff 20%,#fff 80%,#fff 95%,#fff);
+            background-color: #fff;
+        }
+        a {
+            color: #43ac45;
+        }
+        .picker-item.picker-selected{
+            color: #43ac45;
+        }
     </style>
 </head>
 <body>
-//
-<script src="__JS__/jquery-1.11.1.min.js"></script>
-<script src="__JS__/framework7.js"></script>
+
+<div class="view home" >
+    <div class="view view-main">
+        <div class="pages">
+            <div class="page" data-page="home">
+                <div class="page-content" id="page1">
+                    <div class="top1">
+                        <input type="text" placeholder="请输入业主姓名" id="input1">
+                        <b></b>
+                        <div class="top1-button">
+                            <a id="changeView" onclick="window.location.href='zheng'">
+                                <b></b>
+                                全景模式
+                            </a>
+                            <a id="cancel1">
+                                取消
+                            </a>
+                        </div>
+                    </div>
+                    <div class="main1" style="display:none">
+                        <ul id="topList">
+                            <!--<li>-->
+                            <!--<span>王建国</span>-->
+                            <!--<span>23-1-301</span>-->
+                            <!--</li>-->
+                        </ul>
+                        <div id="noMess" style="display:none">
+                            <img src="/community/images/noMess.png" alt=""><br>
+                            抱歉，没有相关数据！
+                        </div>
+                    </div>
+                    <div class="other">
+                        <div class="navbar1" id="navbar1">
+                            <a class="active"  onclick="cut1(this,1)">楼盘详情</a>
+                            <a  onclick="cut1(this,2)">统计详情</a>
+                        </div>
+                        <div class="mainList">
+                            <div class="mainListTop">
+                                <div class="list-block">
+                                    <ul>
+                                        <li>
+                                            <div class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-input">
+                                                        <a href="#" data-popover=".popover-link" class="link open-popover"></a>
+                                                        <input type="text" placeholder="请选择单元号" readonly id="picker-dependent">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="mainListTitle" >
+                                    <span>楼层</span><span>房间号</span>
+                                </div>
+                                <ul class="clearfix" id="mainListMain">
+                                    <li>
+                                        <span>6</span>
+                                        <a>
+                                            <b style="background-image:  url('/community/images/list/alert-state3.png')"></b>
+                                            601
+                                        </a>
+                                        <a>
+                                            <b style="background-image:  url('/community/images/list/alert-state2.png')"></b>
+                                            602
+                                        </a>
+                                        <a>
+                                            <b style=""></b>
+                                            603
+                                        </a>
+                                        <a>
+                                            <b style=""></b>
+                                            604
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <span>5</span>
+                                        <a>
+                                            <b style="background-image:  url('/community/images/list/alert-state1.png')"></b>
+                                            <b style="background-image:  url('/community/images/list/alert-state2.png')"></b>
+                                            <b style="background-image:  url('/community/images/list/alert-state4.png')"></b>
+                                            501
+                                        </a>
+                                        <a>
+                                            <b style=""></b>
+                                            502
+                                        </a>
+                                        <a>
+                                            <b style=""></b>
+                                            503
+                                        </a>
+                                        <a>
+                                            <b style=""></b>
+                                            504
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <span>4</span>
+                                        <a>
+                                            <b ></b>
+                                            401
+                                        </a>
+                                        <a>
+                                            <b style="background-image:  url('/community/images/list/alert-state2.png')"></b>
+                                            402
+                                        </a>
+                                        <a>
+                                            <b style=""></b>
+                                            403
+                                        </a>
+                                        <a>
+                                            <b style=""></b>
+                                            404
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <span>3</span>
+                                        <a>
+                                            <b ></b>
+                                            301
+                                        </a>
+                                        <a>
+                                            <b style=""></b>
+                                            302
+                                        </a>
+                                        <a>
+                                            <b style="background-image:  url('/community/images/list/alert-state3.png')"></b>
+                                            303
+                                        </a>
+                                        <a>
+                                            <b style=""></b>
+                                            304
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <span>2</span>
+                                        <a>
+                                            <b ></b>
+                                            201
+                                        </a>
+                                        <a>
+                                            <b style=""></b>
+                                            202
+                                        </a>
+                                        <a>
+                                            <b style=""></b>
+                                            203
+                                        </a>
+                                        <a>
+                                            <b style="background-image:  url('/community/images/list/alert-state4.png')"></b>
+                                            204
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <span>1</span>
+                                        <a onclick="$('.mainText').show();">
+                                            <b style="background-image:  url('/community/images/list/alert-state1.png')"></b>
+                                            <b style="background-image:  url('/community/images/list/alert-state2.png')"></b>
+                                            <b style="background-image:  url('/community/images/list/alert-state4.png')"></b>
+                                            101
+                                        </a>
+                                        <a>
+                                            <b style=""></b>
+                                            102
+                                        </a>
+                                        <a>
+                                            <b style=""></b>
+                                            103
+                                        </a>
+                                        <a>
+                                            <b style=""></b>
+                                            104
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="statistics" style="display:none;">
+                            <div class="data1">
+                                <h3>数据汇总</h3>
+                                <div class="collect">
+                                    <ul>
+                                        <li onclick="window.location.href='particulars'"><span>98</span><br>出租房源</li>
+                                        <li><span>30</span><br>出售房源</li>
+                                        <li><span>10</span><br>空置房源</li>
+                                        <li><span>35</span><br>欠费房源</li>
+                                    </ul>
+                                </div>
+                                <div class="roundness">
+                                    <canvas id="myChart1"></canvas>
+                                    <canvas id="myChart2"></canvas>
+                                    <canvas id="myChart3"></canvas>
+                                    <canvas id="myChart4"></canvas>
+                                    <span>19.6%</span>
+                                    <span>6%</span>
+                                    <span>2%</span>
+                                    <span>7%</span>
+                                </div>
+                                <div class="data1-base">
+                                    <ul>
+                                        <li><span style="background-color: #78c752"></span>出租房源</li>
+                                        <li><span style="background-color: #f8bd07"></span>出售房源</li>
+                                        <li><span style="background-color: #54cdfc"></span>空置房源</li>
+                                        <li><span style="background-color: #ff644b"></span>欠费房源</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="data2">
+                                <h3>出租趋势</h3>
+                                <div class="mon">
+                                    <a class="active" onclick="cut3(this,0)">月</a>
+                                    <a onclick="cut3(this,1)">季</a>
+                                    <a onclick="cut3(this,2)">年</a>
+                                </div>
+                                <canvas id="myChart5">
+
+                                </canvas>
+                            </div>
+                            <div class="data3">
+                                <h3>出售房源</h3>
+                                <div class="mon">
+                                    <a class="active">月</a>
+                                    <a>季</a>
+                                    <a>年</a>
+                                </div>
+                                <canvas id="myChart6">
+
+                                </canvas>
+                            </div>
+                            <div class="data4">
+                                <h3>空置房源</h3>
+                                <div class="mon">
+                                    <a class="active">月</a>
+                                    <a>季</a>
+                                    <a>年</a>
+                                </div>
+                                <canvas id="myChart7">
+
+                                </canvas>
+                            </div>
+                            <div class="data5">
+                                <h3>欠费房源</h3>
+                                <div class="mon">
+                                    <a class="active">月</a>
+                                    <a>季</a>
+                                    <a>年</a>
+                                </div>
+                                <canvas id="myChart8">
+
+                                </canvas>
+                            </div>
+                        </div>
+                        <div  class="mainText" style="display:none;">
+                            <div class="mainBk">
+                                <div class="mainTop">
+                                    <ul>
+                                        <li class="active" onclick="cut2(this,1)">业主信息</li>
+                                        <li onclick="cut2(this,2)">房屋信息</li>
+                                        <li onclick="cut2(this,3)">租户信息</li>
+                                        <li onclick="cut2(this,4)">车辆信息</li>
+                                    </ul>
+                                    <div class="mainM">
+                                        <ul style="" data-num="1">
+                                            <li>业主姓名：<a>王建国（先生）</a></li>
+                                            <li>联系电话：<a class="click" onclick="window.location.href='tel:15700004138'">15700004138 <b class="tel"></b></a></li>
+                                            <li>身份证号码：<a>31022199405290676</a></li>
+                                            <li>户籍所在地：<a>浙江省杭州市余杭区</a></li>
+                                            <li>物业费：<a class="click">已欠费6个月 <b class="num"></b></a></li>
+                                            <li>备注：</li>
+                                        </ul>
+                                        <ul style="display:none;" data-num="2">
+                                            <li>房屋面积：<a>129m&sup2;</a></li>
+                                            <li>户型：<a>三室两厅两卫一厨</a></li>
+                                            <li>用途：<a>住宅</a></li>
+                                            <li>性质：<a>商品房</a></li>
+                                            <li>年代：<a>2009</a></li>
+                                            <li>产权：<a>70年</a></li>
+                                            <li>是否复式：<a>否</a></li>
+                                            <li>房屋地址：<a>余杭区海曙路130号</a></li>
+                                            <li>房屋坐落：<a>仓溢绿苑1幢1单元101室</a></li>
+                                            <li>备注：</li>
+                                        </ul>
+                                        <ul style="display:none;" data-num="3">
+                                            <li>租客姓名：<a>张三</a></li>
+                                            <li>联系电话：<a class="click" onclick="window.location.href='tel:15700004138'">15700004138 <b class="tel"></b></a></li>
+                                            <li>身份证号码：<a>31022199405290576</a></li>
+                                            <li>户籍所在地：<a>浙江省杭州市余杭区</a></li>
+                                            <li>备注：<a></a></li>
+                                        </ul>
+                                        <ul style="display:none;" data-num="4">
+                                            <li>车辆信息：<a>浙A8888</a></li>
+                                            <li>车位1：<a>A252（有效期至2018.12.31）</a></li>
+                                            <li>备注：<a></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="mainClose" onclick="$('.mainText').hide();">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 提醒弹出框 -->
+<div class="popover popover-link">
+    <div class="popover-angle"></div>
+    <div class="popover-inner">
+        <div class="content-block">
+            <ul>
+                <li><img src="/community/images/list/alert-state1.png" alt="">代表房屋出售</li>
+                <li><img src="/community/images/list/alert-state2.png" alt="">代表出租房屋</li>
+                <li><img src="/community/images/list/alert-state3.png" alt="">代表房屋空置</li>
+                <li><img src="/community/images/list/alert-state4.png" alt="">代表拖欠费用</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="/community/js/jquery-1.11.1.min.js"></script>
+<script src="/community/js/framework7.js"></script>
+<script src="/community/js/Chart.js"></script>
+<script>
+    //对于vh兼容性使用js进行空置
+    $(function(){
+        $('#noMess').css({'margin-top':document.body.clientHeight/2-50-65+'px'});
+        $('.mainBk>div.mainTop').css({'margin-top':document.body.clientHeight/2-160+'px'});
+    })
+    //生成frame对象
+    var myApp=new Framework7;
+    //判断刚开始的中文输入法没有完成
+    var lock;
+    //搜索主内容区点击关闭
+//    $('.main1').click(close);
+    //搜索框点击事件
+    $('#input1').focus(showList);
+    function close(e){
+        if(e.target.nodeName=='LI'){
+        }else{
+            $('.main1').hide();
+            $('#changeView').show();
+            $('#cancel1').hide();
+        }
+    }
+    function showList(){
+        $('#noMess').hide();
+        $('.other').hide();
+        $('.main1>ul').html('');
+        $('.main1').show();
+        setGet();
+        $('#changeView').hide();
+//        $('#cancel1').show();
+        $('#cancel1').show().css({'display':'block'});
+    }
+    //定时器取数据
+    function setGet(){
+        setTimeout(function(){
+            $.ajax({
+                type:'post',
+                url:"{:Url('Community/search')}",
+                data:{'name':$('#input1').val()},
+                success:function(data){
+                    if($('#input1').val()!=''){
+                        var data=JSON.parse(data);
+                        if(data==0){
+                            $('.main1>ul').html('');
+                            $('#noMess').show();
+                            $('.main1>ul').hide();
+                        }else{
+                            $('.main1>ul').show();
+                            $('.main1>ul').html('');
+                            $('#noMess').hide();
+                            for(var i=0;i<data.length;i++){
+                                $('.main1>ul').append(
+                                        '<li onclick=window.location.href="information"'+'><span>'+data[i].name+'</span><span>'+data[i].info+'</span></li>'
+                                );
+                            }
+
+                        }
+                    }
+                }
+            });
+        },200);
+    }
+    //在一些自带输入法判断中文输入完成
+    $('#input1').on('compositionstart',function(){
+        lock = true;
+    });
+    $('#input1').on('compositionend',function(){
+        lock = false;
+    });
+    $('#input1').on('input',function(){
+        if(!lock){
+            setGet();
+        }
+    });
+    //搜索框非中文输入处理
+    $('#input1').keyup(function(){
+        if($(this).val()){
+//            $('#changeView').hide();
+//            $('#cancel1').show().css({'display':'block'});
+            $('#noMess').hide();
+            setGet();
+        }else{
+            $('.main1>ul').html('');
+//            $('#changeView').show();
+//            $('#cancel1').hide();
+            $('#noMess').hide();
+        }
+    });
+    //myApp.showIndicator();等待框
+    //搜索取消按钮点击
+    $('#cancel1').click(function(){
+        $('.other').show();
+        $('input').val('');
+        $('.main1>ul').html('');
+        $('.main1').hide();
+        $('#changeView').show();
+        $('#cancel1').hide();
+    })
+
+    var carVendors = {
+        '1号楼' : ['1单元', '2单元', '3单元'],
+        '2号楼' : ['1单元', '2单元'],
+        '3号楼' : ['1单元', '2单元', '3单元'],
+        '4号楼' : ['1单元', '2单元', '3单元'],
+        '5号楼' : ['1单元', '2单元', '3单元'],
+        '6号楼' : ['1单元', '2单元', '3单元']
+    };
+    var pickerDependent = myApp.picker({
+        input: '#picker-dependent',
+        rotateEffect: true,
+//        formatValue: function (picker, values) {
+//            return values[1];
+//        },
+        value:['1号楼','1单元'],
+        cols: [
+            {
+                textAlign: 'left',
+                values: ['1号楼', '2号楼', '3号楼', '4号楼', '5号楼', '6号楼'],
+                onChange: function (picker, country) {
+                    if(picker.cols[1].replaceValues){
+                        picker.cols[1].replaceValues(carVendors[country]);
+                    }
+                }
+            },
+            {
+                values: carVendors['1号楼'],
+                width: 180,
+            },
+        ]
+    });
+    //切换1级选择框
+    function cut1(a,b){
+        if(b==2){
+            if(!$(a).hasClass('active')){
+                $('.mainList').hide();
+                $('.statistics').show();
+                $(a).parent().find('.active').removeClass('active');
+                $(a).addClass('active');
+                //一系列的图表
+                new Chart(ctx1).Doughnut(data1,{segmentStrokeColor : "transparent", percentageInnerCutout : 60,});
+                new Chart(ctx2).Doughnut(data2,{segmentStrokeColor : "transparent",percentageInnerCutout : 60,});
+                new Chart(ctx3).Doughnut(data3,{segmentStrokeColor : "transparent",percentageInnerCutout : 60,});
+                new Chart(ctx4).Doughnut(data4,{segmentStrokeColor : "transparent",percentageInnerCutout : 60,});
+                new Chart(ctx5).Line(data5,lineOptions);
+                new Chart(ctx6).Line(data6,lineOptions);
+                new Chart(ctx7).Line(data7,lineOptions);
+                new Chart(ctx8).Line(data8,lineOptions);
+            }
+        }else{
+            if(!$(a).hasClass('active')){
+                $('.statistics').hide();
+                $('.mainList').show();
+                $(a).parent().find('.active').removeClass('active');
+                $(a).addClass('active');
+            }
+        }
+    }
+    //详情切换选择框
+    function cut2(a,b){
+        if(!$(a).hasClass('active')){
+            $(a).parent().find('.active').removeClass('active');
+            $(a).addClass('active');
+            $('.mainM>ul:not('+b+')').hide();
+            $('.mainM>ul[data-num='+ b+']').show();
+        }
+    }
+    //
+    function cut3(a,b){
+        if(!$(a).hasClass('active')){
+            $(a).parent().find('.active').removeClass('active');
+            $(a).addClass('active');
+            switch(b){
+                case 0:
+                    data5 = {
+                        labels : ["1","2","3","4","5","6","7",'8','9','10','11','12'],
+                        datasets : [
+                            {
+                                fillColor : "rgba(120,199,82,.6)",
+                                strokeColor : "rgba(120,199,82,1)",
+                                pointColor : "rgba(120,199,82,1)",
+                                pointStrokeColor : "#fff",
+                                pointHighlightFill: "#fff",
+                                pointHighlightStroke: "fff",
+                                data : [10,15,35,45,56,55,61,66,68,69]
+                            },
+                        ]
+                    };
+                    new Chart(ctx5).Line(data5,lineOptions);
+                    break;
+                case 1:
+                    data5 = {
+                        labels : ["春季","夏季","秋季","冬季"],
+                        datasets : [
+                            {
+                                fillColor : "rgba(120,199,82,.6)",
+                                strokeColor : "rgba(120,199,82,1)",
+                                pointColor : "rgba(120,199,82,1)",
+                                pointStrokeColor : "#fff",
+                                pointHighlightFill: "#fff",
+                                pointHighlightStroke: "fff",
+                                data : [10,45,61,69]
+                            },
+                        ]
+                    };
+                    new Chart(ctx5).Line(data5,lineOptions);
+                    break;
+                case 2:
+                    data5 = {
+                        labels : ["2014","2015","2016"],
+                        datasets : [
+                            {
+                                fillColor : "rgba(120,199,82,.6)",
+                                strokeColor : "rgba(120,199,82,1)",
+                                pointColor : "rgba(120,199,82,1)",
+                                pointStrokeColor : "#fff",
+                                pointHighlightFill: "#fff",
+                                pointHighlightStroke: "fff",
+                                data : [5,10,45]
+                            },
+                        ]
+                    };
+                    new Chart(ctx5).Line(data5,lineOptions);
+                    break;
+            }
+        }
+    }
+
+    //所有统计图的画笔
+    var ctx1 = document.getElementById("myChart1").getContext("2d");
+    var ctx2 = document.getElementById("myChart2").getContext("2d");
+    var ctx3 = document.getElementById("myChart3").getContext("2d");
+    var ctx4 = document.getElementById("myChart4").getContext("2d");
+    var ctx5 = document.getElementById("myChart5").getContext("2d");
+    var ctx6 = document.getElementById("myChart6").getContext("2d");
+    var ctx7 = document.getElementById("myChart7").getContext("2d");
+    var ctx8 = document.getElementById("myChart8").getContext("2d");
+    //所有统计图的数据
+    var data1 = [
+        {
+            value: 98,
+            color:"rgba(120,199,82,1)",
+        },
+        {
+            value : 402,
+            color:"rgba(120,199,82,.6)",
+        }
+    ]
+    var data2 = [
+        {
+            value: 30,
+            color:"rgba(248,189,7,1)",
+        },
+        {
+            value : 470,
+            color:"rgba(248,189,7,.6)",
+        }
+    ]
+    var data3 = [
+        {
+            value: 10,
+            color:"rgba(84,205,252,1)",
+        },
+        {
+            value : 490,
+            color:"rgba(84,205,252,.6)",
+        }
+    ]
+    var data4 = [
+        {
+            value: 35,
+            color:"rgba(255,100,75,1)",
+        },
+        {
+            value : 465,
+            color:"rgba(255,100,75,.6)",
+        }
+    ]
+    var data5 = {
+        labels : ["1","2","3","4","5","6","7",'8','9','10','11','12'],
+        datasets : [
+            {
+                fillColor : "rgba(120,199,82,.6)",
+                strokeColor : "rgba(120,199,82,1)",
+                pointColor : "rgba(120,199,82,1)",
+                pointStrokeColor : "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "fff",
+                data : [10,15,35,45,56,55,61,66,68,69]
+            },
+        ]
+    }
+    var data6 = {
+        labels : ["1","2","3","4","5","6","7",'8','9','10','11','12'],
+        datasets : [
+            {
+                fillColor : "rgba(248,189,7,.6)",
+                strokeColor : "rgba(248,189,7,1)",
+                pointColor : "rgba(248,189,7,1)",
+                pointStrokeColor : "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "fff",
+                data : [0,1,3,6,4,3,2,8,2,1]
+            },
+        ]
+    }
+    var data7 = {
+        labels : ["1","2","3","4","5","6","7",'8','9','10','11','12'],
+        datasets : [
+            {
+                fillColor : "rgba(84,205,252,.6)",
+                strokeColor : "rgba(84,205,252,1)",
+                pointColor : "rgba(84,205,252,1)",
+                pointStrokeColor : "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "fff",
+                data : [0,59,80,10,56,55,40,30,40,20]
+            },
+        ]
+    }
+    var data8 = {
+        labels : ["1","2","3","4","5","6","7",'8','9','10','11','12'],
+        datasets : [
+            {
+                fillColor : "rgba(255,100,75,.6)",
+                strokeColor : "rgba(255,100,75,1)",
+                pointColor : "rgba(255,100,75,1)",
+                pointStrokeColor : "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "fff",
+                data : [30,21,20,20,15,12,11,10,10,8]
+            },
+        ]
+    }
+    //折线统计图的设计
+    var lineOptions = {
+        scaleLabel : "<%=value%>%",
+        scaleGridLineColor : "rgba(255,255,255,1)",
+        scaleLineColor : "rgba(255,255,255,1)",
+        scaleFontColor : "#fff",
+        scaleShowGridLines : false,
+    };
+
+</script>
 </body>
 </html>

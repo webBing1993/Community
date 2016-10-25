@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>业主管理</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <meta content="telephone=no" name="format-detection">
+    <link rel="stylesheet" href="/community/css/framework7.ios.min.css">
+    <!-- Path to Framework7 color related styles, iOS Theme -->
+    <link rel="stylesheet" href="/community/css/framework7.ios.colors.min.css">
+    <style>
+        *{
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "黑体", "宋体", sans-serif;
+        }
+        body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, form,  input, p, table, th, td ,select,option{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .page{
+            background: url("/community/images/list/bk-1.png") no-repeat 0 0;
+            background-size: cover;
+        }
+        .clearfix:before{
+            display:table;
+            content:'';
+        }
+        .clearfix:after{
+            display:table;
+            content:'';
+            clear:both;
+        }
+        /*搜索框*/
+        .top1{
+            width:100%;
+            height:50px;
+            background-color: rgba(0,0,0,.3);
+            position:absolute;
+            top:0;
+            left:0;
+            z-index:10000;
+            padding-top:5px;
+            box-sizing: border-box;
+            /*background: url("/community/images/list/bk-1.png") no-repeat 0 0;*/
+            /*background-size: cover;*/
+        }
+        .top1>input{
+            float:left;
+            margin-left:3.2%;
+            height:40px;
+            width:75%;
+            outline: none;
+            background-color: transparent;
+            border:1px solid #fff;
+            border-radius: 5px;
+            box-sizing: border-box;
+            padding-left:2.6%;
+            -webkit-appearance:none;
+            color:#fff;
+            font-size: 14px;
+        }
+        .top1>input::-webkit-input-placeholder{
+            font-size: 14px;
+            color:#ccc;
+        }
+        .top1>b{
+            float:left;
+            margin-left:-25px;
+            width:15px;
+            height:15px;
+            background-color:#000;
+            margin-top:10.5px;
+            background: url('/community/images/zheng/search.png') no-repeat  0  0;
+            background-size: cover;
+        }
+        .top1>.top1-button{
+            width:21%;
+            float:left;
+            height:45px;
+        }
+        .top1>.top1-button>a{
+            display:block;
+            text-align: center;
+            color:#fff;
+            font-size: 14px;
+            line-height: 25px;
+        }
+        .top1>.top1-button>a>b{
+            width:25px;
+            height:20px;
+            background:url('/community/images/zheng/view-all.png') no-repeat 0 0;
+            background-size:cover;
+            display:block;
+            margin:0 auto;
+        }
+        #changeView{
+
+        }
+        .top1>.top1-button>#cancel1{
+            line-height: 40px;
+            display:none;
+
+        }
+        .main1{
+            width:100%;
+            height:calc(100vh);
+            position:absolute;
+            top:0px;
+            left:0;
+            background-color: #fff;
+            z-index: 9999;
+            overflow: hidden;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+            padding-top:51px;
+            background: url("/community/images/list/bk-1.png") no-repeat 0 0;
+            background-size: cover;
+        }
+        .main1>ul{
+            box-sizing: border-box;
+            width:100%;
+            height:calc(100vh - 51px);
+            overflow: scroll;
+        }
+        .main1>ul>li{
+            width: 100%;
+            padding-left:3.2%;
+            box-sizing: border-box;
+            border-bottom: 1px solid rgba(255,255,255,.3);
+            line-height: 40px;
+            font-size: 15px;
+            color:#fff;
+            height:40px;
+            background-color:rgba(0,0,0,.3);
+        }
+        #topList>li>span{
+            color:#fff;
+            display:inline-block;
+            margin-right:3.7%;
+            margin-left:0;
+            float:left;
+            font-size: 14px;
+        }
+        #topList>li>span:first-child{
+            width:57px;
+        }
+        #noMess{
+            text-align: center;
+            color:#fff;
+            font-size: 14px;
+            margin-top: 70px;
+            top: 50px;
+            width:100%;
+        }
+        #noMess>img{
+            width:99px;
+            height:96px;
+            margin-bottom:10px;
+        }
+        #page1{
+            padding-top:51px;
+        }
+        /*本页css*/
+        h3.title1{
+            font-size: 15px;
+            color:#fff;
+            height:40px;
+            font-weight: normal;
+            line-height: 40px;
+            border-bottom:1px solid rgba(255,255,255,.3);
+            padding-left:3.2%;
+            background-color:rgba(0,0,0,.3);
+        }
+        .main2{
+            height:calc(100vh - 51px);
+            top:51px;
+            left:0;
+            overflow: scroll;
+            z-index: 100;
+        }
+        .main2>ul{
+            background-color:rgba(0,0,0,.3);
+        }
+        .main2>ul>li{
+            font-size: 14px;
+            color:#fff;
+            padding-left:3.2%;
+            line-height: 40px;
+            height:40px;
+            position:relative;
+            border-bottom:1px solid rgba(255,255,255,.3);
+        }
+        .main2>ul>li>span{
+            float:left;
+        }
+        .main2>ul>li>span:after{
+            content: '';
+            display:block;
+            float: right;
+            width:1px;
+            height:15px;
+            border-right:1px solid rgba(255,255,255,.6);
+            margin-top:12.5px;
+            padding-right:3.2vw;
+        }
+        .main2>ul>li>div{
+            float:left;
+            margin-left:3.2vw;
+            color:#43ac45;
+        }
+        .main2>ul>li>b{
+            width:15px;
+            height:15px;
+            position:absolute;
+            display:block;
+            right:3.2vw;
+            top:12.5px;
+            background: url("/community/images/zheng/right-arrow.png") no-repeat  0  0;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+<div class="view home">
+    <div class="view view-main">
+        <div class="pages">
+            <div class="page" data-page="home">
+                <div class="page-content" id="page1">
+                    <div class="top1">
+                        <input type="text" placeholder="请输入业主姓名" id="input1">
+                        <b></b>
+                        <div class="top1-button">
+                            <a id="changeView" onclick="window.location.href='houseslist'">
+                                <b></b>
+                                列表模式
+                            </a>
+                            <a id="cancel1">
+                                取消
+                            </a>
+                        </div>
+                    </div>
+                    <div class="main1" style="display:none">
+                        <ul id="topList" style="display:none">
+                            <!--<li>-->
+                            <!--<span>王建国</span>-->
+                            <!--<span>23-1-301</span>-->
+                            <!--</li>-->
+                        </ul>
+                        <div id="noMess" style="display:none;">
+                            <img src="/community/images/noMess.png" alt=""><br>
+                            抱歉，没有相关数据！
+                        </div>
+                    </div>
+                    <div class="main2">
+                        <h3 class="title1">出租房源</h3>
+                        <ul class="">
+                            <li onclick="window.location.href='particulars1'">
+                                <span>1号楼</span>
+                                <div>7套</div>
+                                <b></b>
+                            </li>
+                            <li>
+                                <span>2号楼</span>
+                                <div>18套</div>
+                                <b></b>
+                            </li>
+                            <li>
+                                <span>3号楼</span>
+                                <div>11套</div>
+                                <b></b>
+                            </li>
+                            <li>
+                                <span>4号楼</span>
+                                <div>5套</div>
+                                <b></b>
+                            </li>
+                            <li>
+                                <span>5号楼</span>
+                                <div>12套</div>
+                                <b></b>
+                            </li>
+                            <li>
+                                <span>6号楼</span>
+                                <div>7套</div>
+                                <b></b>
+                            </li>
+                            <li>
+                                <span>6号楼</span>
+                                <div>9套</div>
+                                <b></b>
+                            </li>
+                            <li>
+                                <span>7号楼</span>
+                                <div>18套</div>
+                                <b></b>
+                            </li>
+                            <li>
+                                <span>8号楼</span>
+                                <div>18套</div>
+                                <b></b>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/community/js/jquery-1.11.1.min.js"></script>
+    <!--<script src="/community/js/framework7.js"></script>-->
+    <script>
+        //对于vh兼容性使用js进行空置
+        $(function(){
+            $('#noMess').css({'margin-top':document.body.clientHeight/2-50-65+'px'});
+//            $('.mainBk>div.mainTop').css({'margin-top':document.body.clientHeight/2-160+'px'});
+        })
+        //生成frame对象
+        //        var myApp=new Framework7;
+        //判断刚开始的中文输入法没有完成
+        var lock;
+        //搜索主内容区点击关闭
+        //    $('.main1').click(close);
+        //搜索框点击事件
+        $('#input1').focus(showList);
+        function close(e){
+            if(e.target.nodeName=='LI'){
+            }else{
+                $('.main1').hide();
+                $('#changeView').show();
+                $('#cancel1').hide();
+            }
+        }
+        function showList(){
+            $('#noMess').hide();
+            $('.main2').hide();
+            $('.main1>ul').html('');
+            $('.main1').show();
+            setGet();
+            $('#changeView').hide();
+//            $('#cancel1').show();
+            $('#cancel1').show().css({'display':'block'});
+        }
+        //定时器取数据
+        function setGet(){
+            setTimeout(function(){
+                $.ajax({
+                    type:'post',
+                    url:"{:Url('Community/search')}",
+                    data:{'name':$('#input1').val()},
+                    success:function(data){
+                        if($('#input1').val()!=''){
+                            var data=JSON.parse(data);
+                            if(data==0){
+                                $('.main1>ul').html('');
+                                $('#noMess').show();
+                                $('.main1>ul').hide();
+                            }else{
+                                $('.main1>ul').html('');
+                                $('.main1>ul').show();
+                                $('#noMess').hide();
+                                for(var i=0;i<data.length;i++){
+                                    $('.main1>ul').append(
+                                            '<li onclick=window.location.href="information"'+'><span>'+data[i].name+'</span><span>'+data[i].info+'</span></li>'
+                                    );
+                                }
+
+                            }
+                        }
+                    }
+                });
+            },200);
+        }
+        //在一些自带输入法判断中文输入完成
+        $('#input1').on('compositionstart',function(){
+            lock = true;
+        });
+        $('#input1').on('compositionend',function(){
+            lock = false;
+        });
+        $('#input1').on('input',function(){
+            if(!lock){
+                setGet();
+            }
+        });
+        //搜索框非中文输入处理
+        $('#input1').keyup(function(){
+            if($(this).val()){
+//            $('#changeView').hide();
+//            $('#cancel1').show().css({'display':'block'});
+                $('#noMess').hide();
+                setGet();
+            }else{
+                $('.main1>ul').html('');
+//            $('#changeView').show();
+//            $('#cancel1').hide();
+                $('#noMess').hide();
+            }
+        });
+        //myApp.showIndicator();等待框
+        //搜索取消按钮点击
+        $('#cancel1').click(function(){
+            $('input').val('');
+            $('.main1>ul').html('');
+            $('.main1').hide();
+            $('#changeView').show();
+            $('#cancel1').hide();
+            $('.main2').show();
+        })
+
+    </script>
+</div>
+</body>
+</html>

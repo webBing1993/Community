@@ -20,6 +20,18 @@ class Community extends Controller{
     public function shang(){
         return $this->fetch();
     }
+    public function houseslist(){
+        return $this->fetch();
+    }
+    public function particulars(){
+        return $this->fetch();
+    }
+    public function particulars1(){
+        return $this->fetch();
+    }
+    public function information(){
+        return $this->fetch();
+    }
     public function search(){
         $name=input('post.name');
         $Host=new Host();
