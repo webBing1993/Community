@@ -10,7 +10,7 @@
     <hotspots width="180" height="0" wordwrap="1">
       <label width="60" backgroundalpha="1" enabled="1" height="0" backgroundcolor="0x585858" bordercolor="0x585858" border="1" textcolor="0xffffff" background="1" borderalpha="1" borderradius="19" wordwrap="1" textalpha="1"/>
       <polystyle mode="0" backgroundalpha="0.2509803921568627" backgroundcolor="0x0000ff" bordercolor="0x0000ff" borderalpha="1"/>
-      <hotspot title="俯视视角" target="280.5/-46.5/82" pan="-32.30" skinid="no" url="shang" id="Point01" tilt="9.97"/>
+      <hotspot title="俯视视角" target="280.5/-46.5/82" pan="-35.30" skinid="no" url="shang" id="Point01" tilt="9.97"/>
       <hotspot title="1#" target="" pan="-14.0151" skinid="" url="houseslist" id="Point02" tilt="-17.4556"/>
       <hotspot title="2#" target="" pan="7.54103" skinid="" url="" id="Point03" tilt="-10.0387"/>
       <hotspot title="3#" target="" pan="-95.9758" skinid="" url="" id="Point04" tilt="-18.1823"/>

@@ -44,7 +44,8 @@ var init = function() {
 //            });
             var marker = new qq.maps.Marker({
                 position: latlngs[n],
-                map: map
+                map: map,
+                animation:qq.maps.MarkerAnimation.DROP,
             });
             $(marker).data('ab',n);
                 qq.maps.event.addListener(marker, 'click', function() {
