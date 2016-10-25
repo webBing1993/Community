@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>平面图</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        #container{
+           width:100%;
+           height:100vh;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<script src="/community/js/jquery-1.11.1.min.js"></script>
+<script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp&key=WS7BZ-ZBERG-5T5Q3-IBRHI-FVXU3-45FR5&libraries=drawing,geometry,autocomplete,convertor"></script>
+<script>
+
+//直接加载地图
+
+
+                //初始化地图函数  自定义函数名i
+var init = function() {
+    var center = new qq.maps.LatLng(30.283511,120.010507);
+    var map = new qq.maps.Map(document.getElementById('container'),{
+        center: center,
+        zoom: 13
+    });
+    var arr=['仓溢绿苑','西溪北苑','钱神花苑小区']
+    var latlngs = [
+        new qq.maps.LatLng(30.281990,119.992800),
+        new qq.maps.LatLng(30.285510,120.035360),
+        new qq.maps.LatLng(30.287410,119.990830)
+    ];
+    for(var i = 0;i < latlngs.length; i++) {
+        (function(n){
+//            var i= new qq.maps.InfoWindow({
+//                map: map
+//            });
+            var marker = new qq.maps.Marker({
+                position: latlngs[n],
+                map: map
+            });
+            $(marker).data('ab',n);
+                qq.maps.event.addListener(marker, 'click', function() {
+                    if($(this).data('ab')==0){
+                        window.location.href='zheng';
+                    }else{
+                        alert('这是'+arr[$(this).data('ab')]);
+                    }
+        });
+        })(i);
+    }
+
+//    //获取标记的点击事件
+//    qq.maps.event.addListener(marker, 'click', function() {
+//        marker1=this;
+//        this.setIcon('images/marker1.png');
+////                var anchor = new qq.maps.Point(12, 12),
+////                        size = new qq.maps.Size(24, 24),
+////                        origin = new qq.maps.Point(0, 0),
+////                        icon = new qq.maps.MarkerImage('images/center.gif', size, origin, anchor);
+////                marker1 = new qq.maps.Marker({
+////                    position: new qq.maps.LatLng(this.position.lat,this.position.lng),
+////                    map: map,
+////                    zIndex:5,
+////                    icon:icon
+////                });
+////            });
+//    });
+//    qq.maps.event.addListener(map, 'click', function() {
+//        if(marker1){
+//            marker1.setIcon('images/marker.png');
+//        }
+//    });
+}
+init();
+var wAlert = window.alert;
+window.alert = function (message) {
+    try {
+        var iframe = document.createElement("IFRAME");
+        iframe.style.display = "none";
+        iframe.setAttribute("src", 'data:text/plain,');
+        document.documentElement.appendChild(iframe);
+        var alertFrame = window.frames[0];
+        var iwindow = alertFrame.window;
+        if (iwindow == undefined) {
+            iwindow = alertFrame.contentWindow;
+        }
+        iwindow.alert(message);
+        iframe.parentNode.removeChild(iframe);
+    }
+    catch (exc) {
+        return wAlert(message);
+    }
+}
+var wConfirm = window.confirm;
+window.confirm = function (message) {
+    try {
+        var iframe = document.createElement("IFRAME");
+        iframe.style.display = "none";
+        iframe.setAttribute("src", 'data:text/plain,');
+        document.documentElement.appendChild(iframe);
+        var alertFrame = window.frames[0];
+        var iwindow = alertFrame.window;
+        if (iwindow == undefined) {
+            iwindow = alertFrame.contentWindow;
+        }
+        iwindow.confirm(message);
+        iframe.parentNode.removeChild(iframe);
+    }
+    catch (exc) {
+        return wConfirm(message);
+    }
+}
+</script>
+</body>
+</html>

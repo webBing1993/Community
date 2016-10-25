@@ -32,6 +32,9 @@ class Community extends Controller{
     public function information(){
         return $this->fetch();
     }
+    public function map(){
+        return $this->fetch();
+    }
     public function search(){
         $name=input('post.name');
         $Host=new Host();
