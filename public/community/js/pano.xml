@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panorama id="node1">
+  <input levelbias="0.400" width="3673" height="3673" leveltileurl="../images/tiles/zheng1/cf_%c/l_%l/c_%x/tile_%y.jpg" leveltilesize="510" overlap="1" levelbiashidpi="0.400" levelingpitch="0" levelingroll="0">
+    <level predecode="0" width="3673" preload="0" height="3673"/>
+    <level predecode="0" width="1836" preload="0" height="1836"/>
+    <level predecode="0" width="918" preload="0" height="918"/>
+    <level predecode="1" width="459" preload="1" height="459"/>
+    <preview strip="1" color="0x808080"/>
+  </input>
+  <view pannorth="0" fovmode="0">
+    <start pan="304" fov="90" tilt="-16"/>
+    <min pan="0" fov="40" tilt="-90"/>
+    <max pan="360" fov="120" tilt="90"/>
+  </view>
+  <userdata latitude="30.283628" datetime="2016:10:13 09:45:00" source="" description="" title="" copyright="" info="" author="" tags="仓溢绿苑" longitude="119.988282" comment=""/>
+  <hotspots width="180" wordwrap="1" height="20">
+    <label textalpha="1" border="1" enabled="1" width="100" backgroundcolor="0xffffff" backgroundalpha="1" textcolor="0x000000" bordercolor="0x000000" borderalpha="1" wordwrap="1" height="20" borderradius="1" background="1"/>
+    <polystyle backgroundcolor="0x0000ff" backgroundalpha="0.2509803921568627" mode="0" handcursor="1" bordercolor="0x0000ff" borderalpha="1"/>
+    <hotspot title="俯视视角" target="280.5/-46.5/82" pan="-35.30" skinid="no" url="../../../community/community/shang" id="Point01" tilt="9.97"/>
+    <hotspot title="1#" target="" pan="-14.0151" skinid="" url="../../../community/community/houseslist" id="Point02" tilt="-17.4556"/>
+    <hotspot title="2#" target="" pan="7.54103" skinid="" url="../../../community/community/houseslist" id="Point03" tilt="-10.0387"/>
+    <hotspot title="3#" target="" pan="-95.9758" skinid="" url="../../../community/community/houseslist" id="Point04" tilt="-18.1823"/>
+    <hotspot title="4#" target="" pan="-30.1545" skinid="" url="../../../community/community/houseslist" id="Point05" tilt="-13.5862"/>
+    <hotspot title="5#" target="" pan="-82.6093" skinid="" url="../../../community/community/houseslist" id="Point06" tilt="-13.2281"/>
+    <hotspot title="6#" target="" pan="-104.154" skinid="" url="../../../community/community/houseslist" id="Point07" tilt="-9.49075"/>
+    <hotspot title="7#" target="" pan="-48.1712" skinid="" url="../../../community/community/houseslist" id="Point08" tilt="-6.41556"/>
+    <hotspot title="8#" target="" pan="-65.1558" skinid="" url="../../../community/community/houseslist" id="Point09" tilt="-5.93298"/>
+    <hotspot title="9#" target="" pan="-5.12" skinid="" url="../../../community/community/houseslist" id="Point10" tilt="-9.10"/>
+    <hotspot title="10#" target="" pan="-11.43" skinid="" url="../../../community/community/houseslist" id="Point11" tilt="-6.99"/>
+    <hotspot title="11#" target="" pan="-17.83" skinid="" url="../../../community/community/houseslist" id="Point12" tilt="-5.90"/>
+  </hotspots>
+  <media/>
+  <transition enabled="0" blendtime="1" zoomoutpause="1" zoomspeed="2" blendcolor="0x000000" zoomin="0" type="crossdissolve" softedge="0" zoomfov="20" zoomout="0"/>
+  <control lockedkeyboard="0" contextfullscreen="0" lockedkeyboardzoom="1" invertcontrol="1" simulatemass="1" sensitivity="8" lockedwheel="0" speedwheel="1" lockedmouse="0" dblclickfullscreen="0" invertwheel="0" hideabout="1"/>
+</panorama>
