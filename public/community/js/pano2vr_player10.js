@@ -3,7 +3,7 @@
 // License:                                                         //
 // (c) 2016, Garden Gnome Software, http://ggnome.com               //
 //////////////////////////////////////////////////////////////////////
-
+var abc=0;
 var h = function() {
         function e(a, c) {
             this.x = a;
@@ -3195,7 +3195,7 @@ var ba = function() {
         e.prototype.ui = function(a) {
             0 == a && (this.C.yc = !1);
             1 == a && (this.C.yc = !0);
-            2 == a && (this.C.yc = this.C.yc ? !1 : !0)
+            2 == a && (this.C.yc = this.C.yc ? !1 : !0);
         };
         e.prototype.ej = function() {
             return 1 == this.C.yc ? 1 : 0
@@ -3461,7 +3461,7 @@ var ba = function() {
                 c;
             this.Sa ? this.Y && (this.uk(), 2 === this.rb ? (this.ab(), this.ab(), this.ef()) : 0 === this.rb && (c = this.bc(), this.Wg(this.l.width / 2, this.l.height / 2, c), this.ef())) : (this.ab(), 2 === this.rb ? (this.ab(), this.ef(), this.yk()) : 0 === this.rb && (c = this.bc(), this.Wg(this.l.width / 2, this.l.height / 2, c), this.ef(), this.ae ? this.Dk() : this.$h && this.Zh(), this.Uh(), this.ka ? (this.o.$c ? this.Ck() : 0 < this.f.L.length ? this.Bk() : this.Ak(), this.zj()) : (this.Hb ? 0 < this.f.L.length ? this.xk() : this.wk() : this.$d && this.tk(), this.yj()), this.Ea && this.Ea.xj()));
             50 < Date.now() - a ? this.Oe || (2 < this.bg ? (this.Oe = !0, this.Sc()) : this.bg++) : this.bg = 0;
-            this.Id && this.f.Dh++
+            this.Id && this.f.Dh++;
         };
         e.prototype.Ak = function() {
             var a;
@@ -3521,7 +3521,6 @@ var ba = function() {
                                 f: null,
                                 Pb: null
                             };
-
                             g.A = document.createElement("canvas");
                             c.ka ? (g.A.width = b.width, g.A.height = b.height) : (g.A.width = c.f.Z + 2 * c.f.Va, g.A.height = c.f.Z + 2 * c.f.Va);
                             g.da = g.A.getContext("2d");
@@ -3548,9 +3547,10 @@ var ba = function() {
                             c.Hb && (g.A.wc = -1, c.w.insertBefore(g.A, c.w.firstChild));
                             b.$[d] = g
                         }
-                        c.f.L.push(b)
+                        c.f.L.push(b);
+                        // $('#fakeloader').fadeOut();
                     }
-                    $('#fakeloader').fadeOut();
+
                 } catch (f) {}
                 c.update()
             }
@@ -3814,7 +3814,13 @@ var ba = function() {
                 a.f && !a.A && c.w.appendChild(a.f);
                 c.ja && c.ja--;
                 0 == c.ja && c.D && c.D.ggLoadedLevels && c.D.ggLoadedLevels();
-                a.f && a.da && (a.da.drawImage(a.f, 0, 0), a.f = null)
+                a.f && a.da && (a.da.drawImage(a.f, 0, 0), a.f = null);
+                //每块图片加载
+                // abc++;
+                // if(abc>6){
+                //     $('#fakeloader').fadeOut();
+                // }
+                // alert(1);
             }
         };
         e.prototype.lk = function() {
@@ -3936,7 +3942,7 @@ var ba = function() {
                             var r;
                             r = {};
                             a.cache ? (r.gb = 0, r.vb = 0, r.Bb = a.Ma - 1, r.Cb = a.Fb - 1) : this.Qg(a, m, r);
-                            for (g = r.vb; g <= r.Cb; g++) for (d = r.gb; d <= r.Bb; d++) {
+                            for (g = r.vb; g <= r.Cb; g++)for (d = r.gb; d <= r.Bb; d++) {
                                 f = d + g * a.Ma + b * a.Ma * a.Fb;
                                 (m = a.$[f]) || (m = a.$[f] = {});
                                 if (!m.A && this.ja < this.Ye) {
@@ -3959,6 +3965,10 @@ var ba = function() {
                                         this.w.insertBefore(m.A, f)
                                     }
                                     m.A && (m.f = new Image, m.f.crossOrigin = this.crossOrigin, m.f.style[this.Aa + "Origin"] = "0% 0%", m.f.style.position = "absolute", m.f.style.overflow = "hidden", m.A.wc = q, c && (m.A.id = "tile" + b + "_" + q + "___" + g + "_" + d), m.f.onload = this.kk(m), m.f.onerror = this.Ze(m), m.f.onabort = this.Ze(m), m.f.setAttribute("src", this.$e(b, q, d, g)), a.cache && this.bb.push(m.f), 0 == this.ja && this.D && this.D.ggReLoadedLevels && this.D.ggReLoadedLevels(), this.ja++, this.Ca = !0)
+                                    // abc++;
+                                    //
+                                    //         $('#fakeloader').fadeOut();
+
                                 } else this.Oc++;
                                 if (m.A) {
                                     f = "";
@@ -3977,6 +3987,7 @@ var ba = function() {
                     }
                     q--
                 }
+
                 for (e = 0; e < this.f.L.length; e++) {
                     var a = this.f.L[e],
                         v;
@@ -5641,7 +5652,8 @@ var ba = function() {
                 this.Pc.hasOwnProperty(d) || (this.ad("Start node " + d + " not found!"), d = n);
                 this.Uf(this.Pc[d], c);
                 this.of("{" + d + "}")
-            } else this.Kd = !1, this.Uf(b, c), this.of(""), this.sa.push("")
+            } else this.Kd = !1, this.Uf(b, c), this.of(""), this.sa.push("");
+            $('#fakeloader').fadeOut();
         };
         e.prototype.Uf = function(a, c) {
             this.Bh();

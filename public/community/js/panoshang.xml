@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panorama id="node1" >
+  <input leveltilesize="510" levelbiashidpi="0.400" levelingpitch="0" levelingroll="0" levelbias="0.400" leveltileurl="../images/tileshang/shang/cf_%c/l_%l/c_%x/tile_%y.jpg" overlap="0" width="3665" height="3665">
+    <level predecode="0" preload="0" width="3665" height="3665"/>
+    <level predecode="0" preload="0" width="1832" height="1832"/>
+    <level predecode="0" preload="0" width="916" height="916"/>
+    <level predecode="1" preload="1" width="458" height="458"/>
+    <preview color="0x808080"/>
+  </input>
+  <view pannorth="0" fovmode="0">
+    <start pan="286.5" fov="90" tilt="-22.5"/>
+    <min pan="0" fov="40" tilt="-90"/>
+    <max pan="360" fov="120" tilt="90"/>
+  </view>
+  <userdata latitude="30.285965" datetime="2016:10:10 09:56:44" info="" description="" comment="" tags="仓溢绿苑" copyright="" longitude="119.985713" author="" title="" source=""/>
+  <hotspots wordwrap="1" width="180" height="20">
+    <label borderradius="1" enabled="1" borderalpha="1" border="1" backgroundalpha="1" wordwrap="1" background="1" bordercolor="0x000000" textcolor="0x000000" backgroundcolor="0xffffff" textalpha="1" width="180" height="20"/>
+    <polystyle borderalpha="1" handcursor="1" backgroundalpha="0.2509803921568627" bordercolor="0x0000ff" backgroundcolor="0x0000ff" mode="0"/>
+    <hotspot title="正门视角" target="" pan="-75.3023" skinid="no" url="../../../community/community/in" id="Point01" tilt="-17.8222"/>
+  </hotspots>
+  <media/>
+  <transition enabled="0" blendtime="1" zoomoutpause="1" zoomspeed="2" blendcolor="0x000000" zoomin="0" type="crossdissolve" softedge="0" zoomfov="20" zoomout="0"/>
+  <control lockedkeyboard="0" contextfullscreen="0" lockedkeyboardzoom="1" invertcontrol="1" simulatemass="1" sensitivity="8" lockedwheel="0" speedwheel="1" lockedmouse="0" dblclickfullscreen="0" invertwheel="0" hideabout="1"/>
+</panorama>
+
