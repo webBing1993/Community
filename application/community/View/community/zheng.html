@@ -1,66 +1,17 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="charset=UTF-8">
-		<title>全景模式</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui" />
-		<!--<meta name="apple-mobile-web-app-capable" content="yes" />-->
-		<!--<meta name="apple-mobile-web-app-status-bar-style" content="black" />-->
-		<!--<link rel="stylesheet" href="/community/css/framework7.ios.min.css">-->
-		<!--&lt;!&ndash; Path to Framework7 color related styles, iOS Theme &ndash;&gt;-->
-		<!--<link rel="stylesheet" href="/community/css/framework7.ios.colors.min.css">-->
-		<script type="text/javascript" src="/community/js/swfobject.js">
-		</script>
-		<script type="text/javascript">
-			function hideUrlBar() {
-				// hide URL field on the iPhone/iPod touch
-				var p = String(navigator.platform);
-				container = document.getElementById("container");
-				if( p === 'iPad' || p === 'iPhone' || p === 'iPod touch' ){
-					var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
-					if (parseInt(v[1], 10)>=7) {
-						// iOS >=7
-						if (container) {
-							container.style.top=(0) + "px";
-							container.style.left=(0) + "px";
-							container.style.width=(window.innerWidth) + "px";
-							container.style.height=(window.innerHeight) + "px";
-							if (pano) {
-								pano.setViewerSize(window.innerWidth, window.innerHeight);
-							}						}
-						window.scrollTo(0, 0);
-					} else {
-						if (container) {
-							var cheight;
-							switch(window.innerHeight) {
-								case 208:cheight=268; break; // landscape
-								case 260:cheight=320; break; // landscape, fullscreen
-								case 336:cheight=396; break; // portrait, in call status bar
-								case 356:cheight=416; break; // portrait 
-								case 424:cheight=484; break; // portrait iPhone5, in call status bar
-								case 444:cheight=504; break; // portrait iPhone5 
-								default: cheight=window.innerHeight;
-							}
-							if ((cheight) && ((container.offsetHeight!=cheight) || (window.innerHeight!=cheight))) {
-								container.style.height=cheight + "px";
-							}
-						}
-						document.getElementsByTagName("body")[0].style.marginTop="1px";
-						window.scrollTo(0, 1);
-					}
-				}
-			}            
-			if (window.addEventListener) {
-				window.addEventListener("load", hideUrlBar);
-				window.addEventListener("resize", hideUrlBar);
-				window.addEventListener("orientationchange", hideUrlBar);
-			}
-	
-		</script>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+		<title>社区楼盘表</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<meta name="mobile-web-app-capable" content="yes" />		
 		<style type="text/css" title="Default">
 			body, div, h1, h2, h3, span, p {
 				font-family: Verdana,Arial,Helvetica,sans-serif;
-				color: #000000; 
+				color: #000000;
 			}
 			*{
 				font-family: "Microsoft YaHei", "黑体", "宋体", sans-serif;
@@ -80,14 +31,14 @@
 				overflow:hidden; /* disable scrollbars */
 			}
 			body {
-			  font-size: 10pt;
-			  background : #ffffff; 
+				font-size: 10pt;
+				background : #ffffff;
 			}
 			table,tr,td {
 				font-size: 10pt;
 				border-color : #777777;
-				background : #dddddd; 
-				color: #000000; 
+				background : #dddddd;
+				color: #000000;
 				border-style : solid;
 				border-width : 2px;
 				padding: 5px;
@@ -99,16 +50,16 @@
 			h2 {
 				font-size: 14pt;
 			}
-			.warning { 
+			.warning {
 				font-weight: bold;
-			} 
-			/* fix for scroll bars on webkit & Mac OS X Lion */ 
+			}
+			/* fix for scroll bars on webkit & Mac OS X Lion */
 			/*::-webkit-scrollbar {*/
-				/*background-color: rgba(0,0,0,0.5);*/
-				/*width: 0.75em;*/
+			/*background-color: rgba(0,0,0,0.5);*/
+			/*width: 0.75em;*/
 			/*}*/
 			/*::-webkit-scrollbar-thumb {*/
-    			/*background-color:  rgba(255,255,255,0.5);*/
+			/*background-color:  rgba(255,255,255,0.5);*/
 			/*}*/
 			/*搜索框*/
 			.top1{
@@ -234,11 +185,28 @@
 				height:96px;
 				margin-bottom:10px;
 			}
+			.no{
+				display:none;
+			}
+			#fakeloader{
+				top:0;
+				width:100vw;
+				height:100vh;
+				z-index:10001;
+				background: rgba(0,0,0,.3);
+				position:absolute;
+				background:rgba(0,0,0,.7) url("/community/images/list/4.gif") no-repeat center center;
+				background-size:35px 35px;
+			}
+			#container{
+				background:#000;
+			}
 		</style>	
 	</head>
 	<body>
-		<script type="text/javascript" src="/community/js/pano2vr_player.js">
-		</script>
+<!-- - - - - - - 8<- - - - - - cut here - - - - - 8<- - - - - - - -->
+		<div id="fakeloader">
+		</div>
 		<div class="top1">
 			<input type="text" placeholder="请输入业主姓名" id="input1">
 			<b></b>
@@ -255,8 +223,8 @@
 		<div class="main1" style="display:none">
 			<ul id="topList">
 				<!--<li>-->
-					<!--<span>王建国</span>-->
-					<!--<span>23-1-301</span>-->
+				<!--<span>王建国</span>-->
+				<!--<span>23-1-301</span>-->
 				<!--</li>-->
 			</ul>
 			<div id="noMess" style="display:none;">
@@ -264,136 +232,114 @@
 				抱歉，没有相关数据！
 			</div>
 		</div>
+		<script src="/community/js/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="/community/js/pano2vr_player10.js">
+		</script>
 		<div id="container" style="width:100%;height:100%;">
-
 		</div>
 		<script type="text/javascript">
-
-		// check for CSS3 3D transformations and WebGL
-		if (ggHasHtml5Css3D() || ggHasWebGL()) {
-		// use HTML5 panorama
 			// create the panorama player with the container
 			pano=new pano2vrPlayer("container");
-			pano.readConfigUrl("/community/js/zheng_out.xml");
-			// hide the URL bar on the iPhone
-			setTimeout(function() { hideUrlBar(); }, 10);
-		} else if (swfobject.hasFlashPlayerVersion("10.0.0")) {
-			var flashvars = {};
-			var params = {};
-			// enable javascript interface
-			flashvars.externalinterface="1";
-			params.quality = "high";
-			params.bgcolor = "#ffffff";
-			params.allowscriptaccess = "sameDomain";
-			params.allowfullscreen = "true";
-			var attributes = {};
-			attributes.id = "pano";
-			attributes.name = "pano";
-			attributes.align = "middle";
-			flashvars.panoxml="/community/js/zheng_out.xml";
-			params.base=".";
-			swfobject.embedSWF(
-				"pano2vr_player.swf", "container", 
-				"100%", "100%",
-				"9.0.0", "", 
-				flashvars, params, attributes);
-		}
+			window.addEventListener("load", function() {
+				pano.readConfigUrlAsync("/community/js/pano.xml");
+			});
 		</script>
-		<script src="/community/js/jquery-1.11.1.min.js"></script>
-		<!--<script src="/community/js/framework7.js"></script>-->
 		<script>
-			//对于vh兼容性使用js进行空置
-			$(function(){
-				$('#noMess').css({'margin-top':document.body.clientHeight/2-50-65+'px'});
-				$('.mainBk>div.mainTop').css({'margin-top':document.body.clientHeight/2-160+'px'});
-			})
-			//判断刚开始的中文输入法没有完成
-			var lock;
-			//搜索主内容区点击关闭
-//			$('.main1').click(close);
-			//搜索框点击事件
-			$('#input1').focus(showList);
-			function close(e){
-				if(e.target.nodeName=='LI'){
-				}else{
-					$('.main1').hide();
-					$('#changeView').show();
-					$('#cancel1').hide();
-				}
-			}
-			function showList(){
-				$('#container').hide();
-				$('.main1>ul').html('');
-				$('.main1').show();
-				setGet();
-				$('#changeView').hide();
-				$('#cancel1').show();
-				$('#cancel1').show().css({'display':'block'});
-			}
-			//定时器取数据
-			function setGet(){
-				setTimeout(function(){
-					$.ajax({
-						type:'post',
-						url:"{:Url('Community/search')}",
-						data:{'name':$('#input1').val()},
-						success:function(data){
-							if($('#input1').val()!=''){
-								var data=JSON.parse(data);
-								if(data==0){
-									$('.main1>ul').html('');
-									$('#noMess').show();
-								}else{
-									$('.main1>ul').html('');
-									$('#noMess').hide();
-									for(var i=0;i<data.length;i++){
-										$('.main1>ul').append(
-												'<li onclick=window.location.href="information"'+'><span>'+data[i].name+'</span><span>'+data[i].info+'</span></li>'
-										);
-									}
-
-								}
+	//对于vh兼容性使用js进行空置
+	$(function(){
+		$('#noMess').css({'margin-top':document.body.clientHeight/2-50-65+'px'});
+		$('.mainBk>div.mainTop').css({'margin-top':document.body.clientHeight/2-160+'px'});
+	})
+	//判断刚开始的中文输入法没有完成
+	var lock;
+	//搜索主内容区点击关闭
+	//			$('.main1').click(close);
+	//搜索框点击事件
+	$('#input1').focus(showList);
+	function close(e){
+		if(e.target.nodeName=='LI'){
+		}else{
+			$('.main1').hide();
+			$('#changeView').show();
+			$('#cancel1').hide();
+		}
+	}
+	function showList(){
+		$('#container').hide();
+		$('.main1>ul').html('');
+		$('.main1').show();
+		setGet();
+		$('#changeView').hide();
+		$('#cancel1').show();
+		$('#cancel1').show().css({'display':'block'});
+	}
+	//定时器取数据
+	function setGet(){
+		setTimeout(function(){
+			$.ajax({
+				type:'post',
+				url:"{:Url('Community/search')}",
+				data:{'name':$('#input1').val()},
+				success:function(data){
+					if($('#input1').val()!=''){
+						var data=JSON.parse(data);
+						if(data==0){
+							$('.main1>ul').html('');
+							$('#noMess').show();
+						}else{
+							$('.main1>ul').html('');
+							$('#noMess').hide();
+							for(var i=0;i<data.length;i++){
+								$('.main1>ul').append(
+										'<li onclick=window.location.href="information"'+'><span>'+data[i].name+'</span><span>'+data[i].info+'</span></li>'
+								);
 							}
+
 						}
-					});
-				},200);
-			}
-			//在一些自带输入法判断中文输入完成
-			$('#input1').on('compositionstart',function(){
-				lock = true;
-			});
-			$('#input1').on('compositionend',function(){
-				lock = false;
-			});
-			$('#input1').on('input',function(){
-				if(!lock){
-					setGet();
+					}
 				}
 			});
-			//搜索框非中文输入处理
-			$('#input1').keyup(function(){
-				if($(this).val()){
+		},200);
+	}
+	//在一些自带输入法判断中文输入完成
+	$('#input1').on('compositionstart',function(){
+		lock = true;
+	});
+	$('#input1').on('compositionend',function(){
+		lock = false;
+	});
+	$('#input1').on('input',function(){
+		if(!lock){
+			setGet();
+		}
+	});
+	//搜索框非中文输入处理
+	$('#input1').keyup(function(){
+		if($(this).val()){
 //            $('#changeView').hide();
 //            $('#cancel1').show().css({'display':'block'});
-					$('#noMess').hide();
-					setGet();
-				}else{
-					$('.main1>ul').html('');
+			$('#noMess').hide();
+			setGet();
+		}else{
+			$('.main1>ul').html('');
 //            $('#changeView').show();
 //            $('#cancel1').hide();
-					$('#noMess').hide();
-				}
-			});
-			//myApp.showIndicator();等待框
-			//搜索取消按钮点击
-			$('#cancel1').click(function(){
-				$('#container').show();
-				$('input').val('');
-				$('.main1>ul').html('');
-				$('.main1').hide();
-				$('#changeView').show();
-				$('#cancel1').hide();
-			})
-		</script>
+			$('#noMess').hide();
+		}
+	});
+	//myApp.showIndicator();等待框
+	//搜索取消按钮点击
+	$('#cancel1').click(function(){
+		$('#container').show();
+		$('input').val('');
+		$('.main1>ul').html('');
+		$('.main1').hide();
+		$('#changeView').show();
+		$('#cancel1').hide();
+	})
+</script>
+<!--&lt;!&ndash; - - - - - - 8<- - - - - - cut here - - - - - 8<- - - - - - - &ndash;&gt; -->
+		<!--&lt;!&ndash; Hack needed to hide the url bar on iOS 9, iPhone 5s &ndash;&gt; -->
+		<!--<div style="width:1px;height:1px;"></div>-->
 	</body>
 </html>

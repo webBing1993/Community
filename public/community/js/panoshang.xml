@@ -16,7 +16,7 @@
   <hotspots wordwrap="1" width="180" height="20">
     <label borderradius="1" enabled="1" borderalpha="1" border="1" backgroundalpha="1" wordwrap="1" background="1" bordercolor="0x000000" textcolor="0x000000" backgroundcolor="0xffffff" textalpha="1" width="180" height="20"/>
     <polystyle borderalpha="1" handcursor="1" backgroundalpha="0.2509803921568627" bordercolor="0x0000ff" backgroundcolor="0x0000ff" mode="0"/>
-    <hotspot title="正门视角" target="" pan="-75.3023" skinid="no" url="../../../community/community/in" id="Point01" tilt="-17.8222"/>
+    <hotspot title="正门视角" target="" pan="-75.3023" skinid="no" url="../../../community/community/zheng" id="Point01" tilt="-17.8222"/>
   </hotspots>
   <media/>
   <transition enabled="0" blendtime="1" zoomoutpause="1" zoomspeed="2" blendcolor="0x000000" zoomin="0" type="crossdissolve" softedge="0" zoomfov="20" zoomout="0"/>
