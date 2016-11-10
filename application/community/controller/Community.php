@@ -44,6 +44,15 @@ class Community extends Controller{
     public function in(){
         return $this->fetch();
     }
+    public function a1(){
+        return $this->fetch();
+    }
+    public function carport(){
+        return $this->fetch();
+    }
+    public function carport1(){
+        return $this->fetch();
+    }
     public function search(){
         $name=input('post.name');
         $Host=new Host();

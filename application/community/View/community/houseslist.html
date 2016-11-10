@@ -204,8 +204,8 @@
             color:#fff;
             line-height: 40px;
             height:40px;
-            background: url("/community/images/list/downArrow.png") no-repeat 90% center;
-            background-size:14px 9px;
+            /*background: url("/community/images/list/downArrow.png") no-repeat 90% center;*/
+            /*background-size:14px 9px;*/
         }
         #picker-dependent::-webkit-input-placeholder{
             color: #fff;
@@ -884,7 +884,7 @@
                                             <li>备注：<a></a></li>
                                         </ul>
                                     </div>
-                                    <div class="mainClose" onclick="$('.mainText').hide();">
+                                    <div class="mainClose" onclick="$('.mainText').hide();"></div>
                                     </div>
                                 </div>
                             </div>
@@ -918,6 +918,11 @@
     $(function(){
         $('#noMess').css({'margin-top':document.body.clientHeight/2-50-65+'px'});
         $('.mainBk>div.mainTop').css({'margin-top':document.body.clientHeight/2-160+'px'});
+        //选择区域加上箭头
+        arrowPosi({data:{data:'#picker-dependent'}});
+        //选项改变箭头背景也会改变
+        $('#picker-device').bind('change',{data:'#picker-dependent'},arrowPosi);
+
     })
     //生成frame对象
     var myApp=new Framework7;
@@ -939,7 +944,7 @@
         $('#noMess').hide();
         $('.other').hide();
         $('.main1>ul').html('');
-        $('.main1').show();
+//        $('.main1').show();
         setGet();
         $('#changeView').hide();
 //        $('#cancel1').show();
@@ -1001,11 +1006,24 @@
             $('#noMess').hide();
         }
     });
+    //每次定点选择区域跟状态的箭头
+    function arrowPosi(d) {
+        console.log($(d.data.data).val().length)
+        var a = $(d.data.data).val().length / 2;
+        var b = $(d.data.data).width();
+        var c = b / 2 + a * 18;
+//		$(this).css({background:'#000'})
+        $(d.data.data).css({
+            'background': 'url("/community/images/list/downArrow.png") no-repeat ' + c + 'px 15.7px',
+            'background-size':'14px 8.5px'
+        });
+    }
+
     //myApp.showIndicator();等待框
     //搜索取消按钮点击
     $('#cancel1').click(function(){
         $('.other').show();
-        $('input').val('');
+        $('#input1').val('');
         $('.main1>ul').html('');
         $('.main1').hide();
         $('#changeView').show();

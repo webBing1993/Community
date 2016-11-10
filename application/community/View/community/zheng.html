@@ -8,7 +8,7 @@
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 		<meta name="mobile-web-app-capable" content="yes" />		
-		<style type="text/css" title="Default">
+		<style>
 			body, div, h1, h2, h3, span, p {
 				font-family: Verdana,Arial,Helvetica,sans-serif;
 				color: #000000;
@@ -27,7 +27,6 @@
 			}
 			body {
 				height:100%;
-				margin: 0px;
 				overflow:hidden; /* disable scrollbars */
 			}
 			body {
@@ -185,9 +184,7 @@
 				height:96px;
 				margin-bottom:10px;
 			}
-			.no{
-				display:none;
-			}
+
 			#fakeloader{
 				top:0;
 				width:100vw;
@@ -331,7 +328,7 @@
 	//搜索取消按钮点击
 	$('#cancel1').click(function(){
 		$('#container').show();
-		$('input').val('');
+		$('#input1').val('');
 		$('.main1>ul').html('');
 		$('.main1').hide();
 		$('#changeView').show();
